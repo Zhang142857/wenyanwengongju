@@ -3,7 +3,7 @@
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
-  padding: 0.5rem 0;
+  flex: 1;
 }
 
 .count {
@@ -39,6 +39,7 @@
 }
 
 .modeBadge {
+  position: relative;
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
   font-weight: 500;
@@ -46,6 +47,108 @@
   border: 1px solid rgba(255, 154, 139, 0.3);
   border-radius: 12px;
   color: var(--color-primary-light);
+}
+
+.regexBadge {
+  background: linear-gradient(135deg, rgba(155, 89, 182, 0.15), rgba(142, 68, 173, 0.15));
+  border: 1px solid rgba(155, 89, 182, 0.4);
+  color: #8e44ad;
+  font-weight: 600;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 2px 8px rgba(155, 89, 182, 0.15);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(155, 89, 182, 0.15);
+  }
+  50% {
+    box-shadow: 0 2px 12px rgba(155, 89, 182, 0.25);
+  }
+}
+
+.regexTooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.98);
+  border: 2px solid rgba(155, 89, 182, 0.5);
+  border-radius: 8px;
+  padding: 12px;
+  min-width: 280px;
+  box-shadow: 0 4px 16px rgba(155, 89, 182, 0.2);
+  z-index: 1000;
+  animation: tooltipFadeIn 0.2s ease-out;
+}
+
+.regexTooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(155, 89, 182, 0.5);
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.tooltipHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  color: #8e44ad;
+  font-size: 0.875rem;
+}
+
+.tooltipIcon {
+  font-size: 1.1rem;
+}
+
+.tooltipContent {
+  font-size: 0.8rem;
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+
+.tooltipContent p {
+  margin: 4px 0;
+}
+
+.tooltipExample {
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(155, 89, 182, 0.08);
+  border-radius: 4px;
+  border-left: 3px solid #8e44ad;
+}
+
+.tooltipExample div {
+  font-weight: 600;
+  color: #8e44ad;
+  margin-bottom: 4px;
+}
+
+.tooltipExample code {
+  display: block;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.85rem;
+  color: #9b59b6;
+  background: white;
+  padding: 4px 8px;
+  border-radius: 3px;
+  margin-top: 4px;
 }
 
 .clearAll {

@@ -1,0 +1,226 @@
+.editorContainer {
+  background: var(--bg-secondary, #f8f9fa);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #333);
+  margin: 0;
+}
+
+.warning {
+  font-size: 12px;
+  color: var(--warning-color, #f5a623);
+  background: var(--warning-bg, #fff8e6);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.characterList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.characterItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--bg-primary, #fff);
+  border-radius: 6px;
+  border: 1px solid var(--border-color, #e0e0e0);
+}
+
+.characterItem.otherChars {
+  background: var(--bg-tertiary, #f0f0f0);
+  border-style: dashed;
+}
+
+.charLabel {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary, #333);
+  min-width: 30px;
+  text-align: center;
+}
+
+.weightControl {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slider {
+  flex: 1;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border-color, #ddd);
+  border-radius: 3px;
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--primary-color, #4a90d9);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.slider:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.weightInput {
+  width: 50px;
+  padding: 4px 8px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.weightInput:disabled {
+  background: var(--bg-tertiary, #f0f0f0);
+  cursor: not-allowed;
+}
+
+.percent {
+  font-size: 12px;
+  color: var(--text-secondary, #666);
+}
+
+.removeBtn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: rgba(149, 165, 166, 0.15);
+  color: #7f8c8d;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.removeBtn:hover {
+  background: rgba(149, 165, 166, 0.3);
+  color: #5d6d7e;
+}
+
+.otherWeightBar {
+  flex: 1;
+  height: 6px;
+  background: var(--border-color, #ddd);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.otherWeightFill {
+  height: 100%;
+  background: var(--text-tertiary, #999);
+  border-radius: 3px;
+  transition: width 0.2s ease;
+}
+
+.otherWeightValue {
+  font-size: 13px;
+  color: var(--text-secondary, #666);
+  min-width: 40px;
+  text-align: right;
+}
+
+.autoLabel {
+  font-size: 11px;
+  color: var(--text-tertiary, #999);
+  font-style: italic;
+}
+
+.addSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color, #e0e0e0);
+}
+
+.charInput {
+  width: 50px;
+  padding: 6px 8px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 4px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.addBtn {
+  padding: 6px 16px;
+  background: var(--primary-color, #4a90d9);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.15s ease;
+}
+
+.addBtn:hover:not(:disabled) {
+  background: var(--primary-dark, #3a7bc8);
+}
+
+.addBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.summary {
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color, #e0e0e0);
+}
+
+.summaryItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary, #666);
+}
+
+.summaryItem.total {
+  font-weight: 600;
+  color: var(--text-primary, #333);
+}
+
+.summaryItem.invalid {
+  color: var(--warning-color, #f5a623);
+}
+
+.summaryValue {
+  font-weight: 600;
+}

@@ -1,0 +1,268 @@
+/* Update Notification Styles */
+.notification {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  min-width: 360px;
+  max-width: 450px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(79, 172, 254, 0.3);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.content {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  gap: 12px;
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  border-radius: 10px;
+  color: #fff;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.version {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.changelogToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-primary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.changelogToggle:hover {
+  color: var(--color-primary-dark);
+}
+
+.changelogToggle svg {
+  transition: transform 0.2s;
+}
+
+.changelogToggle svg.rotated {
+  transform: rotate(180deg);
+}
+
+.changelog {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(79, 172, 254, 0.08);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.changelog p {
+  margin: 0;
+  padding: 2px 0;
+  line-height: 1.5;
+}
+
+.changelog p:empty {
+  display: none;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.updateButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(79, 172, 254, 0.25);
+}
+
+.updateButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.35);
+}
+
+.updateButton:active {
+  transform: translateY(0);
+}
+
+.dismissButton {
+  padding: 6px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dismissButton:hover {
+  background: rgba(79, 172, 254, 0.1);
+  border-color: var(--color-primary);
+}
+
+/* Progress bar */
+.progressContainer {
+  margin-top: 8px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 6px;
+  background: rgba(79, 172, 254, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  font-size: 11px;
+  color: var(--color-primary);
+  margin-top: 4px;
+  text-align: center;
+}
+
+/* 下载速度信息 */
+.speedInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 16px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.speed {
+  color: var(--color-accent);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.eta {
+  color: var(--color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.threads {
+  color: var(--color-primary);
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.downloadingText {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.error {
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.2);
+  border-radius: 8px;
+  color: #c0392b;
+  font-size: 12px;
+}
+
+/* Spinning animation */
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .notification {
+    top: 8px;
+    right: 8px;
+    left: 8px;
+    max-width: none;
+  }
+  
+  .content {
+    flex-wrap: wrap;
+  }
+  
+  .actions {
+    flex-direction: row;
+    width: 100%;
+    margin-top: 8px;
+  }
+  
+  .updateButton,
+  .dismissButton {
+    flex: 1;
+  }
+}

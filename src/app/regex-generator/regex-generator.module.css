@@ -7,7 +7,21 @@
 
 .header {
   margin-bottom: 2rem;
-  text-align: center;
+}
+
+.headerTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.headerTop > div:first-child {
+  text-align: left;
+}
+
+.configSelector {
+  flex-shrink: 0;
 }
 
 .title {

@@ -18,6 +18,7 @@ export default function Sidebar() {
     { name: '编辑库', path: '/manage', icon: EditIcon },
     { name: '导入数据', path: '/import', icon: EditIcon },
     { name: '自动出题', path: '/exam', icon: EditIcon },
+    { name: '⚙️ 设置', path: '/settings', icon: EditIcon },
   ]
 
   return (
@@ -44,16 +45,16 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <button 
+      <button
         className={styles.toggleButton}
         onClick={toggleCollapsed}
         aria-label={collapsed ? '展开侧边栏' : '折叠侧边栏'}
       >
-        <svg 
+        <svg
           className={styles.toggleIcon}
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
           strokeWidth="2"
         >
           {collapsed ? (

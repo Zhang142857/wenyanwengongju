@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+}
+
+.label {
+    white-space: nowrap;
+    opacity: 0.8;
+}
+
+.selectWrapper {
+    position: relative;
+    min-width: 120px;
+}
+
+/* 覆盖 CustomSelect 的某些样式以适应顶栏 */
+/* 注意：由于 CustomSelect 使用 css modules，我们需要传递 className 或者在外层包裹 */

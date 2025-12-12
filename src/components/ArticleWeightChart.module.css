@@ -1,0 +1,281 @@
+.chartContainer {
+  width: 100%;
+  background: var(--bg-secondary, #f8f9fa);
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
+}
+
+.chartWrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  background: white;
+  padding-bottom: 40px;
+}
+
+.chartWrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.chartWrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.chartWrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.chartWrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.chart {
+  display: block;
+  cursor: crosshair;
+  user-select: none;
+}
+
+.timelineWrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  border-radius: 4px;
+  background: white;
+  margin-top: 12px;
+  padding-bottom: 8px;
+}
+
+.timelineWrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.timelineWrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.timelineWrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.timelineWrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.timelineLabel {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 11px;
+  color: var(--text-tertiary, #999);
+  font-weight: 500;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2px 6px;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.timeline {
+  display: block;
+  cursor: crosshair;
+  user-select: none;
+}
+
+.grid {}
+
+.gridLine {
+  stroke: var(--border-color, #e0e0e0);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.axisLabel {
+  font-size: 10px;
+  fill: var(--text-secondary, #666);
+}
+
+.rangeSelection {
+  fill: var(--primary-color, #4a90d9);
+  fill-opacity: 0.15;
+  stroke: var(--primary-color, #4a90d9);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.weightCurve {
+  stroke: var(--primary-color, #4a90d9);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.node {
+  cursor: grab;
+  transition: r 0.15s ease, fill 0.15s ease;
+}
+
+.node:active {
+  cursor: grabbing;
+}
+
+.node.included {
+  fill: var(--primary-color, #4a90d9);
+  stroke: var(--primary-dark, #3a7bc8);
+  stroke-width: 2;
+}
+
+.node.excluded {
+  fill: var(--text-tertiary, #999);
+  stroke: var(--border-color, #ccc);
+  stroke-width: 2;
+}
+
+.node.dragging {
+  r: 12;
+  fill: var(--primary-dark, #3a7bc8);
+}
+
+.node.hovered {
+  r: 10;
+}
+
+.articleLabel {
+  font-size: 11px;
+  fill: var(--text-secondary, #666);
+  pointer-events: none;
+}
+
+.tooltip {}
+
+.tooltipBg {
+  fill: var(--bg-primary, #fff);
+  stroke: var(--border-color, #ddd);
+  stroke-width: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.tooltipText {
+  font-size: 11px;
+  fill: var(--text-primary, #333);
+  font-weight: 500;
+}
+
+.tooltipTitle {
+  font-size: 12px;
+  fill: var(--text-primary, #333);
+  font-weight: 600;
+}
+
+.tooltipWeight {
+  font-size: 11px;
+  fill: var(--primary-color, #4a90d9);
+}
+
+.rangeGroup {
+  cursor: pointer;
+}
+
+.rangeRect {
+  transition: opacity 0.2s ease, fill 0.2s ease;
+}
+
+.rangeRect:hover {
+  opacity: 0.8 !important;
+}
+
+.rangeEdge {
+  cursor: ew-resize;
+  transition: opacity 0.2s ease;
+}
+
+.rangeEdge:hover {
+  opacity: 1 !important;
+}
+
+.contextMenu {
+  position: fixed;
+  background: white;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 120px;
+  padding: 4px 0;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.contextMenuItem {
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-primary, #333);
+  transition: background 0.15s ease;
+}
+
+.contextMenuItem:hover {
+  background: var(--bg-secondary, #f5f5f5);
+}
+
+.contextMenuItem:active {
+  background: var(--bg-tertiary, #e8e8e8);
+}
+
+.legend {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color, #e0e0e0);
+}
+
+.legendRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary, #666);
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.legendDot.included {
+  background: var(--primary-color, #4a90d9);
+}
+
+.legendDot.excluded {
+  background: var(--text-tertiary, #999);
+}
+
+.legendHint {
+  font-size: 11px;
+  color: var(--text-tertiary, #999);
+  line-height: 1.5;
+}

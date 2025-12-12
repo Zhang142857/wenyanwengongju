@@ -1,0 +1,42 @@
+{
+  "id": "patch-v1.0.1-20251207",
+  "version": "1.0.1",
+  "newVersion": "1.0.1",
+  "description": "添加新的 API 配置和功能开关",
+  "operations": [
+    {
+      "_comment": "追加新的 API 配置到数组（不影响用户已有的配置）",
+      "op": "append",
+      "path": "ai.apiConfigs",
+      "value": {
+        "provider": "minimax",
+        "baseUrl": "https://api.minimax.chat/v1",
+        "apiKey": "",
+        "model": "abab6.5s-chat"
+      }
+    },
+    {
+      "_comment": "添加新配置项（仅当不存在时）",
+      "op": "add",
+      "path": "ai.newProvider",
+      "value": {
+        "enabled": false,
+        "apiKey": ""
+      }
+    },
+    {
+      "_comment": "强制更新系统配置",
+      "op": "set",
+      "path": "features.newFeature",
+      "value": true
+    },
+    {
+      "_comment": "合并对象（保留用户其他设置）",
+      "op": "merge",
+      "path": "system",
+      "value": {
+        "newSetting": "default-value"
+      }
+    }
+  ]
+}

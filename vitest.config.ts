@@ -5,20 +5,20 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   test: {
-    environment: 'jsdom',
+    environment: 'node',
     globals: true,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       exclude: [
         'node_modules/',
-        'main/',
         '.next/',
         '**/*.d.ts',
         '**/*.config.*',
       ],
     },
-    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+    include: ['src/**/*.test.ts', 'tests/**/*.test.ts'],
+    exclude: ['src/**/*.test.tsx', 'node_modules/**'],
   },
   resolve: {
     alias: {

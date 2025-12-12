@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react'
 import Layout from '@/components/Layout'
 import { StorageService } from '@/services/storage'
 import { batchExtractShortSentences } from '@/services/shortSentence'
+import { useToast } from '@/contexts/ToastContext'
 import { PlusIcon, SaveIcon, CloseIcon, EditIcon, LibraryIcon, CollectionIcon, ArticleIcon } from '@/components/Icons'
 import type { Library, Collection, Article, Definition, ShortSentence } from '@/types'
 import type { ShortSentenceRequest } from '@/services/shortSentence'
@@ -13,6 +14,7 @@ type ContextMenuType = 'library' | 'collection' | 'article' | null
 
 export default function ManagePage() {
   const [storage] = useState(() => new StorageService())
+  const toast = useToast()
   const [libraries, setLibraries] = useState<Library[]>([])
   const [selectedLibrary, setSelectedLibrary] = useState<Library | null>(null)
   const [selectedCollection, setSelectedCollection] = useState<Collection | null>(null)
@@ -107,7 +109,7 @@ export default function ManagePage() {
 
   const addCollection = () => {
     if (!selectedLibrary) {
-      alert('请先选择一个库')
+      toast.warning('请先选择一个库')
       return
     }
     const count = selectedLibrary.collections.length + 1
@@ -126,7 +128,7 @@ export default function ManagePage() {
 
   const addArticle = () => {
     if (!selectedCollection) {
-      alert('请先选择一个集')
+      toast.warning('请先选择一个集')
       return
     }
     const count = selectedCollection.articles.length + 1
@@ -275,7 +277,7 @@ export default function ManagePage() {
       storage.saveToLocal()
       setIsEditing(false)
       loadData()
-      alert('保存成功！')
+      toast.success('保存成功！')
     }
   }
 
@@ -320,7 +322,7 @@ export default function ManagePage() {
       try {
         const lib = JSON.parse(e.target?.result as string) as Library
         if (!lib.collections || !Array.isArray(lib.collections)) {
-          alert('文件格式错误：不是有效的库文件')
+          toast.error('文件格式错误：不是有效的库文件')
           return
         }
         storage.addLibrary(lib.name)
@@ -342,9 +344,9 @@ export default function ManagePage() {
         }
         storage.saveToLocal()
         loadData()
-        alert('导入成功！')
+        toast.success('导入成功！')
       } catch (error) {
-        alert('导入失败：文件格式错误')
+        toast.error('导入失败：文件格式错误')
       }
     }
     reader.readAsText(file)
@@ -352,7 +354,7 @@ export default function ManagePage() {
 
   const importCollection = (file: File) => {
     if (!selectedLibrary) {
-      alert('请先选择一个库')
+      toast.warning('请先选择一个库')
       return
     }
     const reader = new FileReader()
@@ -360,7 +362,7 @@ export default function ManagePage() {
       try {
         const col = JSON.parse(e.target?.result as string) as Collection
         if (!col.articles || !Array.isArray(col.articles)) {
-          alert('文件格式错误：不是有效的集文件')
+          toast.error('文件格式错误：不是有效的集文件')
           return
         }
         const order = selectedLibrary.collections.length + 1
@@ -377,9 +379,9 @@ export default function ManagePage() {
         }
         storage.saveToLocal()
         loadData()
-        alert('导入成功！')
+        toast.success('导入成功！')
       } catch (error) {
-        alert('导入失败：文件格式错误')
+        toast.error('导入失败：文件格式错误')
       }
     }
     reader.readAsText(file)
@@ -387,7 +389,7 @@ export default function ManagePage() {
 
   const importArticle = (file: File) => {
     if (!selectedCollection) {
-      alert('请先选择一个集')
+      toast.warning('请先选择一个集')
       return
     }
     const reader = new FileReader()
@@ -395,7 +397,7 @@ export default function ManagePage() {
       try {
         const art = JSON.parse(e.target?.result as string) as Article
         if (!art.title || !art.content) {
-          alert('文件格式错误：不是有效的文章文件')
+          toast.error('文件格式错误：不是有效的文章文件')
           return
         }
         storage.addArticle(selectedCollection.id, {
@@ -405,9 +407,9 @@ export default function ManagePage() {
         })
         storage.saveToLocal()
         loadData()
-        alert('导入成功！')
+        toast.success('导入成功！')
       } catch (error) {
-        alert('导入失败：文件格式错误')
+        toast.error('导入失败：文件格式错误')
       }
     }
     reader.readAsText(file)
@@ -502,7 +504,7 @@ export default function ManagePage() {
       }
 
       if (requests.length === 0) {
-        alert('没有找到任何句子，请先导入文言文库')
+        toast.warning('没有找到任何句子，请先导入文言文库')
         setIsGeneratingShort(false)
         return
       }
@@ -531,10 +533,10 @@ export default function ManagePage() {
 
       await storage.saveToLocal()
       loadData()
-      alert(`成功生成 ${storage.getShortSentences().length} 个短句！`)
+      toast.success(`成功生成 ${storage.getShortSentences().length} 个短句！`)
     } catch (error) {
       console.error('生成失败:', error)
-      alert('生成失败，请查看控制台')
+      toast.error('生成失败，请查看控制台')
     } finally {
       setIsGeneratingShort(false)
     }
@@ -560,7 +562,7 @@ export default function ManagePage() {
     storage.clearAllDefinitions()
     await storage.saveToLocal()
     loadData()
-    alert('已清除所有义项')
+    toast.success('已清除所有义项')
   }
 
   // 库类型选择状态

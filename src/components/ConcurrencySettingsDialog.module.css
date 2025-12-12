@@ -4,7 +4,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,14 +23,16 @@
 }
 
 .dialog {
-  background: white;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
   border-radius: 12px;
   width: 90%;
   max-width: 500px;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   animation: slideUp 0.3s ease-out;
 }
 
@@ -49,13 +52,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .title {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text-primary);
   margin: 0;
 }
 
@@ -63,7 +66,7 @@
   background: none;
   border: none;
   font-size: 1.8rem;
-  color: #999;
+  color: var(--color-text-muted);
   cursor: pointer;
   padding: 0;
   width: 32px;
@@ -71,13 +74,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 8px;
   transition: all 0.2s;
 }
 
 .closeBtn:hover {
-  background: #f0f0f0;
-  color: #333;
+  background: rgba(79, 172, 254, 0.1);
+  color: var(--color-text-primary);
 }
 
 .body {
@@ -93,7 +96,7 @@
 .label {
   display: block;
   font-weight: 500;
-  color: #333;
+  color: var(--color-text-primary);
   margin-bottom: 0.5rem;
   font-size: 0.95rem;
 }
@@ -109,7 +112,7 @@
   flex: 1;
   height: 6px;
   border-radius: 3px;
-  background: #e0e0e0;
+  background: rgba(79, 172, 254, 0.2);
   outline: none;
   -webkit-appearance: none;
   appearance: none;
@@ -121,71 +124,72 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #4ecdc4;
+  background: var(--color-primary);
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(79, 172, 254, 0.2);
 }
 
 .slider::-webkit-slider-thumb:hover {
-  background: #3db8b0;
-  box-shadow: 0 2px 8px rgba(78, 205, 196, 0.3);
+  background: var(--color-primary-light);
+  box-shadow: 0 2px 8px rgba(79, 172, 254, 0.3);
 }
 
 .slider::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #4ecdc4;
+  background: var(--color-primary);
   cursor: pointer;
   border: none;
   transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(79, 172, 254, 0.2);
 }
 
 .slider::-moz-range-thumb:hover {
-  background: #3db8b0;
-  box-shadow: 0 2px 8px rgba(78, 205, 196, 0.3);
+  background: var(--color-primary-light);
+  box-shadow: 0 2px 8px rgba(79, 172, 254, 0.3);
 }
 
 .value {
   min-width: 80px;
   padding: 0.5rem 1rem;
-  background: #f5f5f5;
-  border-radius: 4px;
+  background: rgba(79, 172, 254, 0.1);
+  border-radius: 8px;
   text-align: center;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text-primary);
   font-size: 0.9rem;
 }
 
 .hint {
   font-size: 0.8rem;
-  color: #999;
+  color: var(--color-text-muted);
   margin: 0;
 }
 
 .divider {
   height: 1px;
-  background: #e0e0e0;
+  background: var(--color-border);
   margin: 1.5rem 0;
 }
 
 .modelInput {
   width: 100%;
   padding: 0.6rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
   font-size: 0.9rem;
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   outline: none;
   transition: all 0.2s;
   margin-bottom: 0.5rem;
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .modelInput:focus {
-  border-color: #4ecdc4;
-  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
 }
 
 .checkboxLabel {
@@ -194,7 +198,7 @@
   gap: 0.75rem;
   cursor: pointer;
   font-size: 0.95rem;
-  color: #333;
+  color: var(--color-text-primary);
   margin-bottom: 0.5rem;
 }
 
@@ -202,15 +206,15 @@
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: #4ecdc4;
+  accent-color: var(--color-primary);
 }
 
 .footer {
   display: flex;
   gap: 0.75rem;
   padding: 1.5rem;
-  border-top: 1px solid #e0e0e0;
-  background: #f9f9f9;
+  border-top: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 0 0 12px 12px;
 }
 
@@ -220,7 +224,7 @@
   flex: 1;
   padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
@@ -228,34 +232,34 @@
 }
 
 .saveBtn {
-  background: #4ecdc4;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   color: white;
+  box-shadow: 0 2px 8px rgba(79, 172, 254, 0.25);
 }
 
 .saveBtn:hover {
-  background: #3db8b0;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.35);
 }
 
 .resetBtn {
-  background: #95a5a6;
-  color: white;
+  background: rgba(149, 165, 166, 0.2);
+  color: var(--color-text-secondary);
 }
 
 .resetBtn:hover {
-  background: #7f8c8d;
+  background: rgba(149, 165, 166, 0.3);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(149, 165, 166, 0.3);
 }
 
 .closeDialogBtn {
-  background: #ecf0f1;
-  color: #333;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
 }
 
 .closeDialogBtn:hover {
-  background: #d5dbdb;
+  background: rgba(255, 255, 255, 0.8);
   transform: translateY(-1px);
 }
 
@@ -265,10 +269,10 @@
   left: 50%;
   transform: translateX(-50%);
   padding: 0.75rem 1.5rem;
-  background: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-  border-radius: 6px;
+  background: rgba(67, 233, 123, 0.15);
+  color: #27ae60;
+  border: 1px solid rgba(67, 233, 123, 0.3);
+  border-radius: 8px;
   font-size: 0.9rem;
   animation: slideUp 0.3s ease-out;
 }

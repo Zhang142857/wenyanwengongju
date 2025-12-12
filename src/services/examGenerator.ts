@@ -14,6 +14,17 @@ export type AnswerType = 'find-same' | 'find-different'
 /**
  * 出题配置
  */
+export interface CharacterWeight {
+  char: string;
+  weight: number; // 0-100
+}
+
+export interface ArticleWeightConfig {
+  articleId: string;
+  weight: number; // 0-100，0表示完全排除
+  included: boolean; // 是否包含在考察范围
+}
+
 export interface ExamConfig {
   // 必填
   questionCount: number; // 题目数量
@@ -22,12 +33,17 @@ export interface ExamConfig {
   // 可选
   questionType?: QuestionType; // 题型（默认 'same-character'）
   answerType?: AnswerType; // 答案类型：找相同或找不同（默认 'find-different'）
-  targetCharacters?: string[]; // 优先考察的字
+  targetCharacters?: string[]; // 优先考察的字（已废弃，使用 priorityCharacters）
+  priorityCharacters?: string[]; // 优先考察的字
+  characterWeights?: CharacterWeight[]; // 字符权重配置（新）
+  articleWeights?: ArticleWeightConfig[]; // 文章权重配置（新）
+  randomRate?: number; // 随机率 0-100，默认100（100表示完全随机，0表示只用优先字）
   optionsCount?: number; // 每题选项数（默认4）
   sentencesPerOption?: number; // 每个选项的短句数量（默认3，范围2-8）
   correctAnswer?: 'A' | 'B' | 'C' | 'D'; // 正确答案（默认随机）
   matchPattern?: string; // 匹配规则（正则表达式）
   includePreviousKnowledge?: boolean; // 包括之前知识
+  previousKnowledgeWeight?: number; // 之前知识的权重 0-100
 }
 
 export interface ExamScope {
@@ -84,20 +100,27 @@ export class ExamGenerator {
   private async generateSameCharacterExam(config: ExamConfig): Promise<ExamQuestion[]> {
     console.log('生成"同一个字"题型')
     
-    // 1. 获取短句库
-    const shortSentences = this.storage.getShortSentences();
-    console.log('短句库中的短句数量:', shortSentences.length)
+    // 获取文章权重配置
+    const articleWeights = config.articleWeights;
+    if (articleWeights && articleWeights.length > 0) {
+      const includedCount = articleWeights.filter(aw => aw.included && aw.weight > 0).length;
+      console.log(`文章权重配置: ${articleWeights.length}篇文章, ${includedCount}篇被选中`);
+    }
+    
+    // 1. 获取范围内的短句库
+    const shortSentences = this.getShortSentencesInScope(config.scope, config.includePreviousKnowledge, articleWeights);
+    console.log('范围内短句数量:', shortSentences.length)
 
     if (shortSentences.length === 0) {
-      throw new Error('短句库为空，请先生成短句库');
+      throw new Error('指定范围内没有短句数据，请先生成短句库或扩大考察范围');
     }
 
-    // 2. 获取所有义项
-    const definitions = this.storage.getDefinitions();
-    console.log('义项库中的义项数量:', definitions.length)
+    // 2. 获取范围内的义项
+    const definitions = this.getDefinitionsInScope(config.scope, config.includePreviousKnowledge, articleWeights);
+    console.log('范围内义项数量:', definitions.length)
 
     if (definitions.length === 0) {
-      throw new Error('义项库为空，请先添加义项或使用"AI自动生成义项"功能');
+      throw new Error('指定范围内没有义项数据，请使用"AI自动生成义项"功能或扩大考察范围');
     }
     
     // 3. 检查义项是否有关联的例句
@@ -108,7 +131,7 @@ export class ExamGenerator {
     console.log('有例句关联的义项数量:', definitionsWithLinks.length)
     
     if (definitionsWithLinks.length === 0) {
-      throw new Error('义项库中的义项都没有关联例句，请使用"AI自动生成义项"功能生成带例句的义项');
+      throw new Error('指定范围内的义项都没有关联例句，请使用"AI自动生成义项"功能');
     }
 
     // 4. 生成题目
@@ -116,10 +139,41 @@ export class ExamGenerator {
     const usedCharacters = new Set<string>();
     const failedAttempts: string[] = []
 
-    // 优先使用目标字符
-    if (config.targetCharacters && config.targetCharacters.length > 0) {
-      for (const char of config.targetCharacters) {
-        if (questions.length >= config.questionCount) break;
+    // 获取字符权重配置
+    const characterWeights = config.characterWeights || [];
+    const priorityChars = config.priorityCharacters || config.targetCharacters || [];
+    const randomRate = config.randomRate !== undefined ? config.randomRate : 100;
+    
+    // 如果有权重配置，使用权重选择字符
+    const useWeightedSelection = characterWeights.length > 0;
+    
+    // 计算需要多少题使用优先字，多少题随机
+    const totalQuestions = config.questionCount;
+    let priorityQuestionCount: number;
+    let randomQuestionCount: number;
+    
+    if (useWeightedSelection) {
+      // 使用权重配置时，所有题目都从权重列表中选择
+      priorityQuestionCount = totalQuestions;
+      randomQuestionCount = 0;
+      console.log(`使用权重配置，${characterWeights.length}个字符`);
+    } else {
+      priorityQuestionCount = randomRate === 100 ? 0 : Math.ceil(totalQuestions * (100 - randomRate) / 100);
+      randomQuestionCount = totalQuestions - priorityQuestionCount;
+      console.log(`随机率: ${randomRate}%, 优先字题目: ${priorityQuestionCount}, 随机题目: ${randomQuestionCount}`);
+    }
+
+    // 第一阶段：生成优先字/权重字题目
+    let priorityQuestionsGenerated = 0;
+    
+    if (useWeightedSelection) {
+      // 使用权重选择字符（优先考察重点字，但不排斥其他字）
+      const weightedChars = this.selectCharactersByWeight(characterWeights, totalQuestions * 2); // 多选一些备用
+      console.log(`🎯 重点字权重选择: ${weightedChars.join(', ')}`);
+      
+      for (const char of weightedChars) {
+        if (questions.length >= totalQuestions) break;
+        if (usedCharacters.has(char)) continue;
 
         const question = this.generateQuestionForCharacter(
           char,
@@ -131,15 +185,46 @@ export class ExamGenerator {
         if (question) {
           questions.push(question);
           usedCharacters.add(char);
+          priorityQuestionsGenerated++;
+          console.log(`✓ 重点字 "${char}" 生成第 ${questions.length} 题`);
+        } else {
+          failedAttempts.push(char);
+          console.log(`✗ 重点字 "${char}" 无法生成题目（数据不足）`);
+        }
+      }
+      
+      console.log(`📊 重点字生成了 ${priorityQuestionsGenerated} 道题，还需要 ${totalQuestions - questions.length} 道`);
+    } else if (priorityChars.length > 0 && priorityQuestionCount > 0) {
+      for (const char of priorityChars) {
+        if (questions.length >= priorityQuestionCount) break;
+
+        const question = this.generateQuestionForCharacter(
+          char,
+          shortSentences,
+          definitionsWithLinks,
+          config
+        );
+
+        if (question) {
+          questions.push(question);
+          usedCharacters.add(char);
+          priorityQuestionsGenerated++;
+          console.log(`✓ 优先字 "${char}" 生成第 ${questions.length} 题`)
         } else {
           failedAttempts.push(char)
+          console.log(`✗ 优先字 "${char}" 无法生成题目`)
         }
       }
     }
 
-    // 补充其他题目
+    // 第二阶段：补充随机题目（当重点字不够时，从其他字中补充）
+    if (questions.length < config.questionCount) {
+      console.log(`🔄 开始补充随机题目，还需要 ${config.questionCount - questions.length} 道`);
+    }
+    
     let attempts = 0
     const maxAttempts = definitionsWithLinks.length * 2 // 防止无限循环
+    let randomQuestionsGenerated = 0;
     
     while (questions.length < config.questionCount && attempts < maxAttempts) {
       attempts++
@@ -149,7 +234,7 @@ export class ExamGenerator {
         .filter(c => !usedCharacters.has(c));
 
       if (availableChars.length === 0) {
-        console.warn('可用字符不足，只能生成', questions.length, '道题');
+        console.warn('⚠️ 可用字符不足，只能生成', questions.length, '道题');
         break;
       }
 
@@ -164,21 +249,45 @@ export class ExamGenerator {
       if (question) {
         questions.push(question);
         usedCharacters.add(randomChar);
-        console.log(`成功生成第 ${questions.length} 题，字: ${randomChar}`)
+        randomQuestionsGenerated++;
+        console.log(`✓ 其他字 "${randomChar}" 生成第 ${questions.length} 题`)
       } else {
         // 如果无法生成题目，标记该字符已使用
         usedCharacters.add(randomChar);
         failedAttempts.push(randomChar)
-        console.log(`无法为字 "${randomChar}" 生成题目`)
       }
     }
+    
+    // 输出统计信息
+    console.log(`📊 题目生成统计: 重点字 ${priorityQuestionsGenerated} 道, 其他字 ${randomQuestionsGenerated} 道, 共 ${questions.length} 道`);
     
     if (failedAttempts.length > 0) {
       console.log('无法生成题目的字:', failedAttempts)
     }
     
     if (questions.length === 0) {
-      throw new Error('无法生成"同一个字"题型的题目。\n\n可能原因：\n1. 大部分字只有1个义项（需要至少2个义项）\n2. 义项的短句数量不足（每个义项至少需要3个短句）\n\n建议解决方案：\n1. 切换到"不同字"题型（对数据要求更低）\n2. 使用"AI自动生成义项"功能生成更多义项\n3. 扩大考察范围');
+      // 统计数据
+      const charGroups = new Map<string, number>();
+      for (const def of definitionsWithLinks) {
+        charGroups.set(def.character, (charGroups.get(def.character) || 0) + 1);
+      }
+      const multiDefChars = Array.from(charGroups.values()).filter(count => count >= 2).length;
+      
+      throw new Error(
+        `无法生成"同一个字"题型的题目。\n\n` +
+        `数据统计（当前范围）：\n` +
+        `- 义项总数：${definitionsWithLinks.length}\n` +
+        `- 短句总数：${shortSentences.length}\n` +
+        `- 有多个义项的字：${multiDefChars}\n` +
+        `- 需要题目数：${config.questionCount}\n\n` +
+        `可能原因：\n` +
+        `1. 大部分字只有1个义项（需要至少2个义项）\n` +
+        `2. 义项的短句数量不足（每个义项至少需要${config.sentencesPerOption || 3}个短句）\n\n` +
+        `建议解决方案：\n` +
+        `1. 切换到"不同字"题型（对数据要求更低）\n` +
+        `2. 使用"AI自动生成义项"功能生成更多义项\n` +
+        `3. 扩大考察范围或减少题目数量`
+      );
     }
 
     console.log(`成功生成 ${questions.length} 道题目`)
@@ -192,16 +301,23 @@ export class ExamGenerator {
   private async generateDifferentCharactersExam(config: ExamConfig): Promise<ExamQuestion[]> {
     console.log('生成"不同字"题型')
     
-    // 1. 获取短句库
-    const shortSentences = this.storage.getShortSentences();
+    // 获取文章权重配置
+    const articleWeights = config.articleWeights;
+    if (articleWeights && articleWeights.length > 0) {
+      const includedCount = articleWeights.filter(aw => aw.included && aw.weight > 0).length;
+      console.log(`文章权重配置: ${articleWeights.length}篇文章, ${includedCount}篇被选中`);
+    }
+    
+    // 1. 获取范围内的短句库
+    const shortSentences = this.getShortSentencesInScope(config.scope, config.includePreviousKnowledge, articleWeights);
     if (shortSentences.length === 0) {
-      throw new Error('短句库为空，请先生成短句库');
+      throw new Error('指定范围内没有短句数据，请先生成短句库或扩大考察范围');
     }
 
-    // 2. 获取所有义项
-    const definitions = this.storage.getDefinitions();
+    // 2. 获取范围内的义项
+    const definitions = this.getDefinitionsInScope(config.scope, config.includePreviousKnowledge, articleWeights);
     if (definitions.length === 0) {
-      throw new Error('义项库为空，请先添加义项或使用"AI自动生成义项"功能');
+      throw new Error('指定范围内没有义项数据，请使用"AI自动生成义项"功能或扩大考察范围');
     }
     
     // 3. 检查义项是否有关联的例句
@@ -211,7 +327,7 @@ export class ExamGenerator {
     })
     
     if (definitionsWithLinks.length === 0) {
-      throw new Error('义项库中的义项都没有关联例句');
+      throw new Error('指定范围内的义项都没有关联例句');
     }
 
     // 4. 按字符分组并统计每个字符的可用短句数量
@@ -253,6 +369,21 @@ export class ExamGenerator {
     // 5. 筛选出符合条件的字符（短句数量 >= sentencesPerOption）
     const validCharacters = characterInfos.filter(info => info.shortSentencesCount >= sentencesPerOption)
     
+    // 检查重点字的数据情况
+    const characterWeightsForCheck = config.characterWeights || [];
+    if (characterWeightsForCheck.length > 0) {
+      console.log(`🔍 [不同字题型] 检查重点字数据情况:`);
+      for (const cw of characterWeightsForCheck.filter(w => w.weight > 0)) {
+        const charInfo = characterInfos.find(info => info.character === cw.char);
+        if (charInfo) {
+          const isValid = charInfo.shortSentencesCount >= sentencesPerOption;
+          console.log(`   ${cw.char}: ${charInfo.shortSentencesCount}个短句 ${isValid ? '✓ 可用' : `✗ 不足(需要${sentencesPerOption}个)`}`);
+        } else {
+          console.log(`   ${cw.char}: 无义项数据 ✗`);
+        }
+      }
+    }
+    
     console.log(`📊 字符筛选结果：总共 ${characterInfos.length} 个字符，符合条件的 ${validCharacters.length} 个`)
     
     if (validCharacters.length < optionsCount) {
@@ -284,19 +415,147 @@ export class ExamGenerator {
 
     // 6. 生成题目
     const questions: ExamQuestion[] = []
-    const usedCharacters = new Set<string>()
+    const usedNormalChars = new Set<string>() // 普通字只能使用一次
+    const priorityCharUsageCount = new Map<string, number>() // 重点字的使用次数
+    
+    // 获取优先字符列表和权重配置
+    const characterWeights = config.characterWeights || [];
+    const priorityChars = config.priorityCharacters || config.targetCharacters || [];
+    const randomRate = config.randomRate !== undefined ? config.randomRate : 100;
+    const useWeightedSelection = characterWeights.length > 0;
+    
+    // 计算每个重点字的最大使用次数（基于权重）
+    const priorityCharMaxUsage = new Map<string, number>();
+    const priorityCharSet = new Set<string>();
+    if (useWeightedSelection) {
+      for (const cw of characterWeights) {
+        if (cw.weight > 0) {
+          // 权重越高，允许使用的次数越多
+          // 权重80%的字在5道题中最多可以使用 ceil(5 * 0.8) = 4 次
+          const maxUsage = Math.max(1, Math.ceil(config.questionCount * cw.weight / 100));
+          priorityCharMaxUsage.set(cw.char, maxUsage);
+          priorityCharSet.add(cw.char);
+          priorityCharUsageCount.set(cw.char, 0);
+        }
+      }
+    }
+    
+    // 调试日志
+    if (useWeightedSelection) {
+      const weightedCharsDebug = characterWeights
+        .filter(w => w.weight > 0)
+        .map(w => `${w.char}(${w.weight}%,最多${priorityCharMaxUsage.get(w.char)}次)`);
+      console.log(`🎯 [不同字题型] 使用权重配置: ${weightedCharsDebug.join(', ')}`);
+      
+      // 检查哪些重点字在有效字符列表中
+      const validCharsSet = new Set(validCharacters.map(v => v.character));
+      const matchedChars = characterWeights.filter(w => w.weight > 0 && validCharsSet.has(w.char));
+      const unmatchedChars = characterWeights.filter(w => w.weight > 0 && !validCharsSet.has(w.char));
+      
+      console.log(`📊 重点字匹配情况: ${matchedChars.length}个可用, ${unmatchedChars.length}个不可用`);
+      if (unmatchedChars.length > 0) {
+        console.log(`⚠️ 不可用的重点字（数据不足）: ${unmatchedChars.map(w => w.char).join(', ')}`);
+      }
+    }
+    
+    let priorityQuestionsCount = 0;
+    let randomQuestionsCount = 0;
 
     for (let i = 0; i < config.questionCount; i++) {
-      // 从符合条件的字符中筛选未使用的
-      const availableChars = validCharacters.filter(info => !usedCharacters.has(info.character))
+      // 从符合条件的字符中筛选可用的字符
+      // 重点字：检查是否达到最大使用次数
+      // 普通字：检查是否已使用
+      const availableChars = validCharacters.filter(info => {
+        if (priorityCharSet.has(info.character)) {
+          // 重点字：检查使用次数
+          const currentUsage = priorityCharUsageCount.get(info.character) || 0;
+          const maxUsage = priorityCharMaxUsage.get(info.character) || 1;
+          return currentUsage < maxUsage;
+        } else {
+          // 普通字：检查是否已使用
+          return !usedNormalChars.has(info.character);
+        }
+      })
       
       if (availableChars.length < optionsCount) {
         console.warn(`可用字符不足（需要${optionsCount}个，只有${availableChars.length}个），只能生成${questions.length}道题`)
         break
       }
 
-      // 随机选择N个字符
-      const selectedCharInfos = this.randomSelect(availableChars, optionsCount)
+      // 根据权重或随机率选择字符
+      let selectedCharInfos: typeof validCharacters;
+      let usedPriorityInThisQuestion = false;
+      
+      if (useWeightedSelection) {
+        // 使用权重配置选择字符
+        // 策略：权重高的字优先被选中，且更可能成为正确答案
+        const weightedChars = characterWeights
+          .filter(w => w.weight > 0)
+          .sort((a, b) => b.weight - a.weight)
+          .map(w => w.char);
+        
+        const priorityCharInfos = availableChars.filter(info => weightedChars.includes(info.character));
+        const nonPriorityChars = availableChars.filter(info => !weightedChars.includes(info.character));
+        
+        if (priorityCharInfos.length >= optionsCount) {
+          // 重点字足够，全部从重点字中选择（按权重）
+          selectedCharInfos = this.selectCharInfosByWeight(priorityCharInfos, characterWeights, optionsCount);
+          usedPriorityInThisQuestion = true;
+        } else if (priorityCharInfos.length > 0) {
+          // 重点字不足，优先使用重点字，补充其他字
+          // 确保重点字在前面（更可能成为正确答案）
+          const supplementCount = optionsCount - priorityCharInfos.length;
+          const supplementChars = this.randomSelect(nonPriorityChars, supplementCount);
+          // 重点字放在前面，这样在随机选择正确答案时更可能选中重点字
+          selectedCharInfos = [...priorityCharInfos, ...supplementChars];
+          usedPriorityInThisQuestion = true;
+          console.log(`📝 第${i+1}题: 使用${priorityCharInfos.length}个重点字 + ${supplementChars.length}个其他字`);
+        } else {
+          // 没有可用的重点字，完全随机
+          selectedCharInfos = this.randomSelect(availableChars, optionsCount);
+        }
+        
+        if (usedPriorityInThisQuestion) {
+          priorityQuestionsCount++;
+        } else {
+          randomQuestionsCount++;
+        }
+      } else if (randomRate === 0 && priorityChars.length > 0) {
+        // 随机率为0，只使用优先字
+        const priorityCharInfos = availableChars.filter(info => priorityChars.includes(info.character));
+        if (priorityCharInfos.length >= optionsCount) {
+          selectedCharInfos = this.randomSelect(priorityCharInfos, optionsCount);
+        } else {
+          // 优先字不足，补充随机字
+          const remainingCount = optionsCount - priorityCharInfos.length;
+          const nonPriorityChars = availableChars.filter(info => !priorityChars.includes(info.character));
+          const supplementChars = this.randomSelect(nonPriorityChars, remainingCount);
+          selectedCharInfos = [...priorityCharInfos, ...supplementChars];
+        }
+      } else if (randomRate === 100 || priorityChars.length === 0) {
+        // 随机率为100或没有优先字，完全随机
+        selectedCharInfos = this.randomSelect(availableChars, optionsCount);
+      } else {
+        // 混合模式：按比例选择优先字和随机字
+        const priorityCount = Math.ceil(optionsCount * (100 - randomRate) / 100);
+        const randomCount = optionsCount - priorityCount;
+        
+        const priorityCharInfos = availableChars.filter(info => priorityChars.includes(info.character));
+        const nonPriorityChars = availableChars.filter(info => !priorityChars.includes(info.character));
+        
+        const selectedPriority = this.randomSelect(priorityCharInfos, Math.min(priorityCount, priorityCharInfos.length));
+        const selectedRandom = this.randomSelect(nonPriorityChars, optionsCount - selectedPriority.length);
+        
+        selectedCharInfos = [...selectedPriority, ...selectedRandom];
+        
+        // 如果总数不足，从所有可用字符中补充
+        if (selectedCharInfos.length < optionsCount) {
+          const usedInSelection = new Set(selectedCharInfos.map(info => info.character));
+          const remaining = availableChars.filter(info => !usedInSelection.has(info.character));
+          const supplement = this.randomSelect(remaining, optionsCount - selectedCharInfos.length);
+          selectedCharInfos = [...selectedCharInfos, ...supplement];
+        }
+      }
       
       // 为每个字符生成选项
       const options: ExamOption[] = []
@@ -358,7 +617,16 @@ export class ExamGenerator {
       })
       
       // 标记这些字符已使用
-      selectedCharInfos.forEach(info => usedCharacters.add(info.character))
+      selectedCharInfos.forEach(info => {
+        if (priorityCharSet.has(info.character)) {
+          // 重点字：增加使用次数
+          const currentUsage = priorityCharUsageCount.get(info.character) || 0;
+          priorityCharUsageCount.set(info.character, currentUsage + 1);
+        } else {
+          // 普通字：标记为已使用
+          usedNormalChars.add(info.character);
+        }
+      })
       console.log(`✅ 成功生成第 ${questions.length} 题，考察字: ${questionChars.join(', ')}`)
     }
     
@@ -366,8 +634,100 @@ export class ExamGenerator {
       throw new Error('无法生成"不同字"题型的题目。\n\n可能原因：\n1. 每个字的短句数量不足（每个字至少需要3个短句）\n2. 可用字符数量不足（需要至少 题目数×选项数 个字符）\n\n建议解决方案：\n1. 减少题目数量\n2. 减少每题选项数\n3. 使用"AI自动生成义项"功能\n4. 扩大考察范围')
     }
 
+    // 输出统计信息
+    if (useWeightedSelection) {
+      console.log(`📊 [不同字题型] 题目生成统计: 使用重点字 ${priorityQuestionsCount} 题, 完全随机 ${randomQuestionsCount} 题, 共 ${questions.length} 题`);
+      
+      // 显示每个重点字的实际使用次数
+      const usageStats = Array.from(priorityCharUsageCount.entries())
+        .filter(([_, count]) => count > 0)
+        .map(([char, count]) => `${char}×${count}`)
+        .join(', ');
+      if (usageStats) {
+        console.log(`📈 重点字使用情况: ${usageStats}`);
+      }
+    }
+    
     console.log(`成功生成 ${questions.length} 道题目`)
     return questions
+  }
+
+  /**
+   * 根据权重选择字符
+   * 权重越高，被选中的概率越大
+   */
+  private selectCharactersByWeight(weights: CharacterWeight[], count: number): string[] {
+    if (weights.length === 0) return [];
+    
+    // 过滤掉权重为0的字符
+    const validWeights = weights.filter(w => w.weight > 0);
+    if (validWeights.length === 0) return [];
+    
+    // 计算总权重
+    const totalWeight = validWeights.reduce((sum, w) => sum + w.weight, 0);
+    
+    // 根据权重随机选择
+    const selected: string[] = [];
+    const availableWeights = [...validWeights];
+    
+    while (selected.length < count && availableWeights.length > 0) {
+      // 随机选择一个
+      const random = Math.random() * availableWeights.reduce((sum, w) => sum + w.weight, 0);
+      let cumulative = 0;
+      
+      for (let i = 0; i < availableWeights.length; i++) {
+        cumulative += availableWeights[i].weight;
+        if (random <= cumulative) {
+          selected.push(availableWeights[i].char);
+          availableWeights.splice(i, 1); // 移除已选择的，避免重复
+          break;
+        }
+      }
+    }
+    
+    return selected;
+  }
+
+  /**
+   * 根据权重选择字符信息（用于不同字题型）
+   * 从字符信息列表中根据权重随机选择
+   */
+  private selectCharInfosByWeight<T extends { character: string }>(
+    charInfos: T[],
+    weights: CharacterWeight[],
+    count: number
+  ): T[] {
+    if (charInfos.length === 0) return [];
+    
+    // 构建权重映射
+    const weightMap = new Map(weights.map(w => [w.char, w.weight]));
+    
+    // 为每个字符信息添加权重
+    const infosWithWeight = charInfos.map(info => ({
+      info,
+      weight: weightMap.get(info.character) || 1, // 默认权重为1
+    }));
+    
+    // 根据权重随机选择
+    const selected: T[] = [];
+    const available = [...infosWithWeight];
+    
+    while (selected.length < count && available.length > 0) {
+      const totalWeight = available.reduce((sum, item) => sum + item.weight, 0);
+      const random = Math.random() * totalWeight;
+      let cumulative = 0;
+      
+      for (let i = 0; i < available.length; i++) {
+        cumulative += available[i].weight;
+        if (random <= cumulative) {
+          selected.push(available[i].info);
+          available.splice(i, 1);
+          break;
+        }
+      }
+    }
+    
+    return selected;
   }
 
   /**
@@ -526,6 +886,158 @@ export class ExamGenerator {
       options,
       correctAnswer,
     };
+  }
+
+  /**
+   * 获取指定范围内的义项
+   * 只返回关联到范围内句子的义项
+   */
+  private getDefinitionsInScope(
+    scope: ExamScope, 
+    includePrevious: boolean = false,
+    articleWeights?: ArticleWeightConfig[]
+  ): Definition[] {
+    // 获取范围内的句子ID集合
+    const sentenceIds = this.getSentenceIdsInScope(scope, includePrevious, articleWeights);
+    
+    // 获取所有义项
+    const allDefinitions = this.storage.getDefinitions();
+    
+    // 筛选出关联到范围内句子的义项
+    const definitionsInScope: Definition[] = [];
+    
+    for (const definition of allDefinitions) {
+      const links = this.storage.getDefinitionLinksForDefinition(definition.id);
+      
+      // 检查是否有任何关联指向范围内的句子
+      const hasLinkInScope = links.some(link => sentenceIds.has(link.sentenceId));
+      
+      if (hasLinkInScope) {
+        definitionsInScope.push(definition);
+      }
+    }
+    
+    return definitionsInScope;
+  }
+
+  /**
+   * 获取指定范围内的短句
+   * 根据 sourceSentenceId 筛选范围内的短句
+   */
+  private getShortSentencesInScope(
+    scope: ExamScope, 
+    includePrevious: boolean = false,
+    articleWeights?: ArticleWeightConfig[]
+  ): any[] {
+    // 获取范围内的句子ID集合
+    const sentenceIds = this.getSentenceIdsInScope(scope, includePrevious, articleWeights);
+    
+    // 获取所有短句
+    const allShortSentences = this.storage.getShortSentences();
+    
+    // 筛选出来源于范围内句子的短句
+    const shortSentencesInScope = allShortSentences.filter(
+      shortSentence => sentenceIds.has(shortSentence.sourceSentenceId)
+    );
+    
+    return shortSentencesInScope;
+  }
+
+  /**
+   * 获取指定范围内的句子ID集合
+   * 用于筛选义项和短句
+   * @param scope 考察范围
+   * @param includePrevious 是否包含之前知识
+   * @param articleWeights 文章权重配置（可选，用于过滤文章）
+   */
+  private getSentenceIdsInScope(
+    scope: ExamScope, 
+    includePrevious: boolean = false,
+    articleWeights?: ArticleWeightConfig[]
+  ): Set<string> {
+    const sentenceIds = new Set<string>();
+    const libraries = this.storage.getLibraries();
+
+    // 构建文章过滤集合（只包含 included=true 且 weight>0 的文章）
+    const includedArticleIds = articleWeights 
+      ? new Set(articleWeights.filter(aw => aw.included && aw.weight > 0).map(aw => aw.articleId))
+      : null;
+    
+    // 如果有文章权重配置但没有任何文章被选中，返回空集合
+    if (includedArticleIds && includedArticleIds.size === 0) {
+      console.log('⚠️ 文章权重配置中没有任何文章被选中');
+      return sentenceIds;
+    }
+
+    for (const library of libraries) {
+      // 库筛选
+      if (scope.libraryId && library.id !== scope.libraryId) {
+        continue;
+      }
+
+      // 找到目标集和目标文章的索引（用于"包括之前知识"的比较）
+      let targetCollection: any = null;
+      let targetArticleIndex: number = -1;
+      
+      if (scope.collectionId) {
+        targetCollection = library.collections.find(c => c.id === scope.collectionId);
+        if (targetCollection && scope.articleId) {
+          targetArticleIndex = targetCollection.articles.findIndex((a: any) => a.id === scope.articleId);
+        }
+      }
+
+      for (const collection of library.collections) {
+        // 集筛选
+        if (scope.collectionId && collection.id !== scope.collectionId) {
+          // 如果开启了"包括之前知识"，则包含order更小的集
+          if (includePrevious && targetCollection) {
+            if (collection.order >= targetCollection.order) {
+              continue;
+            }
+            // 之前的集，包含所有文章（但仍需检查文章权重）
+            for (const article of collection.articles) {
+              // 检查文章是否在权重配置中被选中
+              if (includedArticleIds && !includedArticleIds.has(article.id)) {
+                continue;
+              }
+              article.sentences.forEach((sentence: any) => sentenceIds.add(sentence.id));
+            }
+            continue;
+          } else {
+            continue;
+          }
+        }
+
+        for (let articleIndex = 0; articleIndex < collection.articles.length; articleIndex++) {
+          const article = collection.articles[articleIndex];
+          
+          // 检查文章是否在权重配置中被选中
+          if (includedArticleIds && !includedArticleIds.has(article.id)) {
+            continue;
+          }
+          
+          // 文章筛选
+          if (scope.articleId && article.id !== scope.articleId) {
+            // 如果开启了"包括之前知识"，则包含同一集中索引更小的文章
+            if (includePrevious && targetArticleIndex >= 0 && collection.id === scope.collectionId) {
+              if (articleIndex >= targetArticleIndex) {
+                continue;
+              }
+              // 之前的文章，包含所有句子
+              article.sentences.forEach((sentence: any) => sentenceIds.add(sentence.id));
+              continue;
+            } else {
+              continue;
+            }
+          }
+
+          // 添加该文章的所有句子ID
+          article.sentences.forEach((sentence: any) => sentenceIds.add(sentence.id));
+        }
+      }
+    }
+
+    return sentenceIds;
   }
 
   /**

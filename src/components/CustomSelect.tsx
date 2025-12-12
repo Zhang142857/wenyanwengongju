@@ -7,39 +7,44 @@ import styles from './CustomSelect.module.css'
 interface Option {
   value: string
   label: string
+  description?: string
 }
 
 interface CustomSelectProps {
   value: string
+  onChange: (value: string) => void
   options: Option[]
   placeholder?: string
-  onChange: (value: string) => void
+  className?: string
   disabled?: boolean
   'aria-label'?: string
 }
 
-export default function CustomSelect({
-  value,
-  options,
-  placeholder = '请选择',
-  onChange,
+export default function CustomSelect({ 
+  value, 
+  onChange, 
+  options, 
+  placeholder, 
+  className,
   disabled = false,
   'aria-label': ariaLabel,
 }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({})
-  const wrapperRef = useRef<HTMLDivElement>(null)
-  const buttonRef = useRef<HTMLButtonElement>(null)
-  const dropdownRef = useRef<HTMLDivElement>(null)
+  const [position, setPosition] = useState({ top: 0, left: 0, width: 0 })
+  const containerRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLDivElement>(null)
+  const optionsRef = useRef<HTMLDivElement>(null)
 
-  // 点击外部关闭
+  const selectedOption = options.find(opt => opt.value === value)
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node
-      const isOutsideWrapper = wrapperRef.current && !wrapperRef.current.contains(target)
-      const isOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(target)
+      // 检查点击是否在触发器或下拉选项之外
+      const isOutsideContainer = containerRef.current && !containerRef.current.contains(target)
+      const isOutsideOptions = optionsRef.current && !optionsRef.current.contains(target)
       
-      if (isOutsideWrapper && isOutsideDropdown) {
+      if (isOutsideContainer && isOutsideOptions) {
         setIsOpen(false)
       }
     }
@@ -47,74 +52,72 @@ export default function CustomSelect({
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside)
     }
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
   }, [isOpen])
 
-  const toggleDropdown = () => {
-    if (disabled) return
-    if (!isOpen && buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect()
-      setDropdownStyle({
-        position: 'fixed',
-        top: rect.bottom + 4,
+  useEffect(() => {
+    if (isOpen && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect()
+      setPosition({
+        top: rect.bottom + 8,
         left: rect.left,
-        minWidth: Math.max(rect.width, 150),
+        width: rect.width
       })
     }
-    setIsOpen(!isOpen)
-  }
+  }, [isOpen])
 
   const handleSelect = (optionValue: string) => {
     onChange(optionValue)
     setIsOpen(false)
   }
 
-  const selectedOption = options.find(opt => opt.value === value)
-  const displayText = selectedOption?.label || placeholder
-
   return (
-    <div className={styles.selectWrapper} ref={wrapperRef}>
-      <button
-        ref={buttonRef}
-        type="button"
-        className={`${styles.selectButton} ${value ? styles.active : ''} ${isOpen ? styles.open : ''}`}
-        onClick={toggleDropdown}
-        disabled={disabled}
+    <div className={`${styles.customSelect} ${className || ''}`} ref={containerRef}>
+      <div 
+        ref={triggerRef}
+        className={`${styles.selectTrigger} ${isOpen ? styles.open : ''} ${disabled ? styles.disabled : ''}`}
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        role="combobox"
         aria-label={ariaLabel}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
+        aria-disabled={disabled}
+        tabIndex={disabled ? -1 : 0}
       >
-        <span className={styles.buttonText}>{displayText}</span>
-        <svg
-          className={`${styles.icon} ${isOpen ? styles.iconOpen : ''}`}
-          width="14"
-          height="14"
-          viewBox="0 0 16 16"
-          fill="none"
-        >
-          <path
-            d="M4 6L8 10L12 6"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
+        <span className={styles.selectedValue}>
+          {selectedOption?.label || placeholder || '请选择'}
+        </span>
+        <span className={`${styles.arrow} ${isOpen ? styles.arrowUp : ''}`}>▼</span>
+      </div>
 
-      {isOpen && createPortal(
-        <div ref={dropdownRef} className={styles.dropdown} style={dropdownStyle} role="listbox">
+      {isOpen && typeof document !== 'undefined' && createPortal(
+        <div 
+          ref={optionsRef}
+          className={styles.optionsContainer}
+          style={{
+            position: 'fixed',
+            top: position.top,
+            left: position.left,
+            width: position.width
+          }}
+        >
           {options.map((option) => (
-            <button
+            <div
               key={option.value}
-              type="button"
               className={`${styles.option} ${option.value === value ? styles.selected : ''}`}
               onClick={() => handleSelect(option.value)}
-              role="option"
-              aria-selected={option.value === value}
             >
-              {option.label}
-            </button>
+              <div className={styles.optionMain}>
+                <span className={styles.optionLabel}>{option.label}</span>
+                {option.value === value && <span className={styles.checkmark}>✓</span>}
+              </div>
+              {option.description && (
+                <div className={styles.optionDescription}>{option.description}</div>
+              )}
+            </div>
           ))}
         </div>,
         document.body

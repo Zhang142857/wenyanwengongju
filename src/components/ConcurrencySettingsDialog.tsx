@@ -58,7 +58,7 @@ export default function ConcurrencySettingsDialog({ isOpen, onClose }: Concurren
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.dialog} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <h2 className={styles.title}>⚡ 并发参数设置 (Ling-flash-2.0)</h2>
+          <h2 className={styles.title}>⚡ 并发参数设置</h2>
           <button className={styles.closeBtn} onClick={onClose}>×</button>
         </div>
 
@@ -134,34 +134,7 @@ export default function ConcurrencySettingsDialog({ isOpen, onClose }: Concurren
           </div>
 
           {/* 分隔线 */}
-          <div className={styles.divider}></div>
 
-          {/* 模型ID */}
-          <div className={styles.setting}>
-            <label className={styles.label}>模型ID</label>
-            <input
-              type="text"
-              value={config.modelId}
-              onChange={(e) => handleChange('modelId', e.target.value as any)}
-              placeholder="例如: inclusionAI/Ling-flash-2.0"
-              className={styles.modelInput}
-            />
-            <p className={styles.hint}>输入要使用的模型ID</p>
-          </div>
-
-          {/* 思考模型复选框 */}
-          <div className={styles.setting}>
-            <label className={styles.checkboxLabel}>
-              <input
-                type="checkbox"
-                checked={config.isThinkingModel}
-                onChange={(e) => handleChange('isThinkingModel', e.target.checked as any)}
-                className={styles.checkbox}
-              />
-              <span>这是一个思考模型</span>
-            </label>
-            <p className={styles.hint}>思考模型会使用更多的计算资源但质量更高</p>
-          </div>
         </div>
 
         <div className={styles.footer}>

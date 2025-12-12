@@ -1,0 +1,113 @@
+{
+  "version": "1.0.0",
+  "edition": "custom",
+  "ai": {
+    "configGroups": [
+      {
+        "id": "default-fast",
+        "name": "快速模式",
+        "description": "使用zai-org/GLM-4.6模型，速度快，适合大批量处理",
+        "provider": "siliconflow",
+        "baseUrl": "https://api.siliconflow.cn/v1",
+        "apiKeys": [
+          "sk-vkasvvxaewwtnrfnyjkdqizcubmwlvywlbzuvgsfjotoxtrg",
+          "sk-vzuzylxxtolfxmlcmmhykqgctgiuivbfgtlwebcjcxpdlqyv",
+          "sk-cplztrsifchetezkbabzxrzsnmlyvuwlspevkgpmztfksthz",
+          "sk-izfpkafaxakjrexfsecdkoqxtearoidybzootmwzjpbofqnx",
+          "sk-mkdvcwoseuxtfmltgmnxxiaaornbkrookxbqctiuvjgweecw",
+          "sk-limxenepsomcnviqzvoevkzmngcihkmvezrlamjqkmtblrfs",
+          "sk-qtfeqncvnoftrgngdzxhhpfvovgcigftdfyohrpxxoycdrdf"
+        ],
+        "model": "zai-org/GLM-4.6",
+        "isThinkingModel": true,
+        "concurrency": {
+          "aiDefinitionConcurrency": 19,
+          "shortSentenceConcurrency": 18,
+          "batchDelayMs": 100,
+          "retryDelayMs": 500
+        }
+      },
+      {
+        "name": "高质量模式",
+        "description": "使用DeepSeek-R1-0528模型，质量极高，但极慢",
+        "provider": "siliconflow",
+        "baseUrl": "https://api.siliconflow.cn/v1",
+        "apiKeys": [
+          "sk-limxenepsomcnviqzvoevkzmngcihkmvezrlamjqkmtblrfs",
+          "sk-qtfeqncvnoftrgngdzxhhpfvovgcigftdfyohrpxxoycdrdf",
+          "sk-vkasvvxaewwtnrfnyjkdqizcubmwlvywlbzuvgsfjotoxtrg",
+          "sk-vzuzylxxtolfxmlcmmhykqgctgiuivbfgtlwebcjcxpdlqyv",
+          "sk-utmyrihhgtrltmxrfrgwdgczanizxgsghozpznrblhwpywzx",
+          "sk-dcncotheouqogwthjhyhfqvgmaczodynhmawheiaitttlgoa",
+          "sk-cplztrsifchetezkbabzxrzsnmlyvuwlspevkgpmztfksthz",
+          "sk-fkqobhyaaozmwnbehnpujthpetkxpxlujelpvefbjwcdhmoh",
+          "sk-mkdvcwoseuxtfmltgmnxxiaaornbkrookxbqctiuvjgweecw",
+          "sk-izfpkafaxakjrexfsecdkoqxtearoidybzootmwzjpbofqnx"
+        ],
+        "model": "deepseek-ai/DeepSeek-R1",
+        "isThinkingModel": true,
+        "id": "group-1764931385710",
+        "concurrency": {
+          "aiDefinitionConcurrency": 1,
+          "shortSentenceConcurrency": 1,
+          "batchDelayMs": 0,
+          "retryDelayMs": 500
+        }
+      }
+    ],
+    "activeGroupId": "default-fast",
+    "concurrency": {
+      "aiDefinitionConcurrency": 30,
+      "shortSentenceConcurrency": 34,
+      "batchDelayMs": 100,
+      "retryDelayMs": 500
+    }
+  },
+  "libraries": {
+    "defaultLibraries": [],
+    "focusWords": "安卑备被鄙毕薄策长称诚惩驰出辞次箪当道得等敌吊度端恶发凡方分奉否夫扶拂福富更苟固故顾观冠光归过好号还患惠或极寂加间见将角借尽就居举具决绝开可苦乐类利隶良临鳞令妙名谋奇骑前强且清情请穷屈去阙容乳善尚少舍射甚胜施食使始市恃是适书数遂所所以通图徒推屯望为谓文闻下鲜贤相效屑谢信行许学寻焉艳夷遗已义异易诣益意因引盈用友余与欲援缘杂然再曾争指至志质致诸主属著缀资子自足卒作坐乎者以而其于焉虽然则因且乃矣之",
+    "keyCharacters": []
+  },
+  "system": {
+    "appTitle": "文言文小工具",
+    "enableTour": true,
+    "hasPlayedTour": false,
+    "theme": "gradient",
+    "backgroundSettings": {
+      "type": "gradient",
+      "effect": "none",
+      "effects": {
+        "blur": false,
+        "darken": false,
+        "grayscale": false,
+        "blurAmount": 8,
+        "brightness": 50,
+        "saturation": 100
+      }
+    },
+    "autoFilter": {
+      "enabled": true,
+      "defaultLibraryId": "0899880f-c050-47a6-b3d4-d5b362155404"
+    }
+  },
+  "features": {
+    "enableAIOrganize": true,
+    "enableExam": true,
+    "enableRegexGenerator": true,
+    "enableImport": true,
+    "enableManage": true
+  },
+  "tourPlayedRecord": {
+    "home": false,
+    "import": false,
+    "organize": false,
+    "aiOrganize": true,
+    "exam": false,
+    "manage": false,
+    "regexGenerator": false,
+    "query": false,
+    "settings": true,
+    "imageTour": true,
+    "examAnnouncement": true
+  }
+}

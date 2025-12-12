@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import type { SearchOptions } from '@/types'
 import type { FilterState } from './FilterPanel'
 import styles from './ActiveFiltersIndicator.module.css'
@@ -17,6 +18,7 @@ export default function ActiveFiltersIndicator({
   onClearFilter,
   onClearAll,
 }: ActiveFiltersIndicatorProps) {
+  const [showRegexTooltip, setShowRegexTooltip] = useState(false)
   const activeFilters: Array<{ key: keyof FilterState; label: string }> = []
   
   if (filters.library) activeFilters.push({ key: 'library', label: '库' })
@@ -52,8 +54,30 @@ export default function ActiveFiltersIndicator({
       ))}
 
       {activeModes.map((mode) => (
-        <span key={mode} className={styles.modeBadge}>
+        <span 
+          key={mode} 
+          className={`${styles.modeBadge} ${mode === '正则' ? styles.regexBadge : ''}`}
+          onMouseEnter={() => mode === '正则' && setShowRegexTooltip(true)}
+          onMouseLeave={() => mode === '正则' && setShowRegexTooltip(false)}
+        >
+          {mode === '正则' && '🔍 '}
           {mode}
+          {mode === '正则' && showRegexTooltip && (
+            <div className={styles.regexTooltip}>
+              <div className={styles.tooltipHeader}>
+                <span className={styles.tooltipIcon}>⚠️</span>
+                <strong>正则表达式模式</strong>
+              </div>
+              <div className={styles.tooltipContent}>
+                <p>当前不是普通查字模式！</p>
+                <p>正在使用正则语法进行高级匹配</p>
+                <div className={styles.tooltipExample}>
+                  <div>示例：</div>
+                  <code>不亦.*乎</code> - 匹配"不亦"和"乎"之间的任意内容
+                </div>
+              </div>
+            </div>
+          )}
         </span>
       ))}
 

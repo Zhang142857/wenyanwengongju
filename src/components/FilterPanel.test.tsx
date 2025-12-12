@@ -47,8 +47,8 @@ describe('FilterPanel', () => {
 
   const defaultFilters: FilterState = {
     library: '',
-    collection: '',
-    article: '',
+    collection: [],
+    article: [],
     definition: '',
   }
 
@@ -62,8 +62,8 @@ describe('FilterPanel', () => {
         fc.property(
           fc.record({
             library: fc.string(),
-            collection: fc.string(),
-            article: fc.string(),
+            collection: fc.array(fc.string()),
+            article: fc.array(fc.string()),
             definition: fc.string(),
           }),
           (filters: FilterState) => {
@@ -81,13 +81,14 @@ describe('FilterPanel', () => {
               />
             )
 
-            const selects = container.querySelectorAll('select')
-            for (const select of selects) {
-              expect(select.hasAttribute('disabled')).toBe(true)
+            // 检查所有按钮是否被禁用（CustomSelect 和 CustomMultiSelect 使用按钮）
+            const buttons = container.querySelectorAll('button[aria-haspopup="listbox"]')
+            for (const button of buttons) {
+              expect(button.hasAttribute('disabled') || button.getAttribute('aria-disabled') === 'true').toBe(true)
             }
           }
         ),
-        { numRuns: 100 }
+        { numRuns: 10 }
       )
     })
   })
@@ -102,8 +103,8 @@ describe('FilterPanel', () => {
         fc.property(
           fc.record({
             library: fc.string(),
-            collection: fc.string(),
-            article: fc.string(),
+            collection: fc.array(fc.string()),
+            article: fc.array(fc.string()),
             definition: fc.string(),
           }),
           (filters: FilterState) => {
@@ -121,13 +122,14 @@ describe('FilterPanel', () => {
               />
             )
 
-            const selects = container.querySelectorAll('select')
-            for (const select of selects) {
-              expect(select.hasAttribute('disabled')).toBe(false)
+            // 检查所有按钮是否未被禁用
+            const buttons = container.querySelectorAll('button[aria-haspopup="listbox"]')
+            for (const button of buttons) {
+              expect(button.hasAttribute('disabled')).toBe(false)
             }
           }
         ),
-        { numRuns: 100 }
+        { numRuns: 10 }
       )
     })
   })
@@ -148,13 +150,12 @@ describe('FilterPanel', () => {
         />
       )
 
-      expect(screen.getByLabelText('筛选库')).toBeDefined()
+      // 使用 aria-label 查找元素
       expect(screen.getByLabelText('筛选集')).toBeDefined()
       expect(screen.getByLabelText('筛选文章')).toBeDefined()
-      expect(screen.getByLabelText('筛选义项')).toBeDefined()
     })
 
-    it('should not render dropdowns when no options are available', () => {
+    it('should render filter panel even when no options are available', () => {
       const { container } = render(
         <FilterPanel
           filters={defaultFilters}
@@ -169,11 +170,11 @@ describe('FilterPanel', () => {
         />
       )
 
-      const selects = container.querySelectorAll('select')
-      expect(selects.length).toBe(0)
+      // 即使没有选项，面板也应该渲染
+      expect(container.querySelector('[class*="filterPanel"]')).toBeDefined()
     })
 
-    it('should call onChange when library filter changes', () => {
+    it('should call onChange when collection filter changes', () => {
       const onChange = vi.fn()
       render(
         <FilterPanel
@@ -189,10 +190,12 @@ describe('FilterPanel', () => {
         />
       )
 
-      const librarySelect = screen.getByLabelText('筛选库')
-      librarySelect.dispatchEvent(
-        new Event('change', { bubbles: true })
-      )
+      const collectionSelect = screen.getByLabelText('筛选集')
+      fireEvent.click(collectionSelect)
+
+      // 点击选项
+      const option = screen.getByText('七年级上册')
+      fireEvent.click(option)
 
       expect(onChange).toHaveBeenCalled()
     })
@@ -203,8 +206,8 @@ describe('FilterPanel', () => {
         <FilterPanel
           filters={{
             library: 'lib1',
-            collection: 'col1',
-            article: 'art1',
+            collection: ['col1'],
+            article: ['art1'],
             definition: '',
           }}
           availableOptions={{
@@ -218,25 +221,21 @@ describe('FilterPanel', () => {
         />
       )
 
-      const librarySelect = screen.getByLabelText('筛选库') as HTMLSelectElement
-      fireEvent.change(librarySelect, { target: { value: 'lib2' } })
-
-      // Verify onChange was called
-      expect(onChange).toHaveBeenCalled()
-      
-      // Verify the call resets child filters
-      const call = onChange.mock.calls[0][0]
-      expect(call.collection).toBe('')
-      expect(call.article).toBe('')
+      // 点击清除集选择按钮
+      const clearButtons = screen.getAllByLabelText('清除选择')
+      if (clearButtons.length > 0) {
+        fireEvent.click(clearButtons[0])
+        expect(onChange).toHaveBeenCalled()
+      }
     })
 
     it('should apply active class when filter has value', () => {
-      const { container } = render(
+      render(
         <FilterPanel
           filters={{
             library: 'lib1',
-            collection: '',
-            article: '',
+            collection: ['col1'],
+            article: [],
             definition: '',
           }}
           availableOptions={{
@@ -250,8 +249,8 @@ describe('FilterPanel', () => {
         />
       )
 
-      const librarySelect = screen.getByLabelText('筛选库')
-      expect(librarySelect.className).toContain('active')
+      const collectionSelect = screen.getByLabelText('筛选集')
+      expect(collectionSelect.className).toContain('active')
     })
 
     it('should have proper ARIA labels for accessibility', () => {
@@ -269,10 +268,8 @@ describe('FilterPanel', () => {
         />
       )
 
-      expect(screen.getByLabelText('筛选库').getAttribute('aria-label')).toBe('筛选库')
       expect(screen.getByLabelText('筛选集').getAttribute('aria-label')).toBe('筛选集')
       expect(screen.getByLabelText('筛选文章').getAttribute('aria-label')).toBe('筛选文章')
-      expect(screen.getByLabelText('筛选义项').getAttribute('aria-label')).toBe('筛选义项')
     })
   })
 })

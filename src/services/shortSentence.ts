@@ -1,32 +1,26 @@
 /**
  * 短句生成服务 - 用于从文言文库生成适合出题的短句
- * 使用硅基流动的 Ling-flash-2.0 模型
+ * 从统一配置服务动态获取API配置
  */
 
-const API_BASE_URL = 'https://api.siliconflow.cn/v1';
-const MODEL = 'inclusionAI/Ling-flash-2.0';
-
-// 多个API Key池
-const API_KEYS = [
-  'sk-vkasvvxaewwtnrfnyjkdqizcubmwlvywlbzuvgsfjotoxtrg',
-  'sk-vzuzylxxtolfxmlcmmhykqgctgiuivbfgtlwebcjcxpdlqyv',
-  'sk-cplztrsifchetezkbabzxrzsnmlyvuwlspevkgpmztfksthz',
-  'sk-izfpkafaxakjrexfsecdkoqxtearoidybzootmwzjpbofqnx',
-  'sk-mkdvcwoseuxtfmltgmnxxiaaornbkrookxbqctiuvjgweecw',
-  'sk-limxenepsomcnviqzvoevkzmngcihkmvezrlamjqkmtblrfs',
-  'sk-qtfeqncvnoftrgngdzxhhpfvovgcigftdfyohrpxxoycdrdf',
-];
+import { configService } from './configService'
 
 // API Key 轮询索引
 let currentKeyIndex = 0;
 
 /**
- * 获取下一个API Key（轮询）
+ * 获取下一个API配置（轮询）
  */
-function getNextApiKey(): string {
-  const key = API_KEYS[currentKeyIndex];
-  currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
-  return key;
+function getNextApiConfig() {
+  const configs = configService.getAIConfig().filter(c => c.apiKey)
+
+  if (configs.length === 0) {
+    throw new Error('未配置API Key，请在设置中添加API配置')
+  }
+
+  const config = configs[currentKeyIndex]
+  currentKeyIndex = (currentKeyIndex + 1) % configs.length
+  return config
 }
 
 export interface ShortSentenceRequest {
@@ -71,16 +65,17 @@ export async function extractShortSentences(
 请直接输出短句，用"|"分隔，不要有任何额外的话：`;
 
   try {
-    console.log('[短句生成] 使用 Ling-flash-2.0 模型');
-    const apiKey = getNextApiKey();
-    const response = await fetch(`${API_BASE_URL}/chat/completions`, {
+    const apiConfig = getNextApiConfig();
+    console.log(`[短句生成] 使用模型: ${apiConfig.model}`);
+
+    const response = await fetch(`${apiConfig.baseUrl}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        'Authorization': `Bearer ${apiConfig.apiKey}`,
       },
       body: JSON.stringify({
-        model: MODEL,
+        model: apiConfig.model,
         messages: [
           {
             role: 'system',
@@ -129,7 +124,7 @@ export async function batchExtractShortSentences(
 ): Promise<ShortSentenceResponse[]> {
   // 动态导入配置（避免循环依赖）
   const { getShortSentenceConcurrency, getBatchDelayMs } = await import('./concurrencyConfig')
-  
+
   const results: ShortSentenceResponse[] = [];
   const concurrency = getShortSentenceConcurrency();
   const startTime = Date.now();
@@ -142,7 +137,7 @@ export async function batchExtractShortSentences(
     if (onProgress) {
       const elapsed = (Date.now() - startTime) / 1000;
       const speed = i > 0 ? i / elapsed : 0;
-      
+
       onProgress(i, requests.length, {
         speed,
         startTime,
@@ -167,7 +162,7 @@ export async function batchExtractShortSentences(
     const batchResults = await Promise.all(batchPromises);
     const validResults = batchResults.filter((r): r is ShortSentenceResponse => r !== null);
     results.push(...validResults);
-    
+
     // 累加生成的短句数量
     totalGenerated += validResults.reduce((sum, r) => sum + r.shortSentences.length, 0);
 
@@ -181,7 +176,7 @@ export async function batchExtractShortSentences(
   if (onProgress) {
     const elapsed = (Date.now() - startTime) / 1000;
     const speed = requests.length / elapsed;
-    
+
     onProgress(requests.length, requests.length, {
       speed,
       startTime,

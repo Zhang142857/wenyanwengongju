@@ -1,10 +1,12 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { SearchTool, highlightCharacter } from '@/tools/search'
 import { StorageService } from '@/services/storage'
 import { validateInput, getFirstValidCharacter } from '@/utils/validation'
 import { useSearchOptions } from '@/hooks/useSearchOptions'
+import { configService } from '@/services/configService'
+import { exportSearchResultsToWord, downloadSearchResultWord } from '@/services/searchResultExport'
 import ContextMenu from './ContextMenu'
 import AddDefinitionDialog from './AddDefinitionDialog'
 import AddTranslationDialog from './AddTranslationDialog'
@@ -58,6 +60,35 @@ export default function SearchPage({ storage }: SearchPageProps) {
     definition: '',
   })
   
+  // 是否已初始化自动筛选
+  const autoFilterInitialized = useRef(false)
+  
+  // 初始化时应用自动筛选设置
+  useEffect(() => {
+    if (autoFilterInitialized.current) return
+    
+    const initAutoFilter = async () => {
+      await configService.initialize()
+      const autoFilterConfig = configService.getAutoFilterConfig()
+      
+      if (autoFilterConfig.enabled && autoFilterConfig.defaultLibraryId) {
+        // 验证库是否存在
+        const libraries = storage.getLibraries()
+        const libraryExists = libraries.some(lib => lib.id === autoFilterConfig.defaultLibraryId)
+        
+        if (libraryExists) {
+          setFilters(prev => ({
+            ...prev,
+            library: autoFilterConfig.defaultLibraryId,
+          }))
+        }
+      }
+      autoFilterInitialized.current = true
+    }
+    
+    initAutoFilter()
+  }, [storage])
+  
   // 选中状态
   const [currentSelection, setCurrentSelection] = useState<SelectionState | null>(null)
   // 右键菜单状态
@@ -69,7 +100,7 @@ export default function SearchPage({ storage }: SearchPageProps) {
   // 悬停提示状态
   const [tooltip, setTooltip] = useState<TooltipState | null>(null)
 
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     const validation = validateInput(input)
     
     if (!validation.isValid) {
@@ -86,22 +117,15 @@ export default function SearchPage({ storage }: SearchPageProps) {
     try {
       const searchResults = searchTool.searchWithOptions(input, searchOptions)
       setAllResults(searchResults)
-      setFilteredResults(searchResults)
+      // 不重置筛选，保留用户的筛选设置
+      // 筛选会在 useEffect 中自动应用
       setHasSearched(true)
-      
-      // 重置筛选
-      setFilters({
-        library: '',
-        collection: [],
-        article: [],
-        definition: '',
-      })
     } catch (err) {
       setError(err instanceof Error ? err.message : '搜索出错')
       setAllResults([])
       setFilteredResults([])
     }
-  }
+  }, [input, searchOptions, storage])
 
   // 应用筛选
   const applyFilters = useCallback(() => {
@@ -139,19 +163,19 @@ export default function SearchPage({ storage }: SearchPageProps) {
     setFilteredResults(filtered)
   }, [allResults, filters, storage, input])
 
-  // 当筛选条件或搜索选项改变时重新搜索
+  // 当搜索选项改变时重新搜索
   useEffect(() => {
     if (hasSearched && input) {
       handleSearch()
     }
   }, [searchOptions])
 
-  // 当筛选条件改变时应用筛选
+  // 当筛选条件改变或搜索结果更新时应用筛选
   useEffect(() => {
-    if (hasSearched) {
+    if (allResults.length > 0 || hasSearched) {
       applyFilters()
     }
-  }, [filters, hasSearched, applyFilters])
+  }, [filters, allResults, hasSearched, applyFilters])
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -348,55 +372,74 @@ export default function SearchPage({ storage }: SearchPageProps) {
     return storage.getDefinitions().filter(d => d.character === char)
   }, [storage])
 
-  // 处理悬停显示义项
-  const handleCharacterHover = useCallback((char: string, x: number, y: number) => {
-    const definitions = getDefinitionsForCharacter(char)
-    if (definitions.length > 0) {
-      setTooltip({ x, y, definitions })
+  // 处理悬停显示义项（只显示该字在当前句子中的义项）
+  const handleCharacterHover = useCallback((char: string, sentenceId: string, position: number, x: number, y: number) => {
+    // 获取该字符的所有义项
+    const allDefinitions = getDefinitionsForCharacter(char)
+    
+    // 获取该字符在当前句子中的义项链接
+    const links = storage.getDefinitionLinksForSentence(sentenceId)
+    const relevantLinks = links.filter(link => link.characterPosition === position)
+    
+    // 只显示在当前句子中使用的义项
+    const relevantDefinitions = allDefinitions.filter(def => 
+      relevantLinks.some(link => link.definitionId === def.id)
+    )
+    
+    // 如果当前句子中有标注的义项，只显示这些；否则显示所有义项
+    const definitionsToShow = relevantDefinitions.length > 0 ? relevantDefinitions : allDefinitions
+    
+    if (definitionsToShow.length > 0) {
+      setTooltip({ x, y, definitions: definitionsToShow })
     }
-  }, [getDefinitionsForCharacter])
+  }, [getDefinitionsForCharacter, storage])
 
   // 关闭悬停提示
   const closeTooltip = useCallback(() => {
     setTooltip(null)
   }, [])
 
+  // 导出搜索结果为 Word
+  const handleExportToWord = useCallback(async () => {
+    if (filteredResults.length === 0) return
+
+    try {
+      const searchChar = getFirstValidCharacter(input)
+      const blob = await exportSearchResultsToWord(filteredResults, storage, {
+        title: `"${searchChar}" 查字结果`,
+        showDefinitions: true,
+        showSource: true,
+        highlightChar: searchChar,
+      })
+      
+      const filename = `查字结果_${searchChar}_${new Date().toLocaleDateString('zh-CN').replace(/\//g, '-')}.docx`
+      downloadSearchResultWord(blob, filename)
+    } catch (error) {
+      console.error('导出失败:', error)
+      alert('导出失败，请重试')
+    }
+  }, [filteredResults, input, storage])
+
   return (
     <div className={styles.searchPage}>
       {/* 搜索输入区域 */}
       <div className={styles.searchSection}>
         <div className={styles.searchControls}>
-          <input
-            type="text"
-            className={styles.searchInput}
-            placeholder={
-              searchOptions.mode === 'regex'
-                ? '输入正则表达式 (如: 不亦.*乎)'
-                : searchOptions.mode === 'inverse'
-                ? '输入要排除的字符或模式'
-                : '请输入要查询的汉字...'
-            }
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
-          
-          <div className={styles.controlsRight}>
-            <AdvancedMatchMenu
-              options={searchOptions}
-              onOptionsChange={setSearchOptions}
-            />
-            
-            <FilterPanel
-              filters={filters}
-              availableOptions={{
-                libraries: getAvailableLibraries(),
-                collections: getAvailableCollections(),
-                articles: getAvailableArticles(),
-                definitions: getAvailableDefinitions(),
-              }}
-              disabled={false}
-              onChange={setFilters}
+          {/* 第一行：搜索框 + 搜索按钮 */}
+          <div className={styles.searchRow}>
+            <input
+              type="text"
+              className={styles.searchInput}
+              placeholder={
+                searchOptions.mode === 'regex'
+                  ? '输入正则表达式 (如: 不亦.*乎)'
+                  : searchOptions.mode === 'inverse'
+                  ? '输入要排除的字符或模式'
+                  : '请输入要查询的汉字...'
+              }
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
             
             <button
@@ -407,19 +450,40 @@ export default function SearchPage({ storage }: SearchPageProps) {
               搜索
             </button>
           </div>
+          
+          {/* 第二行：筛选器 */}
+          <FilterPanel
+            filters={filters}
+            availableOptions={{
+              libraries: getAvailableLibraries(),
+              collections: getAvailableCollections(),
+              articles: getAvailableArticles(),
+              definitions: getAvailableDefinitions(),
+            }}
+            disabled={false}
+            onChange={setFilters}
+          />
+          
+          {/* 第三行：高级选项 + 当前筛选条件 */}
+          <div className={styles.bottomRow}>
+            <AdvancedMatchMenu
+              options={searchOptions}
+              onOptionsChange={setSearchOptions}
+            />
+            
+            <ActiveFiltersIndicator
+              filters={filters}
+              options={searchOptions}
+              onClearFilter={(key) => setFilters({ ...filters, [key]: '' })}
+              onClearAll={() => {
+                setFilters({ library: '', collection: [], article: [], definition: '' })
+                setSearchOptions({ ...searchOptions, mode: 'normal' })
+              }}
+            />
+          </div>
         </div>
         
         {error && <div className={styles.error}>{error}</div>}
-        
-        <ActiveFiltersIndicator
-          filters={filters}
-          options={searchOptions}
-          onClearFilter={(key) => setFilters({ ...filters, [key]: '' })}
-          onClearAll={() => {
-            setFilters({ library: '', collection: [], article: [], definition: '' })
-            setSearchOptions({ ...searchOptions, mode: 'normal' })
-          }}
-        />
       </div>
 
       {/* 搜索结果区域 */}
@@ -427,6 +491,15 @@ export default function SearchPage({ storage }: SearchPageProps) {
         <div className={styles.resultsSection}>
           <div className={styles.resultsHeader}>
             <h2 className={styles.resultsTitle}>搜索结果 ({filteredResults.length})</h2>
+            {filteredResults.length > 0 && (
+              <button
+                className={styles.exportButton}
+                onClick={handleExportToWord}
+                title="导出为 Word 文档"
+              >
+                📄 导出 Word
+              </button>
+            )}
           </div>
           
           {filteredResults.length > 0 ? (
@@ -508,7 +581,7 @@ interface ResultItemProps {
   storage: StorageService
   onCharacterSelect: (selection: SelectionState) => void
   onContextMenu: (e: React.MouseEvent, selection: SelectionState) => void
-  onCharacterHover: (char: string, x: number, y: number) => void
+  onCharacterHover: (char: string, sentenceId: string, position: number, x: number, y: number) => void
   onCharacterLeave: () => void
 }
 
@@ -576,7 +649,7 @@ function ResultItem({
           onMouseEnter={(e) => {
             if (hasDefinition) {
               const rect = e.currentTarget.getBoundingClientRect()
-              onCharacterHover(char, rect.left, rect.top)
+              onCharacterHover(char, result.sentence.id, i, rect.left, rect.top)
             }
           }}
           onMouseLeave={onCharacterLeave}

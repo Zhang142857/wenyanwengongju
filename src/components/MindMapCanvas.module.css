@@ -38,11 +38,28 @@
   cursor: not-allowed;
 }
 
+.toolbarBtn.active {
+  background: var(--color-accent);
+}
+
+.toolbarBtn.active:hover {
+  background: var(--color-accent-light);
+}
+
 .zoomInfo {
   margin-left: auto;
   font-size: 0.9rem;
   color: var(--color-text-secondary);
   font-weight: 500;
+}
+
+.editHint {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  padding: 0.5rem 1rem;
+  background: rgba(241, 196, 15, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(241, 196, 15, 0.25);
 }
 
 .canvas {
@@ -137,9 +154,23 @@
 }
 
 .highlightChar {
-  color: #1976d2;
+  color: var(--color-primary);
   font-weight: 700;
-  background-color: rgba(25, 118, 210, 0.15);
+  background-color: rgba(79, 172, 254, 0.15);
   padding: 0 2px;
   border-radius: 2px;
+}
+
+.nodeInput {
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--color-primary);
+  border-radius: 4px;
+  padding: 0.5rem;
+  background: white;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  text-align: center;
+  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
 }

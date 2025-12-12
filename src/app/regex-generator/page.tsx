@@ -1,17 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Layout from '@/components/Layout'
 import styles from './regex-generator.module.css'
-
-// API配置
-const API_CONFIG = {
-  baseUrl: 'https://api.siliconflow.cn/v1',
-  apiKey: 'sk-vkasvvxaewwtnrfnyjkdqizcubmwlvywlbzuvgsfjotoxtrg',
-  model: 'MiniMaxAI/MiniMax-M2',
-}
+import { configService } from '@/services/configService'
+import ApiConfigSelector from '@/components/ApiConfigSelector'
 
 export default function RegexGeneratorPage() {
+  const [apiReady, setApiReady] = useState(false)
   const [requirement, setRequirement] = useState('')
   const [result, setResult] = useState<{ method: string; regex: string } | null>(null)
   const [loading, setLoading] = useState(false)
@@ -21,9 +17,30 @@ export default function RegexGeneratorPage() {
   const [streamingContent, setStreamingContent] = useState('')
   const [isStreaming, setIsStreaming] = useState(false)
 
+  // 初始化配置服务
+  useEffect(() => {
+    const initConfig = async () => {
+      try {
+        await configService.initialize()
+        setApiReady(true)
+      } catch (err) {
+        console.error('配置服务初始化失败:', err)
+        setError('配置服务初始化失败，请刷新页面重试')
+      }
+    }
+    initConfig()
+  }, [])
+
   const handleGenerate = async () => {
     if (!requirement.trim()) {
       setError('请输入需求描述')
+      return
+    }
+
+    // 从配置服务获取API配置
+    const apiConfig = configService.getNextApiConfig()
+    if (!apiConfig) {
+      setError('未配置API Key，请在设置中添加API配置')
       return
     }
 
@@ -39,6 +56,7 @@ export default function RegexGeneratorPage() {
 
     try {
       console.log('开始生成正则表达式...')
+      console.log(`[正则生成] 使用模型: ${apiConfig.model}`)
       const startTime = Date.now()
       
       const prompt = `你是一个正则表达式专家。用户需要一个正则表达式来实现以下需求：
@@ -61,14 +79,14 @@ ${requirement}
 
       console.log('发送API请求（流式）...')
       
-      const response = await fetch(`${API_CONFIG.baseUrl}/chat/completions`, {
+      const response = await fetch(`${apiConfig.baseUrl}/chat/completions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${API_CONFIG.apiKey}`,
+          'Authorization': `Bearer ${apiConfig.apiKey}`,
         },
         body: JSON.stringify({
-          model: API_CONFIG.model,
+          model: apiConfig.model,
           messages: [
             {
               role: 'user',
@@ -268,8 +286,13 @@ ${requirement}
     <Layout>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h1 className={styles.title}>正则生成器</h1>
-          <p className={styles.subtitle}>AI辅助生成正则表达式，支持各种查询需求</p>
+          <div className={styles.headerTop}>
+            <div>
+              <h1 className={styles.title}>正则生成器</h1>
+              <p className={styles.subtitle}>AI辅助生成正则表达式，支持各种查询需求</p>
+            </div>
+            <ApiConfigSelector className={styles.configSelector} />
+          </div>
         </div>
 
         <div className={styles.content}>

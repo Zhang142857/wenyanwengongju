@@ -1,7 +1,6 @@
 .filterPanel {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  gap: 0.75rem;
   align-items: center;
   position: relative;
   z-index: 100;
@@ -10,6 +9,6 @@
 /* 响应式布局 */
 @media (max-width: 768px) {
   .filterPanel {
-    width: 100%;
+    flex-wrap: wrap;
   }
 }

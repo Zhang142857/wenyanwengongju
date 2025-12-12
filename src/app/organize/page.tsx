@@ -1,10 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Layout from '@/components/Layout'
 import MindMapCanvas from '@/components/MindMapCanvas'
 import { StorageService } from '@/services/storage'
 import { MindMapService, type MindMapData } from '@/services/mindmap'
+import { configService } from '@/services/configService'
+import { useToast } from '@/contexts/ToastContext'
 import type { Library } from '@/types'
 import styles from './organize.module.css'
 
@@ -12,39 +14,69 @@ export default function OrganizePage() {
   const [storage] = useState(() => new StorageService())
   const [mindMapService] = useState(() => new MindMapService(storage))
   const [isInitialized, setIsInitialized] = useState(false)
-  
+  const toast = useToast()
+
   // 范围选择
   const [libraries, setLibraries] = useState<Library[]>([])
   const [selectedLibraryId, setSelectedLibraryId] = useState<string>('')
   const [selectedCollectionId, setSelectedCollectionId] = useState<string>('')
   const [selectedArticleId, setSelectedArticleId] = useState<string>('')
-  
+
   // 字符选择
   const [character, setCharacter] = useState('')
   const [mindMapData, setMindMapData] = useState<MindMapData | null>(null)
   const [availableCharacters, setAvailableCharacters] = useState<string[]>([])
+  
+  // 全屏和编辑模式
+  const [isFullscreen, setIsFullscreen] = useState(false)
+  const [isEditMode, setIsEditMode] = useState(false)
+
+  // 是否已初始化自动筛选
+  const autoFilterInitialized = useRef(false)
 
   useEffect(() => {
     const initStorage = async () => {
       await storage.initialize()
       const libs = storage.getLibraries()
       setLibraries(libs)
-      
+
       // 获取所有有义项的字符
       const definitions = storage.getDefinitions()
       const chars = Array.from(new Set(definitions.map(d => d.character))).sort()
       setAvailableCharacters(chars)
-      
+
+      // 应用自动筛选设置
+      if (!autoFilterInitialized.current) {
+        await configService.initialize()
+        const autoFilterConfig = configService.getAutoFilterConfig()
+        
+        if (autoFilterConfig.enabled && autoFilterConfig.defaultLibraryId) {
+          const libraryExists = libs.some(lib => lib.id === autoFilterConfig.defaultLibraryId)
+          if (libraryExists) {
+            setSelectedLibraryId(autoFilterConfig.defaultLibraryId)
+          }
+        }
+        autoFilterInitialized.current = true
+      }
+
       setIsInitialized(true)
     }
     initStorage()
   }, [storage])
 
-  const handleGenerateMindMap = () => {
+  const handleGenerateMindMap = async () => {
     if (!character.trim()) {
-      alert('请输入要查看的字')
+      toast.warning('请输入要查看的字')
       return
     }
+
+    // 重新从 localStorage 加载最新数据，确保能看到其他页面保存的义项
+    await storage.initialize()
+    
+    // 更新可用字符列表
+    const definitions = storage.getDefinitions()
+    const chars = Array.from(new Set(definitions.map(d => d.character))).sort()
+    setAvailableCharacters(chars)
 
     const scope = {
       libraryId: selectedLibraryId || undefined,
@@ -53,19 +85,20 @@ export default function OrganizePage() {
     }
 
     const data = mindMapService.generateMindMap(character, scope)
-    
+
     if (data.nodes.length === 1) {
-      alert(`字"${character}"在选定范围内没有义项或例句`)
+      toast.warning(`字"${character}"在选定范围内没有义项或例句`)
       return
     }
-    
+
+    toast.success('思维导图生成成功')
     setMindMapData(data)
   }
 
   const handleSaveMindMap = () => {
     if (mindMapData) {
       mindMapService.saveMindMap(mindMapData)
-      alert('思维导图已保存')
+      toast.success('思维导图已保存')
     }
   }
 
@@ -85,12 +118,12 @@ export default function OrganizePage() {
   const articles = selectedCollection?.articles || []
 
   return (
-    <Layout title="义项整理" subtitle="Definition Organization">
+    <Layout title="义项整理" subtitle="Definition Organization" fullWidth={true}>
       <div className={styles.container}>
-        <div className={styles.sidebar}>
+        {!isFullscreen && <div className={styles.sidebar}>
           <div className={styles.section}>
             <h3 className={styles.sectionTitle}>生成思维导图</h3>
-            
+
             {/* 字符输入 */}
             <div className={styles.inputGroup}>
               <label className={styles.label}>选择字符：</label>
@@ -107,8 +140,8 @@ export default function OrganizePage() {
             {/* 范围选择 */}
             <div className={styles.scopeSection}>
               <label className={styles.label}>查看范围（可选）：</label>
-              
-              <select 
+
+              <select
                 className={styles.select}
                 value={selectedLibraryId}
                 onChange={(e) => {
@@ -124,7 +157,7 @@ export default function OrganizePage() {
               </select>
 
               {selectedLibraryId && (
-                <select 
+                <select
                   className={styles.select}
                   value={selectedCollectionId}
                   onChange={(e) => {
@@ -140,7 +173,7 @@ export default function OrganizePage() {
               )}
 
               {selectedCollectionId && (
-                <select 
+                <select
                   className={styles.select}
                   value={selectedArticleId}
                   onChange={(e) => setSelectedArticleId(e.target.value)}
@@ -153,7 +186,7 @@ export default function OrganizePage() {
               )}
             </div>
 
-            <button 
+            <button
               className={styles.generateBtn}
               onClick={handleGenerateMindMap}
             >
@@ -214,7 +247,7 @@ export default function OrganizePage() {
                   </div>
                 )}
               </div>
-              <button 
+              <button
                 className={styles.saveBtn}
                 onClick={handleSaveMindMap}
               >
@@ -222,13 +255,18 @@ export default function OrganizePage() {
               </button>
             </div>
           )}
-        </div>
+        </div>}
 
-        <div className={styles.mainContent}>
+        <div className={`${styles.mainContent} ${isFullscreen ? styles.fullscreen : ''}`}>
           {mindMapData ? (
-            <MindMapCanvas 
+            <MindMapCanvas
               data={mindMapData}
+              isFullscreen={isFullscreen}
+              isEditMode={isEditMode}
+              onToggleFullscreen={() => setIsFullscreen(!isFullscreen)}
+              onToggleEditMode={() => setIsEditMode(!isEditMode)}
               onExportPNG={() => console.log('PNG导出完成')}
+              onDataChange={(newData) => setMindMapData(newData)}
             />
           ) : (
             <div className={styles.placeholder}>

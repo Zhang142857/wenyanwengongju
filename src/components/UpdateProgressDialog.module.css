@@ -1,0 +1,256 @@
+/* Update Progress Dialog Styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.dialog {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(79, 172, 254, 0.3);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 420px;
+  padding: 24px;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dialog.error {
+  border-color: rgba(231, 76, 60, 0.3);
+}
+
+.dialog.complete {
+  border-color: rgba(67, 233, 123, 0.3);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  border-radius: 12px;
+  color: #fff;
+}
+
+.icon.errorIcon {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.icon.completeIcon {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.progressSection {
+  margin-bottom: 16px;
+}
+
+.progressBar {
+  height: 8px;
+  background: rgba(79, 172, 254, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 4px;
+  transition: width 0.3s ease-out;
+}
+
+.progressText {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.metrics {
+  display: flex;
+  justify-content: space-around;
+  padding: 12px;
+  background: rgba(79, 172, 254, 0.08);
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.metricLabel {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.metricValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.errorSection {
+  padding: 16px;
+  background: rgba(231, 76, 60, 0.08);
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.errorType {
+  font-size: 12px;
+  color: #c0392b;
+  margin-bottom: 8px;
+}
+
+.errorMessage {
+  font-size: 14px;
+  color: var(--color-text-primary);
+  margin-bottom: 12px;
+}
+
+.actionableSteps {
+  border-top: 1px solid rgba(231, 76, 60, 0.15);
+  padding-top: 12px;
+}
+
+.stepsTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+}
+
+.actionableSteps ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.actionableSteps li {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.completeMessage {
+  text-align: center;
+  font-size: 14px;
+  color: #27ae60;
+  padding: 16px;
+  background: rgba(67, 233, 123, 0.1);
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.retryButton {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(79, 172, 254, 0.25);
+}
+
+.retryButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.35);
+}
+
+.cancelButton {
+  padding: 10px 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelButton:hover {
+  background: rgba(79, 172, 254, 0.1);
+  border-color: var(--color-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .dialog {
+    padding: 20px;
+  }
+  
+  .metrics {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+  
+  .retryButton,
+  .cancelButton {
+    width: 100%;
+  }
+}

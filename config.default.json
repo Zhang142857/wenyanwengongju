@@ -1,0 +1,91 @@
+{
+    "schemaVersion": 1,
+    "version": "1.0.0",
+    "edition": "custom",
+    "ai": {
+        "apiConfigs": [
+            {
+                "provider": "siliconflow",
+                "baseUrl": "https://api.siliconflow.cn/v1",
+                "apiKey": "sk-vkasvvxaewwtnrfnyjkdqizcubmwlvywlbzuvgsfjotoxtrg",
+                "model": "inclusionAI/Ling-flash-2.0"
+            },
+            {
+                "provider": "siliconflow",
+                "baseUrl": "https://api.siliconflow.cn/v1",
+                "apiKey": "sk-vzuzylxxtolfxmlcmmhykqgctgiuivbfgtlwebcjcxpdlqyv",
+                "model": "inclusionAI/Ling-flash-2.0"
+            },
+            {
+                "provider": "siliconflow",
+                "baseUrl": "https://api.siliconflow.cn/v1",
+                "apiKey": "sk-cplztrsifchetezkbabzxrzsnmlyvuwlspevkgpmztfksthz",
+                "model": "inclusionAI/Ling-flash-2.0"
+            },
+            {
+                "provider": "siliconflow",
+                "baseUrl": "https://api.siliconflow.cn/v1",
+                "apiKey": "sk-izfpkafaxakjrexfsecdkoqxtearoidybzootmwzjpbofqnx",
+                "model": "inclusionAI/Ling-flash-2.0"
+            },
+            {
+                "provider": "siliconflow",
+                "baseUrl": "https://api.siliconflow.cn/v1",
+                "apiKey": "sk-mkdvcwoseuxtfmltgmnxxiaaornbkrookxbqctiuvjgweecw",
+                "model": "inclusionAI/Ling-flash-2.0"
+            },
+            {
+                "provider": "siliconflow",
+                "baseUrl": "https://api.siliconflow.cn/v1",
+                "apiKey": "sk-limxenepsomcnviqzvoevkzmngcihkmvezrlamjqkmtblrfs",
+                "model": "inclusionAI/Ling-flash-2.0"
+            },
+            {
+                "provider": "siliconflow",
+                "baseUrl": "https://api.siliconflow.cn/v1",
+                "apiKey": "sk-qtfeqncvnoftrgngdzxhhpfvovgcigftdfyohrpxxoycdrdf",
+                "model": "inclusionAI/Ling-flash-2.0"
+            }
+        ],
+        "concurrency": {
+            "aiDefinitionConcurrency": 30,
+            "shortSentenceConcurrency": 34,
+            "batchDelayMs": 100,
+            "retryDelayMs": 500,
+            "modelId": "zai-org/GLM-4.6",
+            "isThinkingModel": true
+        }
+    },
+    "libraries": {
+        "defaultLibraries": [],
+        "focusWords": "安卑备被鄙毕薄策长称诚惩驰出辞次箪当道得等敌吊度端恶发凡方分奉否夫扶拂福富更苟固故顾观冠光归过好号还患惠或极寂加间见将角借尽就居举具决绝开可苦乐类利隶良临鳞令妙名谋奇骑前强且清情请穷屈去阙容乳善尚少舍射甚胜施食使始市恃是适书数遂所所以通图徒推屯望为谓文闻下鲜贤相效屑谢信行许学寻焉艳夷遗已义异易诣益意因引盈用友余与欲援缘杂然再曾争指至志质致诸主属著缀资子自足卒作坐乎者以而其于焉虽然则因且乃矣之",
+        "keyCharacters": []
+    },
+    "system": {
+        "appTitle": "文言文小工具",
+        "enableTour": true,
+        "hasPlayedTour": false,
+        "theme": "gradient",
+        "backgroundSettings": {
+            "type": "gradient",
+            "effect": "none"
+        }
+    },
+    "features": {
+        "enableAIOrganize": true,
+        "enableExam": true,
+        "enableRegexGenerator": true,
+        "enableImport": true,
+        "enableManage": true
+    },
+    "tourPlayedRecord": {
+        "home": false,
+        "import": false,
+        "organize": false,
+        "aiOrganize": false,
+        "exam": false,
+        "manage": false,
+        "regexGenerator": false,
+        "query": false
+    }
+}

@@ -89,13 +89,8 @@ export default function ImportPage() {
   }
 
   return (
-    <Layout>
+    <Layout title="数据导入" subtitle="导入文言文数据，覆盖整个库">
       <div className={styles.importPage}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>数据导入</h1>
-          <p className={styles.subtitle}>导入文言文数据，覆盖整个库</p>
-        </div>
-
         <div className={styles.content}>
           <div className={styles.instructions}>
             <h2>使用说明</h2>

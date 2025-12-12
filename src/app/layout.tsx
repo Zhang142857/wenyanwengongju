@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { SidebarProvider } from '@/contexts/SidebarContext'
+import Providers from '@/components/Providers'
+import InitializeData from '@/components/InitializeData'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -15,9 +16,10 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body>
-        <SidebarProvider>
+        <InitializeData />
+        <Providers>
           {children}
-        </SidebarProvider>
+        </Providers>
       </body>
     </html>
   )

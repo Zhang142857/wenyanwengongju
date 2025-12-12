@@ -11,6 +11,7 @@ import type {
   SentenceTranslationLink,
   ShortSentence,
 } from '@/types';
+import { configBridge } from './configBridge';
 
 /**
  * 存储服务类
@@ -249,59 +250,99 @@ export class StorageService {
 
   /**
    * 保存到本地存储
+   * 使用配置桥接保存到 config 目录（Electron 环境）
    */
   async saveToLocal(): Promise<void> {
     try {
-      const serialized = this.serialize();
+      // 🔍 调试：检查保存前的数据
+      console.log(`[Storage调试] 保存数据: ${this.data.definitions.length} 个义项, ${this.data.characterDefinitionLinks.length} 个关联`)
+      const erDefs = this.data.definitions.filter(d => d.character === '而')
+      if (erDefs.length > 0) {
+        console.log(`[Storage调试] "而"字义项:`)
+        erDefs.forEach(d => console.log(`  - ${d.content}`))
+      }
       
-      // 在浏览器环境使用 localStorage
+      // 使用配置桥接保存（会同时保存到 config 和 temp 目录）
+      const success = await configBridge.saveLibraries(this.data);
+      
+      if (!success) {
+        // 回退到 localStorage
+        const serialized = this.serialize();
+        if (typeof window !== 'undefined' && window.localStorage) {
+          localStorage.setItem('classical-chinese-data', serialized);
+        }
+      }
+    } catch (error) {
+      // 回退到 localStorage
+      const serialized = this.serialize();
       if (typeof window !== 'undefined' && window.localStorage) {
         localStorage.setItem('classical-chinese-data', serialized);
       }
-    } catch (error) {
-      throw new Error(`Failed to save to local storage: ${error}`);
+      console.error(`Failed to save to storage: ${error}`);
     }
   }
 
   /**
    * 从本地存储加载
+   * 优先从配置桥接加载（Electron 环境会从 temp 目录读取）
    */
   async loadFromLocal(): Promise<void> {
     try {
-      // 在浏览器环境使用 localStorage
-      if (typeof window !== 'undefined' && window.localStorage) {
-        const stored = localStorage.getItem('classical-chinese-data');
+      // 优先使用配置桥接加载
+      const libraries = await configBridge.getLibraries();
+      
+      if (libraries && libraries.libraries) {
+        this.data = {
+          ...libraries,
+          definitions: libraries.definitions || [],
+          translations: libraries.translations || [],
+          characterDefinitionLinks: libraries.characterDefinitionLinks || [],
+          sentenceTranslationLinks: libraries.sentenceTranslationLinks || [],
+          shortSentences: libraries.shortSentences || [],
+          keyCharacters: libraries.keyCharacters || [],
+        };
         
-        if (stored) {
-          this.deserialize(stored);
+        // 🔍 调试：检查加载后的数据
+        console.log(`[Storage调试] 加载数据: ${this.data.definitions.length} 个义项, ${this.data.characterDefinitionLinks.length} 个关联`)
+        const erDefs = this.data.definitions.filter(d => d.character === '而')
+        if (erDefs.length > 0) {
+          console.log(`[Storage调试] "而"字义项:`)
+          erDefs.forEach(d => console.log(`  - ${d.content}`))
+        }
+      } else {
+        // 回退到 localStorage
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const stored = localStorage.getItem('classical-chinese-data');
+          if (stored) {
+            this.deserialize(stored);
+            console.log(`[Storage调试] 从localStorage加载: ${this.data.definitions.length} 个义项`)
+          } else {
+            this.initEmptyData();
+          }
         } else {
-          // 如果没有数据，初始化为空结构
-          this.data = {
-            libraries: [],
-            quotes: [],
-            definitions: [],
-            translations: [],
-            characterDefinitionLinks: [],
-            sentenceTranslationLinks: [],
-            shortSentences: [],
-            keyCharacters: [],
-          };
+          this.initEmptyData();
         }
       }
     } catch (error) {
-      console.error('Failed to load from local storage:', error);
-      // 加载失败时使用空数据结构
-      this.data = {
-        libraries: [],
-        quotes: [],
-        definitions: [],
-        translations: [],
-        characterDefinitionLinks: [],
-        sentenceTranslationLinks: [],
-        shortSentences: [],
-        keyCharacters: [],
-      };
+      console.error('Failed to load from storage:', error);
+      this.initEmptyData();
     }
+  }
+
+  /**
+   * 初始化空数据结构
+   */
+  private initEmptyData(): void {
+    this.data = {
+      libraries: [],
+      quotes: [],
+      definitions: [],
+      translations: [],
+      characterDefinitionLinks: [],
+      sentenceTranslationLinks: [],
+      shortSentences: [],
+      keyCharacters: [],
+    };
   }
 
   /**

@@ -1,14 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Layout from '@/components/Layout'
-import ConcurrencySettingsDialog from '@/components/ConcurrencySettingsDialog'
+import { useToast } from '@/contexts/ToastContext'
 import { StorageService } from '@/services/storage'
 import { findKeyCharacters, batchGenerateDefinitions, validateDefinitionNotName, checkDuplicateDefinitions } from '@/services/ai'
 import { findSentencesWithKeyCharacters, deduplicateCharacterSentencePairs, type CharacterSentencePair } from '@/services/aiOrganize'
 import { initConcurrencyConfig } from '@/services/concurrencyConfig'
+import { configService } from '@/services/configService'
 import type { AIDefinitionRequest } from '@/services/ai'
 import type { Library, Collection, Article } from '@/types'
+import Tour, { type TourStep } from '@/components/Tour'
+import ApiConfigSelector from '@/components/ApiConfigSelector'
 import styles from './ai-organize.module.css'
 
 type ProcessingStep = 'idle' | 'step1' | 'step2' | 'step3' | 'step4' | 'complete'
@@ -22,13 +25,14 @@ interface StepResult {
 
 export default function AIOrganizePage() {
   const [storage] = useState(() => new StorageService())
+  const toast = useToast()
   const [isInitialized, setIsInitialized] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const [shouldStop, setShouldStop] = useState(false)
   const [currentStep, setCurrentStep] = useState<ProcessingStep>('idle')
   const [progress, setProgress] = useState({ current: 0, total: 0, stage: '' })
   const [stepResults, setStepResults] = useState<StepResult>({})
-  
+
   // 性能监测状态
   const [showAdvancedStats, setShowAdvancedStats] = useState(false)
   const [stats, setStats] = useState({
@@ -39,7 +43,7 @@ export default function AIOrganizePage() {
     startTime: 0,
     elapsed: 0,
   })
-  
+
   // 范围选择
   const [libraries, setLibraries] = useState<Library[]>([])
   const [selectedLibraryId, setSelectedLibraryId] = useState<string>('')
@@ -48,7 +52,7 @@ export default function AIOrganizePage() {
 
   // 重点字设置对话框状态 - 必须在所有 useEffect 之前声明
   const [showKeyCharSettings, setShowKeyCharSettings] = useState(false)
-  const [showConcurrencySettings, setShowConcurrencySettings] = useState(false)
+
   const [keyCharacters, setKeyCharacters] = useState<string[]>([])
   const [batchKeyChars, setBatchKeyChars] = useState('')
   const [showBatchInput, setShowBatchInput] = useState(false)
@@ -56,13 +60,31 @@ export default function AIOrganizePage() {
   const [showBatchDelete, setShowBatchDelete] = useState(false)
   const [selectedKeyChars, setSelectedKeyChars] = useState<Set<string>>(new Set())
 
+  // 是否已初始化自动筛选
+  const autoFilterInitialized = useRef(false)
+
   useEffect(() => {
     const initStorage = async () => {
       await storage.initialize()
       const libs = storage.getLibraries()
       setLibraries(libs)
-      setIsInitialized(true)
       
+      // 应用自动筛选设置
+      if (!autoFilterInitialized.current) {
+        await configService.initialize()
+        const autoFilterConfig = configService.getAutoFilterConfig()
+        
+        if (autoFilterConfig.enabled && autoFilterConfig.defaultLibraryId) {
+          const libraryExists = libs.some(lib => lib.id === autoFilterConfig.defaultLibraryId)
+          if (libraryExists) {
+            setSelectedLibraryId(autoFilterConfig.defaultLibraryId)
+          }
+        }
+        autoFilterInitialized.current = true
+      }
+      
+      setIsInitialized(true)
+
       // 初始化并发配置
       initConcurrencyConfig()
       console.log('✅ 并发配置已初始化')
@@ -83,24 +105,22 @@ export default function AIOrganizePage() {
     setStepResults({})
     setCurrentStep('step1')
     setProgress({ current: 0, total: 0, stage: '准备中...' })
-    
+
     // 显示当前配置
     const { getConcurrencyConfig } = await import('@/services/concurrencyConfig')
     const config = getConcurrencyConfig()
     console.log('🚀 开始处理，当前配置:', {
       并发数: config.aiDefinitionConcurrency,
-      批次延迟: `${config.batchDelayMs}ms`,
-      模型ID: config.modelId,
-      思考模型: config.isThinkingModel ? '是' : '否'
+      批次延迟: `${config.batchDelayMs}ms`
     })
 
     try {
       // ========== 第一步：程序查找重点字 ==========
       setProgress({ current: 0, total: 1, stage: '第一步：程序查找重点字' })
       const keyChars = storage.getKeyCharacters()
-      
+
       if (keyChars.length === 0) {
-        alert('重点字列表为空，请先在重点字管理页面添加重点字')
+        toast.warning('重点字列表为空，请先在重点字管理页面添加重点字')
         setIsProcessing(false)
         setCurrentStep('idle')
         return
@@ -112,14 +132,14 @@ export default function AIOrganizePage() {
         collectionId: selectedCollectionId || undefined,
         articleId: selectedArticleId || undefined,
       }
-      
+
       const step1Pairs = findSentencesWithKeyCharacters(storage, keyChars, scope)
-      
+
       console.log(`[范围过滤] 库: ${selectedLibraryId || '全部'}, 集: ${selectedCollectionId || '全部'}, 文章: ${selectedArticleId || '全部'}`)
       console.log(`[范围过滤] 找到 ${step1Pairs.length} 个句子-字对`)
-      
+
       if (step1Pairs.length === 0) {
-        alert('没有找到包含重点字的句子')
+        toast.warning('没有找到包含重点字的句子')
         setIsProcessing(false)
         setCurrentStep('idle')
         return
@@ -127,25 +147,26 @@ export default function AIOrganizePage() {
 
       setStepResults(prev => ({ ...prev, step1: step1Pairs }))
       setProgress({ current: 1, total: 1, stage: '第一步完成' })
-      
+
       // ========== 第二步：AI分句标重点（去重后） ==========
       setCurrentStep('step2')
-      
+
       // 简化实现：直接使用第一步的结果，不进行去重
       // 因为去重逻辑需要复杂的链接关系，这里先实现基本功能
       const newPairs = step1Pairs
-      
+
       if (newPairs.length === 0) {
-        alert('所有重点字句子对都已处理过，无需重复处理')
+        toast.info('所有重点字句子对都已处理过，无需重复处理')
         setIsProcessing(false)
         setCurrentStep('complete')
         return
       }
 
-      // 准备AI请求
-      const requests: AIDefinitionRequest[] = newPairs.map(pair => ({
+      // 准备AI请求，包含原始索引用于后续关联 sentenceId
+      const requests: AIDefinitionRequest[] = newPairs.map((pair, index) => ({
         sentence: pair.sentence,
         character: pair.character,
+        originalIndex: index,  // 保存原始索引
       }))
 
       setProgress({ current: 0, total: requests.length, stage: '第二步：AI生成义项' })
@@ -155,9 +176,9 @@ export default function AIOrganizePage() {
         if (shouldStop) {
           throw new Error('用户停止了生成')
         }
-        
+
         setProgress({ current, total, stage: '第二步：AI生成义项' })
-        
+
         if (progressStats) {
           const elapsed = (Date.now() - progressStats.startTime) / 1000
           setStats({
@@ -174,10 +195,21 @@ export default function AIOrganizePage() {
       setStepResults(prev => ({ ...prev, step2: definitions }))
       console.log(`[第二步完成] 生成了 ${definitions.length} 个义项`)
       
+      // 🔍 调试：检查 originalIndex 是否正确传递
+      const withIndex = definitions.filter(d => d.originalIndex !== undefined).length
+      const withoutIndex = definitions.filter(d => d.originalIndex === undefined).length
+      console.log(`[调试] definitions 中有 originalIndex: ${withIndex}, 无 originalIndex: ${withoutIndex}`)
+      if (withoutIndex > 0) {
+        console.warn('[调试] 以下 definitions 缺少 originalIndex:')
+        definitions.filter(d => d.originalIndex === undefined).slice(0, 5).forEach((d, i) => {
+          console.warn(`  ${i + 1}. "${d.character}" in "${d.sentence.substring(0, 30)}..."`)
+        })
+      }
+
       // ========== 第三步：AI二次验证 ==========
       console.log('[第三步开始] AI二次验证')
       setCurrentStep('step3')
-      
+
       // 按字符分组
       const charGroups = new Map<string, string[]>()
       for (const def of definitions) {
@@ -192,7 +224,7 @@ export default function AIOrganizePage() {
         character,
         sentences,
       }))
-      
+
       // 初始化进度
       setProgress({ current: 0, total: validationRequests.length, stage: '第三步：AI二次验证' })
 
@@ -201,25 +233,30 @@ export default function AIOrganizePage() {
       const step3Results = await batchValidateDefinitions(
         validationRequests,
         (current, total) => {
-          setProgress({ 
-            current, 
-            total, 
-            stage: `第三步：AI二次验证 (${current}/${total})` 
+          setProgress({
+            current,
+            total,
+            stage: `第三步：AI二次验证 (${current}/${total})`
           })
         }
       )
 
       setStepResults(prev => ({ ...prev, step3: step3Results }))
-      
+
       // 过滤掉无效的义项（人名/地名）
       const validDefinitions = definitions.filter(def => {
         const validation = step3Results.find(r => r.character === def.character)
         return validation?.isValid !== false
       })
+      
+      console.log(`[第三步完成] 有效义项: ${validDefinitions.length}, 过滤掉: ${definitions.length - validDefinitions.length}`)
 
       // ========== 保存义项到存储 ==========
+      console.log('[保存开始] 准备保存义项和创建关联...')
       const savedDefinitions: Array<{ id: string; character: string; content: string }> = []
-      
+      let linkCreatedCount = 0
+      let linkSkippedCount = 0
+
       for (const def of validDefinitions) {
         // 使用去重逻辑添加义项
         const existingDef = storage.addDefinitionOrGetExisting(def.character, def.definition)
@@ -228,13 +265,10 @@ export default function AIOrganizePage() {
           character: existingDef.character,
           content: existingDef.content,
         })
-        
-        // 创建字-义项-句子关联
-        // 找到对应的原始pair，获取sentenceId
-        const originalPair = step1Pairs.find(
-          p => p.sentence === def.sentence && p.character === def.character
-        )
-        
+
+        // 使用 originalIndex 直接获取对应的 sentenceId
+        const originalPair = def.originalIndex !== undefined ? newPairs[def.originalIndex] : null
+
         if (originalPair) {
           // 找到字符在句子中的所有位置
           const positions: number[] = []
@@ -243,47 +277,85 @@ export default function AIOrganizePage() {
               positions.push(i)
             }
           }
-          
+
           // 为每个位置创建关联（如果句子中有多个相同的字）
           for (const position of positions) {
             // 检查是否已存在相同的关联
             const existingLinks = storage.getDefinitionLinksForSentence(originalPair.sentenceId)
             const linkExists = existingLinks.some(
-              link => link.definitionId === existingDef.id && 
-                     link.characterPosition === position
+              link => link.definitionId === existingDef.id &&
+                link.characterPosition === position
             )
-            
+
             if (!linkExists) {
               storage.addCharacterDefinitionLink(
                 existingDef.id,
                 originalPair.sentenceId,
                 position
               )
+              linkCreatedCount++
+            } else {
+              linkSkippedCount++
             }
           }
+        } else {
+          console.warn(`[警告] 无法找到原始pair，def.originalIndex=${def.originalIndex}`)
         }
       }
+      
+      console.log(`[关联统计] 创建: ${linkCreatedCount}, 跳过(已存在): ${linkSkippedCount}`)
+      
+      // 🔍 调试：验证关联是否正确创建
+      const allLinks = storage.getDefinitions()
+        .filter(d => d.character === validDefinitions[0]?.character)
+        .map(d => ({
+          defId: d.id,
+          content: d.content,
+          linkCount: storage.getDefinitionLinksForDefinition(d.id).length
+        }))
+      console.log(`[调试] "${validDefinitions[0]?.character}" 字的义项和关联数:`)
+      allLinks.forEach(item => {
+        console.log(`  义项 "${item.content}": ${item.linkCount} 个关联`)
+      })
+      
+      // 🔍 调试：统计唯一句子数
+      const uniqueSentenceIds = new Set<string>()
+      validDefinitions.forEach(def => {
+        if (def.originalIndex !== undefined) {
+          const pair = newPairs[def.originalIndex]
+          if (pair) uniqueSentenceIds.add(pair.sentenceId)
+        }
+      })
+      console.log(`[调试] 唯一句子数: ${uniqueSentenceIds.size}, 总 pair 数: ${validDefinitions.length}`)
 
       // ========== 第四步：AI合并重复义项 ==========
       setCurrentStep('step4')
-      
+
       // 按字符分组义项
-      const defGroups = new Map<string, Array<{ id: string; content: string }>>()
+      // 按字符分组义项，并去重（因为 savedDefinitions 中可能有重复的义项 ID）
+      const defGroups = new Map<string, Map<string, { id: string; content: string }>>()
       for (const def of savedDefinitions) {
         if (!defGroups.has(def.character)) {
-          defGroups.set(def.character, [])
+          defGroups.set(def.character, new Map())
         }
-        defGroups.get(def.character)!.push({ id: def.id, content: def.content })
+        // 使用 id 作为 key 来去重
+        defGroups.get(def.character)!.set(def.id, { id: def.id, content: def.content })
       }
 
       // 准备合并检查请求（只检查有多个义项的字符）
       const checkRequests = Array.from(defGroups.entries())
-        .filter(([_, defs]) => defs.length >= 2)
-        .map(([character, definitions]) => ({
+        .map(([character, defsMap]) => ({
           character,
-          definitions,
+          definitions: Array.from(defsMap.values()),
         }))
+        .filter(req => req.definitions.length >= 2)
       
+      console.log(`[第四步准备] 需要检查 ${checkRequests.length} 个字符的义项重复`)
+      checkRequests.forEach(req => {
+        console.log(`  "${req.character}": ${req.definitions.length} 个不同义项`)
+        req.definitions.forEach((d, i) => console.log(`    ${i + 1}. ${d.content} (id: ${d.id.slice(0, 8)}...)`))
+      })
+
       // 初始化进度
       setProgress({ current: 0, total: checkRequests.length, stage: '第四步：AI合并重复义项' })
 
@@ -292,16 +364,20 @@ export default function AIOrganizePage() {
       const step4Results = await batchCheckDuplicateDefinitions(
         checkRequests,
         (current, total) => {
-          setProgress({ 
-            current, 
-            total, 
-            stage: `第四步：AI合并重复义项 (${current}/${total})` 
+          setProgress({
+            current,
+            total,
+            stage: `第四步：AI合并重复义项 (${current}/${total})`
           })
         }
       )
-      
+
       // 执行合并
+      console.log(`[第四步] AI建议合并 ${step4Results.length} 对义项:`)
       for (const merge of step4Results) {
+        const keepDef = storage.getDefinitionById(merge.keepId)
+        const deleteDef = storage.getDefinitionById(merge.deleteId)
+        console.log(`  合并: "${deleteDef?.content}" -> "${keepDef?.content}" (原因: ${merge.reason})`)
         storage.mergeDefinitions(merge.keepId, merge.deleteId)
       }
 
@@ -309,25 +385,25 @@ export default function AIOrganizePage() {
 
       // 保存到本地存储
       await storage.saveToLocal()
-      
+
       setCurrentStep('complete')
       setProgress({ current: checkRequests.length, total: checkRequests.length, stage: '全部完成' })
-      
+
       const invalidCount = definitions.length - validDefinitions.length
       const mergeCount = step4Results.length
       const failedCount = step1Pairs.length - definitions.length
-      
+
       let message = `处理完成！\n生成义项：${validDefinitions.length}\n过滤无效：${invalidCount}\n合并重复：${mergeCount}`
-      
+
       if (failedCount > 0) {
         message += `\n\n⚠️ 警告：${failedCount} 个请求失败\n请检查控制台查看详情`
         console.error(`❌ 失败统计：\n- 总请求数：${step1Pairs.length}\n- 成功数：${definitions.length}\n- 失败数：${failedCount}`)
       }
-      
-      alert(message)
+
+      toast.success(message)
     } catch (error) {
       console.error('处理失败:', error)
-      alert('处理失败，请查看控制台')
+      toast.error('处理失败，请查看控制台')
       setCurrentStep('idle')
     } finally {
       setIsProcessing(false)
@@ -347,7 +423,7 @@ export default function AIOrganizePage() {
   // 获取选中库的集列表
   const selectedLibrary = libraries.find(lib => lib.id === selectedLibraryId)
   const collections = selectedLibrary?.collections || []
-  
+
   // 获取选中集的文章列表
   const selectedCollection = collections.find(col => col.id === selectedCollectionId)
   const articles = selectedCollection?.articles || []
@@ -356,7 +432,7 @@ export default function AIOrganizePage() {
     setShouldStop(true)
     setIsProcessing(false)
     setCurrentStep('idle')
-    alert('已停止生成')
+    toast.info('已停止生成')
   }
 
   const handleToggleKeyChar = (char: string) => {
@@ -379,7 +455,7 @@ export default function AIOrganizePage() {
 
   const handleDeleteSelectedKeyChars = () => {
     if (selectedKeyChars.size === 0) {
-      alert('请先选择要删除的字')
+      toast.warning('请先选择要删除的字')
       return
     }
 
@@ -393,12 +469,12 @@ export default function AIOrganizePage() {
     storage.saveToLocal()
     setKeyCharacters(storage.getKeyCharacters())
     setSelectedKeyChars(new Set())
-    alert(`已删除 ${selectedKeyChars.size} 个字`)
+    toast.success(`已删除 ${selectedKeyChars.size} 个字`)
   }
 
   const handleBatchAddKeyChar = () => {
     if (!batchKeyChars.trim()) {
-      alert('请输入要添加的字')
+      toast.warning('请输入要添加的字')
       return
     }
 
@@ -409,7 +485,7 @@ export default function AIOrganizePage() {
     })
 
     if (chars.length === 0) {
-      alert('未找到有效的中文字符')
+      toast.warning('未找到有效的中文字符')
       return
     }
 
@@ -429,17 +505,17 @@ export default function AIOrganizePage() {
     setKeyCharacters(storage.getKeyCharacters())
     setBatchKeyChars('')
     setShowBatchInput(false)
-    
+
     let msg = `已添加 ${addedCount} 个字`
     if (skippedCount > 0) {
       msg += `，跳过 ${skippedCount} 个已存在的字`
     }
-    alert(msg)
+    toast.success(msg)
   }
 
   const handleBatchDeleteKeyChar = () => {
     if (!batchDeleteChars.trim()) {
-      alert('请输入要删除的字')
+      toast.warning('请输入要删除的字')
       return
     }
 
@@ -448,7 +524,7 @@ export default function AIOrganizePage() {
     })
 
     if (chars.length === 0) {
-      alert('未找到有效的中文字符')
+      toast.warning('未找到有效的中文字符')
       return
     }
 
@@ -468,16 +544,38 @@ export default function AIOrganizePage() {
     setKeyCharacters(storage.getKeyCharacters())
     setBatchDeleteChars('')
     setShowBatchDelete(false)
-    
+
     let msg = `已删除 ${deletedCount} 个字`
     if (notFoundCount > 0) {
       msg += `，${notFoundCount} 个字不存在`
     }
-    alert(msg)
+    toast.success(msg)
   }
+
+  const tourSteps: TourStep[] = [
+    {
+      target: '#tour-scope-selector',
+      title: '选择处理范围',
+      content: '首先选择要处理的文言文库范围。您可以选择处理整个库、特定的集或者单篇文章。建议初次使用时选择单篇文章进行测试。',
+      position: 'bottom'
+    },
+    {
+      target: '#tour-settings-group',
+      title: '重点字设置',
+      content: '在这里管理需要提取义项的重点字。系统只会处理列表中的字。您可以使用批量添加功能快速导入重点字。',
+      position: 'left'
+    },
+    {
+      target: '#tour-start-btn',
+      title: '开始处理',
+      content: '点击开始后，系统将按顺序执行：查找重点字、AI生成义项、AI验证、AI合并去重四个步骤。处理过程中可以随时暂停。',
+      position: 'top'
+    }
+  ]
 
   return (
     <Layout title="AI义项整理" subtitle="AI Definition Organization">
+      <Tour pageId="aiOrganize" steps={tourSteps} />
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.headerRow}>
@@ -487,29 +585,24 @@ export default function AIOrganizePage() {
                 AI将自动分析文言文库中的句子，识别重点字并生成义项。可以选择处理范围。
               </p>
             </div>
-            <div className={styles.buttonGroup}>
-              <button 
+            <div className={styles.buttonGroup} id="tour-settings-group">
+              <ApiConfigSelector className={styles.configSelector} />
+              <button
                 className={styles.settingsBtn}
                 onClick={() => setShowKeyCharSettings(true)}
                 title="编辑重点字列表"
               >
                 ⚙️ 重点字设置
               </button>
-              <button 
-                className={styles.settingsBtn}
-                onClick={() => setShowConcurrencySettings(true)}
-                title="调整并发参数"
-              >
-                ⚡ 并发设置
-              </button>
+
             </div>
           </div>
 
           {/* 范围选择 */}
-          <div className={styles.scopeSelector}>
+          <div className={styles.scopeSelector} id="tour-scope-selector">
             <div className={styles.selectGroup}>
               <label className={styles.selectLabel}>选择库：</label>
-              <select 
+              <select
                 className={styles.select}
                 value={selectedLibraryId}
                 onChange={(e) => {
@@ -529,7 +622,7 @@ export default function AIOrganizePage() {
             {selectedLibraryId && (
               <div className={styles.selectGroup}>
                 <label className={styles.selectLabel}>选择集：</label>
-                <select 
+                <select
                   className={styles.select}
                   value={selectedCollectionId}
                   onChange={(e) => {
@@ -549,7 +642,7 @@ export default function AIOrganizePage() {
             {selectedCollectionId && (
               <div className={styles.selectGroup}>
                 <label className={styles.selectLabel}>选择文章：</label>
-                <select 
+                <select
                   className={styles.select}
                   value={selectedArticleId}
                   onChange={(e) => setSelectedArticleId(e.target.value)}
@@ -564,7 +657,8 @@ export default function AIOrganizePage() {
             )}
           </div>
 
-          <button 
+          <button
+            id="tour-start-btn"
             className={styles.startButton}
             onClick={handleStartProcessing}
             disabled={isProcessing}
@@ -578,7 +672,7 @@ export default function AIOrganizePage() {
               <div className={styles.stepsHeader}>
                 <h3>处理流程</h3>
               </div>
-              
+
               {/* 步骤指示器 */}
               <div className={styles.stepsIndicator}>
                 <div className={`${styles.stepItem} ${currentStep === 'step1' || currentStep !== 'idle' ? styles.stepActive : ''} ${stepResults.step1 ? styles.stepComplete : ''}`}>
@@ -604,7 +698,7 @@ export default function AIOrganizePage() {
                 <div className={styles.progress}>
                   <p className={styles.progressStage}>{progress.stage}</p>
                   <div className={styles.progressBar}>
-                    <div 
+                    <div
                       className={styles.progressFill}
                       style={{ width: `${progress.total > 0 ? (progress.current / progress.total) * 100 : 0}%` }}
                     />
@@ -629,7 +723,7 @@ export default function AIOrganizePage() {
                         <p>Token速度: {stats.tokenSpeed.toFixed(0)} token/秒</p>
                       </div>
                     )}
-                    <button 
+                    <button
                       className={styles.advancedStatsBtn}
                       onClick={() => setShowAdvancedStats(!showAdvancedStats)}
                     >
@@ -726,7 +820,7 @@ export default function AIOrganizePage() {
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
               <div className={styles.modalHeader}>
                 <h3>重点字设置</h3>
-                <button 
+                <button
                   className={styles.modalClose}
                   onClick={() => setShowKeyCharSettings(false)}
                 >
@@ -735,20 +829,20 @@ export default function AIOrganizePage() {
               </div>
               <div className={styles.modalBody}>
                 <div className={styles.keyCharAdd}>
-                  <button 
-                    onClick={() => { setShowBatchInput(!showBatchInput); setShowBatchDelete(false) }} 
+                  <button
+                    onClick={() => { setShowBatchInput(!showBatchInput); setShowBatchDelete(false) }}
                     className={styles.keyCharBatchBtn}
                   >
                     {showBatchInput ? '取消批量添加' : '批量添加'}
                   </button>
-                  <button 
-                    onClick={() => { setShowBatchDelete(!showBatchDelete); setShowBatchInput(false) }} 
+                  <button
+                    onClick={() => { setShowBatchDelete(!showBatchDelete); setShowBatchInput(false) }}
                     className={styles.keyCharBatchDeleteBtn}
                   >
                     {showBatchDelete ? '取消批量删除' : '批量删除'}
                   </button>
                 </div>
-                
+
                 {showBatchInput && (
                   <div className={styles.keyCharBatchSection}>
                     <textarea
@@ -797,8 +891,8 @@ export default function AIOrganizePage() {
                 </div>
                 <div className={styles.keyCharList}>
                   {keyCharacters.map((char) => (
-                    <div 
-                      key={char} 
+                    <div
+                      key={char}
                       className={`${styles.keyCharItem} ${selectedKeyChars.has(char) ? styles.keyCharSelected : ''}`}
                       onClick={() => handleToggleKeyChar(char)}
                     >
@@ -813,12 +907,6 @@ export default function AIOrganizePage() {
             </div>
           </div>
         )}
-
-        {/* 并发设置对话框 */}
-        <ConcurrencySettingsDialog 
-          isOpen={showConcurrencySettings}
-          onClose={() => setShowConcurrencySettings(false)}
-        />
       </div>
     </Layout>
   )

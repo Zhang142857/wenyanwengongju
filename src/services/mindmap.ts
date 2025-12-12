@@ -203,6 +203,14 @@ export class MindMapService {
     // 查询该字的所有义项
     let definitions = this.storage.getDefinitions().filter((d) => d.character === character)
     
+    console.log(`[思维导图调试] 字符 "${character}" 找到 ${definitions.length} 个义项`)
+    
+    // 🔍 调试：统计每个义项的关联数
+    definitions.forEach(def => {
+      const links = this.storage.getDefinitionLinksForDefinition(def.id)
+      console.log(`  义项 "${def.content}": ${links.length} 个关联`)
+    })
+    
     // 如果指定了范围，过滤义项（只保留在范围内有例句的义项）
     if (scope && (scope.libraryId || scope.collectionId || scope.articleId)) {
       definitions = definitions.filter(def => {
@@ -238,9 +246,20 @@ export class MindMapService {
     const definitionsWithExamples = definitions
       .map((def) => {
         let links = this.storage.getDefinitionLinksForDefinition(def.id)
+        const originalLinkCount = links.length
+        
+        // 🔍 调试：检查有多少关联的句子不存在
+        const invalidLinks = links.filter(link => !this.storage.getSentenceById(link.sentenceId))
+        if (invalidLinks.length > 0) {
+          console.warn(`[思维导图调试] 义项 "${def.content}" 有 ${invalidLinks.length}/${originalLinkCount} 个关联指向不存在的句子`)
+        }
+        
+        // 过滤掉句子不存在的关联
+        links = links.filter(link => this.storage.getSentenceById(link.sentenceId))
         
         // 如果指定了范围，过滤例句
         if (scope && (scope.libraryId || scope.collectionId || scope.articleId)) {
+          const beforeScopeFilter = links.length
           links = links.filter(link => {
             const sentence = this.storage.getSentenceById(link.sentenceId)
             if (!sentence) return false
@@ -262,15 +281,46 @@ export class MindMapService {
             
             return true
           })
+          
+          if (links.length !== beforeScopeFilter) {
+            console.log(`[思维导图调试] 义项 "${def.content}" 范围过滤: ${beforeScopeFilter} -> ${links.length}`)
+          }
+        }
+        
+        // 🔍 调试：对同一句子的多个关联进行去重（只保留第一个位置）
+        const uniqueSentenceLinks = new Map<string, typeof links[0]>()
+        links.forEach(link => {
+          if (!uniqueSentenceLinks.has(link.sentenceId)) {
+            uniqueSentenceLinks.set(link.sentenceId, link)
+          }
+        })
+        const deduplicatedLinks = Array.from(uniqueSentenceLinks.values())
+        
+        if (deduplicatedLinks.length !== links.length) {
+          console.log(`[思维导图调试] 义项 "${def.content}" 句子去重: ${links.length} -> ${deduplicatedLinks.length}`)
         }
         
         return {
           ...def,
-          links,
+          links: deduplicatedLinks,  // 使用去重后的关联
         }
       })
       .filter(def => def.links.length > 0)  // 只保留有例句的义项
       .sort((a, b) => b.links.length - a.links.length)
+
+    // 🔍 调试：统计最终的例句数
+    const totalExamples = definitionsWithExamples.reduce((sum, def) => sum + def.links.length, 0)
+    
+    // 统计所有义项中的唯一句子数
+    const allUniqueSentenceIds = new Set<string>()
+    definitionsWithExamples.forEach(def => {
+      def.links.forEach(link => allUniqueSentenceIds.add(link.sentenceId))
+    })
+    
+    console.log(`[思维导图调试] 过滤后: ${definitionsWithExamples.length} 个义项, 共 ${totalExamples} 个例句 (${allUniqueSentenceIds.size} 个唯一句子)`)
+    definitionsWithExamples.forEach(def => {
+      console.log(`  义项 "${def.content}": ${def.links.length} 个例句`)
+    })
 
     // 预计算每个例句的尺寸
     const exampleSizesMap = new Map<string, { width: number; height: number }[]>()
@@ -436,20 +486,20 @@ export class MindMapService {
     })
 
     // 根据内容量调整缩放
-    const totalExamples = definitionsWithExamples.reduce((sum, def) => sum + def.links.length, 0)
+    const totalExamplesForZoom = definitionsWithExamples.reduce((sum, def) => sum + def.links.length, 0)
     const defCount = definitionsWithExamples.length
     
     // 更智能的缩放计算
     let zoom = 1.0
-    if (defCount > 30 || totalExamples > 150) {
+    if (defCount > 30 || totalExamplesForZoom > 150) {
       zoom = 0.4
-    } else if (defCount > 20 || totalExamples > 100) {
+    } else if (defCount > 20 || totalExamplesForZoom > 100) {
       zoom = 0.5
-    } else if (defCount > 15 || totalExamples > 60) {
+    } else if (defCount > 15 || totalExamplesForZoom > 60) {
       zoom = 0.6
-    } else if (defCount > 10 || totalExamples > 30) {
+    } else if (defCount > 10 || totalExamplesForZoom > 30) {
       zoom = 0.7
-    } else if (defCount > 5 || totalExamples > 15) {
+    } else if (defCount > 5 || totalExamplesForZoom > 15) {
       zoom = 0.8
     }
 

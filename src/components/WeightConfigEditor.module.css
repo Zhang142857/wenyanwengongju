@@ -1,0 +1,703 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.dialog {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-lg);
+  width: 95%;
+  max-width: 1200px;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--color-text-primary);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  overflow: hidden;
+}
+
+.leftPanel {
+  width: 320px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+.rightPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.section {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sectionHeader h3 {
+  margin: 0;
+}
+
+.stats {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.inputRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input {
+  flex: 1;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  color: var(--color-text-primary);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+}
+
+.addButton {
+  padding: 0.625rem 1rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.addButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+}
+
+.configList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.configItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+}
+
+.configItem:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.configInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.configName {
+  font-weight: 500;
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+}
+
+.configMeta {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.configActions {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.smallButton {
+  padding: 0.375rem 0.625rem;
+  background: rgba(79, 172, 254, 0.15);
+  color: var(--color-primary);
+  border: none;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.smallButton:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.smallButtonDanger {
+  padding: 0.375rem 0.625rem;
+  background: rgba(255, 100, 100, 0.1);
+  color: #e74c3c;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.smallButtonDanger:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+.emptyText {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.importExport {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.secondaryButton {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.secondaryButton:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: var(--color-primary);
+}
+
+/* 右侧权重编辑 */
+.rightPanel .section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.weightList {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding-right: 0.5rem;
+}
+
+.weightItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+}
+
+.weightItem:hover {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: var(--color-primary);
+}
+
+.charLabel {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  width: 2.5rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.weightControl {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.weightSlider {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-highlight);
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.weightSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(79, 172, 254, 0.3);
+  transition: all 0.2s ease;
+}
+
+.weightSlider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.weightInput {
+  width: 60px;
+  padding: 0.375rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--color-text-primary);
+  outline: none;
+}
+
+.weightInput:focus {
+  border-color: var(--color-primary);
+}
+
+.itemActions {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.iconButton {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: rgba(79, 172, 254, 0.1);
+  color: var(--color-primary);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.iconButton:hover:not(:disabled) {
+  background: var(--color-primary);
+  color: white;
+}
+
+.iconButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.iconButtonDanger {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: rgba(255, 100, 100, 0.1);
+  color: #e74c3c;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.iconButtonDanger:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+.emptyState {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding: 2rem;
+}
+
+.emptyState p {
+  margin: 0.25rem 0;
+}
+
+.quickActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.quickButton {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  background: rgba(79, 172, 254, 0.1);
+  color: var(--color-primary);
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quickButton:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.quickButtonDanger {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 100, 100, 0.1);
+  color: #e74c3c;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quickButtonDanger:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 2rem;
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+  gap: 1rem;
+}
+
+.saveSection {
+  display: flex;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.footerInput {
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  outline: none;
+  transition: all 0.2s ease;
+  width: 160px;
+}
+
+.footerInput:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+}
+
+.saveButton {
+  padding: 0.625rem 1.25rem;
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.saveButton:hover {
+  background: var(--color-accent-light);
+  transform: translateY(-1px);
+}
+
+.actionButtons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.cancelButton {
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelButton:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.confirmButton {
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.25);
+}
+
+.confirmButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+}
+
+/* 滚动条 */
+.weightList::-webkit-scrollbar,
+.configList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.weightList::-webkit-scrollbar-track,
+.configList::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+}
+
+.weightList::-webkit-scrollbar-thumb,
+.configList::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 3px;
+}
+
+
+/* 自动生成按钮组 */
+.autoGenButtons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.autoGenButton {
+  flex: 1;
+  padding: 0.625rem 0.75rem;
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.15), rgba(79, 172, 254, 0.1));
+  color: var(--color-primary);
+  border: 1px solid rgba(79, 172, 254, 0.3);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.autoGenButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.autoGenButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* AI生成面板 */
+.aiToggleButton {
+  flex: 1;
+  padding: 0.625rem 0.75rem;
+  background: linear-gradient(135deg, rgba(67, 233, 123, 0.15), rgba(79, 172, 254, 0.15));
+  color: var(--color-text-primary);
+  border: 1px solid rgba(67, 233, 123, 0.3);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.aiToggleButton:hover {
+  background: linear-gradient(135deg, rgba(67, 233, 123, 0.25), rgba(79, 172, 254, 0.25));
+  border-color: var(--color-accent);
+}
+
+.aiPanel {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  background: rgba(67, 233, 123, 0.08);
+  border-radius: 10px;
+  border: 1px solid rgba(67, 233, 123, 0.2);
+}
+
+.aiTextarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  resize: vertical;
+  min-height: 70px;
+  outline: none;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.aiTextarea:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(67, 233, 123, 0.1);
+}
+
+.aiTextarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.aiGenerateButton {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.aiGenerateButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(67, 233, 123, 0.3);
+}
+
+.aiGenerateButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.aiHint {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}

@@ -1,71 +1,50 @@
 /**
  * AI 服务 - 用于自动生成义项
- * 使用MiniMax API (MiniMax-M2模型)
+ * 从统一配置服务动态获取API配置
  */
 
-// API配置
+import { configService } from './configService'
+import type { ApiConfig as ConfigApiConfig } from '@/types/config'
+
+// API配置类型（兼容旧代码）
 interface ApiConfig {
   baseUrl: string
   apiKey: string
   model: string
-  provider: 'minimax' | 'siliconflow'
+  provider: 'minimax' | 'siliconflow' | 'deepseek' | 'custom'
 }
-
-// 硅基流动 API - 使用 Ling-flash-2.0 模型（通过硅基流动）
-const ALL_API_CONFIGS: ApiConfig[] = [
-  {
-    baseUrl: 'https://api.siliconflow.cn/v1',
-    apiKey: 'sk-vkasvvxaewwtnrfnyjkdqizcubmwlvywlbzuvgsfjotoxtrg',
-    model: 'inclusionAI/Ling-flash-2.0',
-    provider: 'siliconflow',
-  },
-  {
-    baseUrl: 'https://api.siliconflow.cn/v1',
-    apiKey: 'sk-vzuzylxxtolfxmlcmmhykqgctgiuivbfgtlwebcjcxpdlqyv',
-    model: 'inclusionAI/Ling-flash-2.0',
-    provider: 'siliconflow',
-  },
-  {
-    baseUrl: 'https://api.siliconflow.cn/v1',
-    apiKey: 'sk-cplztrsifchetezkbabzxrzsnmlyvuwlspevkgpmztfksthz',
-    model: 'inclusionAI/Ling-flash-2.0',
-    provider: 'siliconflow',
-  },
-  {
-    baseUrl: 'https://api.siliconflow.cn/v1',
-    apiKey: 'sk-izfpkafaxakjrexfsecdkoqxtearoidybzootmwzjpbofqnx',
-    model: 'inclusionAI/Ling-flash-2.0',
-    provider: 'siliconflow',
-  },
-  {
-    baseUrl: 'https://api.siliconflow.cn/v1',
-    apiKey: 'sk-mkdvcwoseuxtfmltgmnxxiaaornbkrookxbqctiuvjgweecw',
-    model: 'inclusionAI/Ling-flash-2.0',
-    provider: 'siliconflow',
-  },
-  {
-    baseUrl: 'https://api.siliconflow.cn/v1',
-    apiKey: 'sk-limxenepsomcnviqzvoevkzmngcihkmvezrlamjqkmtblrfs',
-    model: 'inclusionAI/Ling-flash-2.0',
-    provider: 'siliconflow',
-  },
-  {
-    baseUrl: 'https://api.siliconflow.cn/v1',
-    apiKey: 'sk-qtfeqncvnoftrgngdzxhhpfvovgcigftdfyohrpxxoycdrdf',
-    model: 'inclusionAI/Ling-flash-2.0',
-    provider: 'siliconflow',
-  },
-]
 
 // API 轮询索引
 let currentConfigIndex = 0
 
 /**
+ * 获取所有API配置（从配置服务）
+ */
+function getAllApiConfigs(): ApiConfig[] {
+  const configs = configService.getAIConfig()
+
+  // 如果配置为空或没有有效的API Key，返回默认配置
+  if (!configs || configs.length === 0 || configs.every(c => !c.apiKey)) {
+    console.warn('⚠️ 未配置API Key，某些AI功能可能无法使用')
+    return []
+  }
+
+  // 过滤掉没有API Key的配置
+  return configs.filter(c => c.apiKey)
+}
+
+/**
  * 获取下一个API配置（轮询）
  */
 function getNextApiConfig(): ApiConfig {
-  const config = ALL_API_CONFIGS[currentConfigIndex]
-  currentConfigIndex = (currentConfigIndex + 1) % ALL_API_CONFIGS.length
+  const configs = getAllApiConfigs()
+
+  if (configs.length === 0) {
+    throw new Error('未配置API Key，请在设置中添加API配置')
+  }
+
+  const config = configs[currentConfigIndex]
+  currentConfigIndex = (currentConfigIndex + 1) % configs.length
   return config
 }
 
@@ -82,14 +61,13 @@ async function makeAIRequest(
   options?: { temperature?: number; max_tokens?: number }
 ): Promise<{ content: string; usage?: { total_tokens: number; completion_tokens: number } }> {
   // 动态导入配置（避免循环依赖）
-  const { getModelId, isThinkingModel } = await import('./concurrencyConfig')
-  
+  const { isThinkingModel } = await import('./concurrencyConfig')
+
   const config = getNextApiConfig()
-  const modelId = getModelId() || config.model  // 使用配置的模型ID，如果没有则使用默认
   const isThinking = isThinkingModel()
-  
-  console.log(`[AI请求] 使用模型: ${modelId}${isThinking ? ' (思考模型)' : ''}`)
-  
+
+  console.log(`[AI请求] 使用模型: ${config.model}${isThinking ? ' (思考模型)' : ''}`)
+
   const response = await fetch(`${config.baseUrl}/chat/completions`, {
     method: 'POST',
     headers: {
@@ -97,7 +75,7 @@ async function makeAIRequest(
       'Authorization': `Bearer ${config.apiKey}`,
     },
     body: JSON.stringify({
-      model: modelId,  // 使用配置的模型ID
+      model: config.model,  // 使用配置组的模型
       messages,
       temperature: options?.temperature ?? 0.3,
       max_tokens: options?.max_tokens ?? 500,
@@ -123,15 +101,46 @@ export function resetApiKeyIndex(): void {
   currentConfigIndex = 0
 }
 
+/**
+ * 通用AI调用函数
+ * @param prompt 提示词
+ * @param apiConfigId 可选的API配置ID，如果不提供则使用轮询
+ */
+export async function callAI(prompt: string, apiConfigId?: string): Promise<string> {
+  let config: ApiConfig;
+  
+  if (apiConfigId) {
+    // 使用指定的配置
+    const configs = getAllApiConfigs();
+    const foundConfig = configs.find(c => (c as any).id === apiConfigId);
+    if (!foundConfig) {
+      throw new Error(`未找到ID为 ${apiConfigId} 的API配置`);
+    }
+    config = foundConfig;
+  } else {
+    // 使用轮询获取配置
+    config = getNextApiConfig();
+  }
+
+  const messages = [
+    { role: 'user', content: prompt }
+  ];
+
+  const result = await makeAIRequest(messages, { temperature: 0.7, max_tokens: 1000 });
+  return result.content;
+}
+
 export interface AIDefinitionRequest {
   sentence: string;
   character: string;
+  originalIndex?: number;  // 原始索引，用于关联 sentenceId
 }
 
 export interface AIDefinitionResponse {
   character: string;
   definition: string;
   sentence: string;
+  originalIndex?: number;  // 原始索引，用于关联 sentenceId
   tokens?: {
     prompt: number;
     completion: number;
@@ -154,7 +163,8 @@ export async function findKeyCharacters(
 ): Promise<KeyCharactersResponse[]> {
   const allResults: KeyCharactersResponse[] = [];
   const batchSize = 30; // 每批处理30个句子
-  const concurrency = Math.min(2, ALL_API_CONFIGS.length); // 并发数等于API配置数量
+  const apiConfigs = getAllApiConfigs();
+  const concurrency = Math.min(2, Math.max(1, apiConfigs.length)); // 并发数等于API配置数量
 
   // 将句子分成多个批次
   const batches: string[][] = [];
@@ -165,7 +175,7 @@ export async function findKeyCharacters(
   // 并发处理批次
   for (let i = 0; i < batches.length; i += concurrency) {
     const concurrentBatches = batches.slice(i, i + concurrency);
-    
+
     // 更新进度
     if (onProgress) {
       onProgress(i * batchSize, sentences.length);
@@ -464,12 +474,16 @@ export async function batchGenerateDefinitions(
 ): Promise<AIDefinitionResponse[]> {
   // 动态导入配置（避免循环依赖）
   const { getAIDefinitionConcurrency, getBatchDelayMs, getRetryDelayMs } = await import('./concurrencyConfig')
-  
+
   // 使用提供的并发数，或从配置中获取
   const finalConcurrency = concurrency ?? getAIDefinitionConcurrency()
   const results: AIDefinitionResponse[] = [];
   const errors: Array<{ request: AIDefinitionRequest; error: any }> = [];
   
+  // 🔍 调试：检查输入的 requests 是否包含 originalIndex
+  const reqWithIndex = requests.filter(r => r.originalIndex !== undefined).length
+  console.log(`[AI服务调试] 收到 ${requests.length} 个请求，其中 ${reqWithIndex} 个有 originalIndex`)
+
   let totalTokens = 0;
   let completionTokens = 0;
   const startTime = Date.now();
@@ -484,7 +498,7 @@ export async function batchGenerateDefinitions(
       const elapsed = (Date.now() - startTime) / 1000;
       const speed = i > 0 ? i / elapsed : 0;
       const tokenSpeed = elapsed > 0 ? completionTokens / elapsed : 0;
-      
+
       onProgress(i, requests.length, {
         totalTokens,
         completionTokens,
@@ -497,15 +511,16 @@ export async function batchGenerateDefinitions(
     const batchPromises = batch.map(async (req) => {
       try {
         const result = await generateDefinitionWithTokens(req.sentence, req.character);
-        
+
         // 累加token统计
         totalTokens += result.tokens.total;
         completionTokens += result.tokens.completion;
-        
+
         return {
           character: req.character,
           definition: result.definition,
           sentence: req.sentence,
+          originalIndex: req.originalIndex,  // 传递原始索引
           tokens: result.tokens,
         };
       } catch (error) {
@@ -529,7 +544,7 @@ export async function batchGenerateDefinitions(
     const elapsed = (Date.now() - startTime) / 1000;
     const speed = requests.length / elapsed;
     const tokenSpeed = completionTokens / elapsed;
-    
+
     onProgress(requests.length, requests.length, {
       totalTokens,
       completionTokens,
@@ -542,26 +557,27 @@ export async function batchGenerateDefinitions(
   // 处理失败的请求
   if (errors.length > 0) {
     console.warn(`⚠️ 第一轮：${errors.length} 个请求失败，准备重试...`, errors);
-    
+
     // 重试失败的请求（逐个重试，降低并发）
     for (const { request, error } of errors) {
       console.log(`🔄 重试: ${request.character} in "${request.sentence.substring(0, 20)}..."`)
-      
+
       try {
         await new Promise(resolve => setTimeout(resolve, 1000));  // 重试前等待1秒
-        
+
         const result = await generateDefinitionWithTokens(request.sentence, request.character);
-        
+
         totalTokens += result.tokens.total;
         completionTokens += result.tokens.completion;
-        
+
         results.push({
           character: request.character,
           definition: result.definition,
           sentence: request.sentence,
+          originalIndex: request.originalIndex,  // 传递原始索引
           tokens: result.tokens,
         });
-        
+
         console.log(`✅ 重试成功: ${request.character}`)
       } catch (retryError) {
         console.error(`❌ 重试失败: ${request.character}`, retryError);
@@ -569,6 +585,10 @@ export async function batchGenerateDefinitions(
     }
   }
 
+  // 🔍 调试：检查返回结果是否包含 originalIndex
+  const resWithIndex = results.filter(r => r.originalIndex !== undefined).length
+  console.log(`[AI服务调试] 返回 ${results.length} 个结果，其中 ${resWithIndex} 个有 originalIndex`)
+  
   return results;
 }
 
@@ -581,7 +601,7 @@ export async function validateDefinition(
   sentences: string[]
 ): Promise<{ isValid: boolean; reason?: string }> {
   console.log(`[AI二次验证] 开始验证字符"${character}"，例句数: ${sentences.length}`)
-  
+
   const prompt = `请判断以下文言文句子中的"${character}"字是否是人名、地名、朝代名的一部分。
 
 句子列表：
@@ -633,17 +653,17 @@ export async function batchValidateDefinitions(
 ): Promise<Array<{ character: string; isValid: boolean; reason?: string }>> {
   // 动态导入配置
   const { getAIDefinitionConcurrency, getBatchDelayMs } = await import('./concurrencyConfig')
-  
+
   const results: Array<{ character: string; isValid: boolean; reason?: string }> = []
   const concurrency = getAIDefinitionConcurrency()
-  
+
   for (let i = 0; i < validations.length; i += concurrency) {
     const batch = validations.slice(i, i + concurrency)
-    
+
     if (onProgress) {
       onProgress(i, validations.length)
     }
-    
+
     const batchPromises = batch.map(async (item) => {
       try {
         const result = await validateDefinition(item.character, item.sentences)
@@ -661,20 +681,20 @@ export async function batchValidateDefinitions(
         }
       }
     })
-    
+
     const batchResults = await Promise.all(batchPromises)
     results.push(...batchResults)
-    
+
     // 批次间延迟
     if (i + concurrency < validations.length) {
       await new Promise(resolve => setTimeout(resolve, getBatchDelayMs()))
     }
   }
-  
+
   if (onProgress) {
     onProgress(validations.length, validations.length)
   }
-  
+
   return results
 }
 
@@ -739,7 +759,7 @@ ${definitions.map((d, i) => `${i + 1}. ${d.content}`).join('\n')}
         const reason = match[3].trim();
 
         if (deleteIndex >= 0 && deleteIndex < definitions.length &&
-            keepIndex >= 0 && keepIndex < definitions.length) {
+          keepIndex >= 0 && keepIndex < definitions.length) {
           merges.push({
             keepId: definitions[keepIndex].id,
             deleteId: definitions[deleteIndex].id,
@@ -765,17 +785,17 @@ export async function batchCheckDuplicateDefinitions(
 ): Promise<Array<{ keepId: string; deleteId: string; reason: string }>> {
   // 动态导入配置
   const { getAIDefinitionConcurrency, getBatchDelayMs } = await import('./concurrencyConfig')
-  
+
   const allMerges: Array<{ keepId: string; deleteId: string; reason: string }> = []
   const concurrency = getAIDefinitionConcurrency()
-  
+
   for (let i = 0; i < checks.length; i += concurrency) {
     const batch = checks.slice(i, i + concurrency)
-    
+
     if (onProgress) {
       onProgress(i, checks.length)
     }
-    
+
     const batchPromises = batch.map(async (item) => {
       try {
         const merges = await checkDuplicateDefinitions(item.character, item.definitions)
@@ -785,19 +805,19 @@ export async function batchCheckDuplicateDefinitions(
         return []
       }
     })
-    
+
     const batchResults = await Promise.all(batchPromises)
     allMerges.push(...batchResults.flat())
-    
+
     // 批次间延迟
     if (i + concurrency < checks.length) {
       await new Promise(resolve => setTimeout(resolve, getBatchDelayMs()))
     }
   }
-  
+
   if (onProgress) {
     onProgress(checks.length, checks.length)
   }
-  
+
   return allMerges
 }
