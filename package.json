@@ -1,91 +1,106 @@
 {
-  "name": "classical-chinese-query",
-  "version": "1.0.0",
-  "description": "文言文查询小程序 - 面向教师的文言文字词查询工具",
-  "main": "main/index.js",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "electron": "electron .",
-    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron:build": "next build && electron-builder",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
-  },
-  "keywords": [
-    "classical-chinese",
-    "文言文",
-    "electron",
-    "nextjs"
-  ],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "docx": "^9.5.1",
-    "electron-store": "^8.1.0",
-    "framer-motion": "^10.16.4",
-    "html2canvas": "^1.4.1",
-    "next": "14.0.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "uuid": "^9.0.1"
-  },
-  "devDependencies": {
-    "@rollup/rollup-win32-x64-msvc": "^4.53.3",
-    "@testing-library/react": "^16.3.0",
-    "@types/debug": "^4.1.12",
-    "@types/node": "^20.9.0",
-    "@types/react": "^18.2.37",
-    "@types/react-dom": "^18.2.15",
-    "@types/uuid": "^9.0.6",
-    "@vitejs/plugin-react": "^4.2.0",
-    "@vitest/coverage-v8": "^1.0.4",
-    "concurrently": "^8.2.2",
-    "electron": "^39.2.4",
-    "electron-builder": "^26.0.12",
-    "fast-check": "^3.23.2",
-    "jsdom": "^27.2.0",
-    "typescript": "^5.2.2",
-    "vitest": "^1.0.4",
-    "wait-on": "^7.2.0"
-  },
-  "build": {
-    "appId": "com.classical-chinese-query.app",
-    "productName": "文言文查询",
-    "directories": {
-      "output": "dist"
+    "name": "classical-chinese-query",
+    "version": "1.2.1",
+    "description": "文言文查询小程序 - 面向教师的文言文字词查询工具",
+    "main": "main/index.js",
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "electron": "electron .",
+        "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:3000 && electron .\"",
+        "electron:build": "next build && electron-builder",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "build:with-config": "node scripts/build-with-config.js",
+        "electron:build:win": "npm run build && electron-builder --win --x64 --ia32",
+        "release:patch": "node scripts/release-patch.js",
+        "release:github": "node scripts/github-release.js",
+        "test:upload": "node scripts/test-upload.js",
+        "test:update": "node scripts/test-update-system.js"
     },
-    "files": [
-      "main/**/*",
-      "out/**/*",
-      "public/**/*",
-      "node_modules/**/*",
-      "package.json"
+    "keywords": [
+        "classical-chinese",
+        "文言文",
+        "electron",
+        "nextjs"
     ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        }
-      ],
-      "icon": "public/icon.ico"
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "docx": "^9.5.1",
+        "electron-store": "^8.1.0",
+        "framer-motion": "^10.16.4",
+        "html2canvas": "^1.4.1",
+        "next": "14.0.4",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "uuid": "^9.0.1",
+        "zustand": "^5.0.9"
     },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "installerLanguages": [
-        "zh_CN",
-        "en_US"
-      ]
+    "devDependencies": {
+        "@rollup/rollup-win32-x64-msvc": "^4.53.3",
+        "@testing-library/react": "^16.3.0",
+        "@types/debug": "^4.1.12",
+        "@types/node": "^20.9.0",
+        "@types/react": "^18.2.37",
+        "@types/react-dom": "^18.2.15",
+        "@types/uuid": "^9.0.6",
+        "@vitejs/plugin-react": "^4.2.0",
+        "@vitest/coverage-v8": "^1.0.4",
+        "concurrently": "^8.2.2",
+        "electron": "^39.2.4",
+        "electron-builder": "^26.0.12",
+        "fast-check": "^3.23.2",
+        "form-data": "^4.0.0",
+        "jsdom": "^27.2.0",
+        "typescript": "^5.2.2",
+        "vitest": "^1.0.4",
+        "wait-on": "^7.2.0"
+    },
+    "build": {
+        "appId": "com.classical-chinese-query.app",
+        "productName": "文言文查询",
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "main/**/*",
+            "out/**/*",
+            "public/**/*",
+            "node_modules/**/*",
+            "package.json"
+        ],
+        "extraResources": [
+            {
+                "from": "config",
+                "to": "../config",
+                "filter": ["**/*"]
+            }
+        ],
+        "win": {
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64",
+                        "ia32"
+                    ]
+                }
+            ],
+            "icon": "public/icon.ico"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "installerLanguages": [
+                "zh_CN",
+                "en_US"
+            ]
+        }
+    },
+    "optionalDependencies": {
+        "@next/swc-win32-x64-msvc": "^13.5.6"
     }
-  },
-  "optionalDependencies": {
-    "@next/swc-win32-x64-msvc": "^13.5.6"
-  }
 }
