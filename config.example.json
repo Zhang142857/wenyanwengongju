@@ -1,0 +1,67 @@
+{
+    "$schema": "./config.schema.json",
+    "schemaVersion": 1,
+    "version": "1.0.0",
+    "edition": "opensource",
+    "remoteConfig": {
+        "enabled": false,
+        "url": "https://your-domain.com/api/config",
+        "refreshInterval": 3600000,
+        "fallbackToLocal": true
+    },
+    "autoUpdate": {
+        "enabled": true,
+        "url": "https://your-domain.com/api/update",
+        "checkInterval": 86400000
+    },
+    "ai": {
+        "apiConfigs": [
+            {
+                "provider": "your-provider",
+                "baseUrl": "https://api.example.com/v1",
+                "apiKey": "YOUR_API_KEY_HERE",
+                "model": "your-model-name"
+            }
+        ],
+        "concurrency": {
+            "aiDefinitionConcurrency": 10,
+            "shortSentenceConcurrency": 10,
+            "batchDelayMs": 100,
+            "retryDelayMs": 500,
+            "modelId": "your-model-id",
+            "isThinkingModel": false
+        }
+    },
+    "libraries": {
+        "defaultLibraries": [],
+        "focusWords": "",
+        "keyCharacters": []
+    },
+    "system": {
+        "appTitle": "文言文小工具",
+        "enableTour": true,
+        "hasPlayedTour": false,
+        "theme": "gradient",
+        "backgroundSettings": {
+            "type": "gradient",
+            "effect": "none"
+        }
+    },
+    "features": {
+        "enableAIOrganize": true,
+        "enableExam": true,
+        "enableRegexGenerator": true,
+        "enableImport": true,
+        "enableManage": true
+    },
+    "tourPlayedRecord": {
+        "home": false,
+        "import": false,
+        "organize": false,
+        "aiOrganize": false,
+        "exam": false,
+        "manage": false,
+        "regexGenerator": false,
+        "query": false
+    }
+}
