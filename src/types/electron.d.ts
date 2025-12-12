@@ -2,6 +2,19 @@
  * Electron API 类型声明
  */
 
+export interface UpdateInfo {
+  has_update?: boolean
+  version: string
+  download_url?: string
+  file_hash?: string
+  file_name?: string
+  file_size?: number
+  changelog: string
+  force_update?: boolean
+  forceUpdate?: boolean
+  timestamp?: string
+}
+
 interface ElectronAPI {
   // 配置管理
   getAppConfig: () => Promise<any>
@@ -22,14 +35,33 @@ interface ElectronAPI {
   saveLibraries: (libraries: any) => Promise<boolean>
 
   // 背景媒体
-  getBackgroundMedia: (path: string) => Promise<{ success: boolean; data?: string }>
-  saveBackgroundMedia: (data: string, filename: string, type: string) => Promise<{ success: boolean; path?: string }>
-  deleteBackgroundMedia: (path: string) => Promise<boolean>
+  getBackgroundMedia: (path: string) => Promise<{ success: boolean; data?: string; error?: string }>
+  saveBackgroundMedia: (data: string, filename: string, type: string) => Promise<{ success: boolean; path?: string; error?: string }>
+  deleteBackgroundMedia: (path: string) => Promise<{ success: boolean; error?: string }>
+  listBackgroundMedia: () => Promise<{ success: boolean; files?: string[]; error?: string }>
 
   // 更新检查
-  checkForUpdates: () => Promise<any>
-  downloadUpdate: (url: string) => Promise<any>
-  installUpdate: (filePath: string) => Promise<void>
+  checkForUpdates: () => Promise<UpdateInfo | null>
+  downloadUpdate: (downloadUrl: string, fileName: string) => Promise<string>
+  installUpdate: (installerPath: string) => Promise<boolean>
+  downloadAndInstall: (downloadUrl: string, fileName: string, version?: string) => Promise<boolean>
+  onUpdateAvailable: (callback: (data: UpdateInfo) => void) => void
+  onUpdateDownloadProgress: (callback: (progress: { 
+    progress: number
+    downloadedSize: number
+    totalSize: number
+    speed?: number
+    speedText?: string
+    eta?: string
+    threads?: number
+  }) => void) => void
+  onUpdateDownloadStarted: (callback: (data: { version: string; downloadUrl: string }) => void) => void
+  onUpdateDownloadError: (callback: (data: { error: string; version?: string }) => void) => void
+  getPendingUpdate: () => Promise<UpdateInfo | null>
+  clearPendingUpdate: () => Promise<boolean>
+  removeUpdateListeners: () => void
+  isDownloading: () => Promise<{ isDownloading: boolean; version: string | null }>
+  cancelDownload: () => Promise<boolean>
 
   // 文件操作
   openFile: (options?: any) => Promise<string | null>

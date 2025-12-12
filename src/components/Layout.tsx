@@ -5,43 +5,9 @@ import Sidebar from './Sidebar'
 import { useSidebar } from '@/contexts/SidebarContext'
 import OnboardingTour from './OnboardingTour'
 import ImageTour from './ImageTour'
-import UpdateNotification, { UpdateInfo } from './UpdateNotification'
+import UpdateNotification from './UpdateNotification'
+import type { UpdateInfo } from '@/types/electron'
 import styles from './Layout.module.css'
-
-// 声明 electronAPI 类型
-declare global {
-  interface Window {
-    electronAPI?: {
-      getAppVersion?: () => Promise<string>
-      checkForUpdates?: () => Promise<UpdateInfo | null>
-      onUpdateAvailable?: (callback: (data: UpdateInfo) => void) => void
-      onUpdateDownloadProgress?: (callback: (progress: { 
-        progress: number; 
-        downloadedSize: number; 
-        totalSize: number;
-        speed?: number;
-        speedText?: string;
-        eta?: string;
-        threads?: number;
-      }) => void) => void
-      onUpdateDownloadStarted?: (callback: (data: { version: string; downloadUrl: string }) => void) => void
-      onUpdateDownloadError?: (callback: (data: { error: string; version?: string }) => void) => void
-      getPendingUpdate?: () => Promise<UpdateInfo | null>
-      clearPendingUpdate?: () => Promise<boolean>
-      removeUpdateListeners?: () => void
-      downloadUpdate?: (downloadUrl: string, fileName: string) => Promise<string>
-      installUpdate?: (installerPath: string) => Promise<boolean>
-      downloadAndInstall?: (downloadUrl: string, fileName: string, version?: string) => Promise<boolean>
-      isDownloading?: () => Promise<{ isDownloading: boolean; version: string | null }>
-      cancelDownload?: () => Promise<boolean>
-      // 背景媒体管理
-      saveBackgroundMedia?: (data: string, filename: string, type: string) => Promise<{ success: boolean; path?: string; error?: string }>
-      getBackgroundMedia?: (filename: string) => Promise<{ success: boolean; data?: string; error?: string }>
-      deleteBackgroundMedia?: (filename: string) => Promise<{ success: boolean; error?: string }>
-      listBackgroundMedia?: () => Promise<{ success: boolean; files?: string[]; error?: string }>
-    }
-  }
-}
 
 interface LayoutProps {
   children: ReactNode

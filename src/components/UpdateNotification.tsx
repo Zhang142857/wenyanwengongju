@@ -2,19 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import styles from './UpdateNotification.module.css';
+import type { UpdateInfo } from '@/types/electron';
 
-export interface UpdateInfo {
-  has_update?: boolean;
-  version: string;
-  download_url?: string;
-  file_hash?: string;
-  file_name?: string;
-  file_size?: number;
-  changelog: string;
-  force_update?: boolean;
-  forceUpdate?: boolean;
-  timestamp?: string;
-}
+export type { UpdateInfo };
 
 export interface UpdateNotificationProps {
   updateInfo: UpdateInfo;
