@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.0",
+  "edition": "test",
+  "ai": {
+    "apiConfigs": [
+      {
+        "provider": "test-provider",
+        "baseUrl": "https://api.test.com/v1",
+        "apiKey": "test-api-key",
+        "model": "test-model"
+      }
+    ],
+    "concurrency": {
+      "aiDefinitionConcurrency": 5,
+      "shortSentenceConcurrency": 5,
+      "batchDelayMs": 100,
+      "retryDelayMs": 500
+    }
+  },
+  "libraries": {
+    "defaultLibraries": [],
+    "focusWords": "测试",
+    "keyCharacters": []
+  },
+  "system": {
+    "appTitle": "测试应用",
+    "enableTour": false,
+    "hasPlayedTour": true,
+    "theme": "gradient"
+  },
+  "features": {
+    "enableAIOrganize": true,
+    "enableExam": true,
+    "enableRegexGenerator": true,
+    "enableImport": true,
+    "enableManage": true
+  }
+}
