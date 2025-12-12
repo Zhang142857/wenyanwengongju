@@ -17,6 +17,9 @@ jobs:
   build:
     runs-on: windows-latest
     
+    permissions:
+      contents: write
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -37,8 +40,8 @@ jobs:
       - name: Build Next.js
         run: npm run build
 
-      - name: Build Electron (Windows x64)
-        run: npm run electron:build:win
+      - name: Build Electron (Windows)
+        run: npx electron-builder --win --x64 --ia32 --publish never
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -70,6 +73,9 @@ jobs:
         with:
           name: windows-build
           path: dist/
+
+      - name: List artifacts
+        run: ls -la dist/
 
       - name: Extract version from tag
         id: version
