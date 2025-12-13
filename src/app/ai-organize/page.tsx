@@ -18,7 +18,7 @@ type ProcessingStep = 'idle' | 'step1' | 'step2' | 'step3' | 'step4' | 'complete
 
 interface StepResult {
   step1?: CharacterSentencePair[]
-  step2?: Array<{ character: string; definition: string; sentence: string }>
+  step2?: Array<{ character: string; definition: string; sentence: string; originalIndex?: number }>
   step3?: Array<{ character: string; isValid: boolean; reason?: string }>
   step4?: Array<{ keepId: string; deleteId: string; reason: string }>
 }
@@ -244,6 +244,15 @@ export default function AIOrganizePage() {
       setStepResults(prev => ({ ...prev, step3: step3Results }))
 
       // 过滤掉无效的义项（人名/地名）
+      const invalidChars = step3Results.filter(r => r.isValid === false)
+      if (invalidChars.length > 0) {
+        console.log(`[第三步] 以下字符被判定为人名/地名，将被过滤:`)
+        invalidChars.forEach(r => {
+          const count = definitions.filter(d => d.character === r.character).length
+          console.log(`  "${r.character}": ${r.reason} (影响 ${count} 个义项)`)
+        })
+      }
+      
       const validDefinitions = definitions.filter(def => {
         const validation = step3Results.find(r => r.character === def.character)
         return validation?.isValid !== false
@@ -257,6 +266,14 @@ export default function AIOrganizePage() {
       let linkCreatedCount = 0
       let linkSkippedCount = 0
 
+      // 构建句子文本到 sentenceId 的映射（用于备用查找）
+      const sentenceTextToIdMap = new Map<string, string>()
+      for (const pair of newPairs) {
+        sentenceTextToIdMap.set(pair.sentence, pair.sentenceId)
+      }
+
+      let fallbackUsedCount = 0
+
       for (const def of validDefinitions) {
         // 使用去重逻辑添加义项
         const existingDef = storage.addDefinitionOrGetExisting(def.character, def.definition)
@@ -267,13 +284,28 @@ export default function AIOrganizePage() {
         })
 
         // 使用 originalIndex 直接获取对应的 sentenceId
-        const originalPair = def.originalIndex !== undefined ? newPairs[def.originalIndex] : null
+        let originalPair = def.originalIndex !== undefined ? newPairs[def.originalIndex] : null
+
+        // 备用方案：如果 originalIndex 不可用，通过句子文本匹配查找
+        if (!originalPair && def.sentence) {
+          const fallbackSentenceId = sentenceTextToIdMap.get(def.sentence)
+          if (fallbackSentenceId) {
+            originalPair = {
+              sentence: def.sentence,
+              character: def.character,
+              sentenceId: fallbackSentenceId,
+            }
+            fallbackUsedCount++
+            console.log(`[备用查找] 通过句子文本匹配找到 sentenceId: "${def.sentence.substring(0, 20)}..."`)
+          }
+        }
 
         if (originalPair) {
-          // 找到字符在句子中的所有位置
+          // 找到字符在句子中的所有位置（使用原始句子文本，而不是 AI 返回的句子）
+          const sentenceText = originalPair.sentence
           const positions: number[] = []
-          for (let i = 0; i < def.sentence.length; i++) {
-            if (def.sentence[i] === def.character) {
+          for (let i = 0; i < sentenceText.length; i++) {
+            if (sentenceText[i] === def.character) {
               positions.push(i)
             }
           }
@@ -299,34 +331,44 @@ export default function AIOrganizePage() {
             }
           }
         } else {
-          console.warn(`[警告] 无法找到原始pair，def.originalIndex=${def.originalIndex}`)
+          console.warn(`[警告] 无法找到原始pair，def.originalIndex=${def.originalIndex}, sentence="${def.sentence?.substring(0, 30)}..."`)
         }
+      }
+      
+      if (fallbackUsedCount > 0) {
+        console.log(`[备用查找统计] 使用备用方案找回 ${fallbackUsedCount} 个关联`)
       }
       
       console.log(`[关联统计] 创建: ${linkCreatedCount}, 跳过(已存在): ${linkSkippedCount}`)
       
-      // 🔍 调试：验证关联是否正确创建
-      const allLinks = storage.getDefinitions()
-        .filter(d => d.character === validDefinitions[0]?.character)
-        .map(d => ({
-          defId: d.id,
-          content: d.content,
-          linkCount: storage.getDefinitionLinksForDefinition(d.id).length
-        }))
-      console.log(`[调试] "${validDefinitions[0]?.character}" 字的义项和关联数:`)
-      allLinks.forEach(item => {
-        console.log(`  义项 "${item.content}": ${item.linkCount} 个关联`)
-      })
+      // 🔍 调试：验证关联是否正确创建 - 统计所有处理过的字符
+      const processedChars = new Set(validDefinitions.map(d => d.character))
+      let totalDefinitionsCreated = 0
+      let totalLinksCreated = 0
       
-      // 🔍 调试：统计唯一句子数
-      const uniqueSentenceIds = new Set<string>()
-      validDefinitions.forEach(def => {
-        if (def.originalIndex !== undefined) {
-          const pair = newPairs[def.originalIndex]
-          if (pair) uniqueSentenceIds.add(pair.sentenceId)
-        }
-      })
-      console.log(`[调试] 唯一句子数: ${uniqueSentenceIds.size}, 总 pair 数: ${validDefinitions.length}`)
+      console.log(`[保存验证] 处理了 ${processedChars.size} 个不同的字符:`)
+      for (const char of processedChars) {
+        const charDefs = storage.getDefinitions().filter(d => d.character === char)
+        let charLinkCount = 0
+        charDefs.forEach(d => {
+          charLinkCount += storage.getDefinitionLinksForDefinition(d.id).length
+        })
+        totalDefinitionsCreated += charDefs.length
+        totalLinksCreated += charLinkCount
+        console.log(`  "${char}": ${charDefs.length} 个义项, ${charLinkCount} 个关联`)
+      }
+      console.log(`[保存验证] 总计: ${totalDefinitionsCreated} 个义项, ${totalLinksCreated} 个关联`)
+      
+      // 🔍 调试：检查是否有义项没有关联
+      const defsWithoutLinks = storage.getDefinitions()
+        .filter(d => processedChars.has(d.character))
+        .filter(d => storage.getDefinitionLinksForDefinition(d.id).length === 0)
+      if (defsWithoutLinks.length > 0) {
+        console.warn(`[警告] 有 ${defsWithoutLinks.length} 个义项没有关联:`)
+        defsWithoutLinks.slice(0, 5).forEach(d => {
+          console.warn(`  "${d.character}": ${d.content}`)
+        })
+      }
 
       // ========== 第四步：AI合并重复义项 ==========
       setCurrentStep('step4')
@@ -393,7 +435,20 @@ export default function AIOrganizePage() {
       const mergeCount = step4Results.length
       const failedCount = step1Pairs.length - definitions.length
 
-      let message = `处理完成！\n生成义项：${validDefinitions.length}\n过滤无效：${invalidCount}\n合并重复：${mergeCount}`
+      // 统计最终保存的义项和关联数
+      const finalStats = {
+        definitions: 0,
+        links: 0,
+      }
+      for (const char of processedChars) {
+        const charDefs = storage.getDefinitions().filter(d => d.character === char)
+        finalStats.definitions += charDefs.length
+        charDefs.forEach(d => {
+          finalStats.links += storage.getDefinitionLinksForDefinition(d.id).length
+        })
+      }
+
+      let message = `处理完成！\n生成义项：${finalStats.definitions}\n创建关联：${finalStats.links}\n过滤无效：${invalidCount}\n合并重复：${mergeCount}`
 
       if (failedCount > 0) {
         message += `\n\n⚠️ 警告：${failedCount} 个请求失败\n请检查控制台查看详情`
