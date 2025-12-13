@@ -15034,9 +15034,2169 @@
     }
   ],
   "quotes": [],
-  "definitions": [],
+  "definitions": [
+    {
+      "id": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "character": "而",
+      "content": "连词，表顺承",
+      "createdAt": "2025-12-13T07:47:43.924Z",
+      "updatedAt": "2025-12-13T07:47:43.924Z"
+    },
+    {
+      "id": "87ff5b39-8014-4a20-9d33-ff151e13bb82",
+      "character": "而",
+      "content": "连词，表转折",
+      "createdAt": "2025-12-13T07:47:43.924Z",
+      "updatedAt": "2025-12-13T07:47:43.924Z"
+    },
+    {
+      "id": "b8dfb67e-b2f6-4bfa-9719-ec84ddca9664",
+      "character": "而",
+      "content": "连词，表并列",
+      "createdAt": "2025-12-13T07:47:43.924Z",
+      "updatedAt": "2025-12-13T07:47:43.924Z"
+    },
+    {
+      "id": "e8102e4a-4545-44b4-860d-4a6ab722c291",
+      "character": "文",
+      "content": "文章义理",
+      "createdAt": "2025-12-13T07:53:31.140Z",
+      "updatedAt": "2025-12-13T07:53:31.141Z"
+    },
+    {
+      "id": "60eb8df4-a2ce-4361-819c-da942a189841",
+      "character": "义",
+      "content": "文章义理",
+      "createdAt": "2025-12-13T07:53:31.141Z",
+      "updatedAt": "2025-12-13T07:53:31.141Z"
+    },
+    {
+      "id": "caa80bb1-3e2e-4f0f-9aa2-01a19a82a731",
+      "character": "与",
+      "content": "介词，和",
+      "createdAt": "2025-12-13T07:53:31.141Z",
+      "updatedAt": "2025-12-13T07:53:31.141Z"
+    },
+    {
+      "id": "8ab3843d-bbdf-411f-a88d-14ebcc231a82",
+      "character": "所",
+      "content": "代词",
+      "createdAt": "2025-12-13T07:53:31.141Z",
+      "updatedAt": "2025-12-13T07:53:31.141Z"
+    },
+    {
+      "id": "223fe69c-085f-4a30-b963-4001b79518a1",
+      "character": "然",
+      "content": "副词，……的样子",
+      "createdAt": "2025-12-13T07:53:31.141Z",
+      "updatedAt": "2025-12-13T07:53:31.141Z"
+    },
+    {
+      "id": "f16bb596-4244-432e-b99d-0b90530635d0",
+      "character": "子",
+      "content": "儿子",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "d21e4439-93d4-46c4-8e77-300b7b332eb2",
+      "character": "因",
+      "content": "介词，凭借",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "b5a41291-ddf8-43b5-aded-a95f6da1a69f",
+      "character": "乐",
+      "content": "感到快乐",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "b3d80897-83d1-43a9-8de2-d13408e151b2",
+      "character": "将",
+      "content": "官职名",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "027f4728-993a-4c13-bd37-0579662f1cd2",
+      "character": "之",
+      "content": "助词，的",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "bc1a5288-228a-4c38-b553-a0f054049bdf",
+      "character": "行",
+      "content": "一同前往",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "e3be3f37-e99c-4c3e-b4e7-d30dcf2e7889",
+      "character": "友",
+      "content": "朋友",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "9b5d166d-1dc4-4aee-a255-72996a5d095d",
+      "character": "过",
+      "content": "超过",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "6dcdd679-7780-4b7e-b44a-b7111bdc36b4",
+      "character": "去",
+      "content": "离开",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "106504ee-06b6-4461-ba9e-66e7c3327031",
+      "character": "舍",
+      "content": "舍弃",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "e40f3ed8-9804-4f9a-a471-7d0cdb2f58a8",
+      "character": "至",
+      "content": "到达",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "8a320f4c-08c7-434f-8d3e-8901e102b5fe",
+      "character": "乃",
+      "content": "副词，才",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "5e9dfd49-5d69-40a1-9e5b-af3119d7ffd5",
+      "character": "方",
+      "content": "副词，正",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "ef1de84a-5360-4ed7-9e8e-29bc96b04888",
+      "character": "方",
+      "content": "人名用字",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "38d5f0a5-04a0-4d94-9345-304319ac9366",
+      "character": "已",
+      "content": "副词，已经",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "7b3f8862-ad71-4b86-9373-16df747b6938",
+      "character": "相",
+      "content": "代词，我",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "3b128fea-4f3d-48ed-9529-91fe5e4a898a",
+      "character": "方",
+      "content": "人的字或表字",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "5ef1dbfd-cd72-4612-ab9c-ba55c7319722",
+      "character": "是",
+      "content": "连词，表承接",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "cd81ecf7-9e5e-4813-968f-c0253298a0d1",
+      "character": "信",
+      "content": "信用",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "8f1abd3d-0fc7-449a-ab22-1f5dbf506d66",
+      "character": "子",
+      "content": "代词",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "6a315834-9c2f-45fa-bd40-4b393bad07cb",
+      "character": "则",
+      "content": "连词，表承接",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "ae13ebb6-e29e-4097-bd08-75297b8a30f3",
+      "character": "方",
+      "content": "副词，才",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "f8c119ce-230f-4425-a82a-c77c6207661b",
+      "character": "顾",
+      "content": "回头看",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "bbd3f416-b580-4c7f-a28a-ce8f8375103f",
+      "character": "下",
+      "content": "从车上下来",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "cd672225-a9cb-428c-8177-954f6ec0f05f",
+      "character": "引",
+      "content": "拉他的手",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "character": "之",
+      "content": "代词",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "e474d835-b33c-4b56-b0ae-2f35fcfec48f",
+      "character": "学",
+      "content": "学习",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "2f49261e-2864-43b3-8a64-965a8e37b9f1",
+      "character": "子",
+      "content": "尊称，先生",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "0e40cb04-c605-48d5-8751-b3e046b65876",
+      "character": "乎",
+      "content": "语气助词",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "2a2d6570-a48c-4c20-9356-a3e8877f7752",
+      "character": "方",
+      "content": "地方",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "c3b94528-dc3c-4aaf-ba98-ef6cc9e58f42",
+      "character": "自",
+      "content": "介词，从",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "3fd8fe90-4bed-4350-82e2-e3df01806570",
+      "character": "子",
+      "content": "有德行的人",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "01c02776-a171-4214-a8e4-ae5621badccf",
+      "character": "谋",
+      "content": "替人谋划",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "89d6c1b4-3943-4894-90f7-7affb3e60800",
+      "character": "为",
+      "content": "介词，替",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "05d3d0cd-ca8c-4b61-ae83-295ce81d213a",
+      "character": "所",
+      "content": "助词，与“欲”连用",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "92c907e9-273e-4285-b015-4df572a93e8d",
+      "character": "欲",
+      "content": "想要",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "70ea9284-9d56-4621-ade1-b5fc0579d371",
+      "character": "志",
+      "content": "立志，有志于",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "9dfee17f-2d5d-46f8-b850-3c2661935552",
+      "character": "于",
+      "content": "介词，在",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "0a6b4881-c8c1-4f05-b973-2c06bc12d934",
+      "character": "故",
+      "content": "旧的知识",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "51a0bfd2-b575-4e95-a61e-3c01361565b7",
+      "character": "可",
+      "content": "可以，能够",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "a1c7dc98-8dae-4a78-83b3-e5292fa42b4b",
+      "character": "以",
+      "content": "介词，凭借",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "4c9a67a3-954e-4dff-a04b-153933f53252",
+      "character": "为",
+      "content": "动词，做",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "56ae0c18-6c06-476c-888f-824d9978b5a1",
+      "character": "矣",
+      "content": "语气助词，表肯定",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "2d92caaf-6270-4623-981e-092b84020d9a",
+      "character": "箪",
+      "content": "盛饭的竹器",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "8b5b09c7-de0e-4c1b-81d4-9f6745e78209",
+      "character": "食",
+      "content": "食物",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "39997fa7-4707-4f8d-9295-8829e6bc4b26",
+      "character": "贤",
+      "content": "品德高尚",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "f5c357e3-2b6a-4d78-be35-4f7afd40bb8b",
+      "character": "其",
+      "content": "代词",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "c210249a-4eb4-4ba2-9a43-8c284761e11c",
+      "character": "好",
+      "content": "喜爱，爱好",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "e3117c8e-a7a9-4515-91e8-396a71bfb14d",
+      "character": "乐",
+      "content": "以……为乐",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "character": "者",
+      "content": "助词，的人",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "a330d5f0-1ce3-4155-8d49-2428baa9dccb",
+      "character": "富",
+      "content": "有钱财",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "5a285b46-a495-4050-a210-f6843da0ec80",
+      "character": "且",
+      "content": "连词，表并列",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "420e0bc2-6770-4442-aafa-9535e7db8b7b",
+      "character": "义",
+      "content": "合乎道义",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "174b3225-8cc3-4a1d-8db4-636058fd304d",
+      "character": "于",
+      "content": "介词，对于",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "1b868689-9bcc-48a3-bde3-de52f77b59b1",
+      "character": "善",
+      "content": "好的方面",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "57940323-39b7-49a6-9f68-eb9ebc5f5bb9",
+      "character": "行",
+      "content": "行走，走路",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "e7cf8801-c88f-45ef-aa6e-6a45f38e5a19",
+      "character": "焉",
+      "content": "兼词，于之",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "8b504376-08ac-43d3-9abc-3f6c77bb0f7f",
+      "character": "夫",
+      "content": "语气助词",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "b2f9010f-33e5-46d4-9eeb-9e511143974e",
+      "character": "夫",
+      "content": "普通人",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "6df0ede4-59fb-4e64-92bf-1a43477a7abd",
+      "character": "志",
+      "content": "志向，决心",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "84fc97a6-a299-411e-961d-4a349fa12792",
+      "character": "夫",
+      "content": "发语词，表议论",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "18ff6114-c6ea-43b3-8daf-a1a5a7306a22",
+      "character": "行",
+      "content": "品行",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "27622693-aa77-4f4e-bdcf-7f37c007cb70",
+      "character": "致",
+      "content": "达到",
+      "createdAt": "2025-12-13T07:53:31.142Z",
+      "updatedAt": "2025-12-13T07:53:31.142Z"
+    },
+    {
+      "id": "2f79e572-7504-4332-b134-c40e694b80b5",
+      "character": "驰",
+      "content": "流逝",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "e2095969-a831-49ad-bd2e-f539cd076333",
+      "character": "将",
+      "content": "副词，又",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "773c20b8-166b-40bc-9a31-90fdf7727353",
+      "character": "穷",
+      "content": "荒凉破败",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "d3dc2ef9-7617-4c25-b251-56973959a44f",
+      "character": "遂",
+      "content": "连词，表顺承",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "64e1ae93-6c3b-44ce-b815-e2d1f1922047",
+      "character": "意",
+      "content": "意志",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "87cc1ffc-f4ff-4ba1-a825-a1d70cf65449",
+      "character": "出",
+      "content": "到外面去",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "e08e9ad0-bf78-4856-a1d9-25b582c29ea9",
+      "character": "居",
+      "content": "停留在外",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "d28b348f-77ea-4763-aa30-0318317eb05d",
+      "character": "得",
+      "content": "得到一个",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "76d0b8a1-5af4-40fa-a306-242666900e72",
+      "character": "闻",
+      "content": "听见",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "89a97520-43fb-4171-a5c8-2d84484a82ef",
+      "character": "道",
+      "content": "说，讲述",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "bb5033cd-3fa0-4492-9a08-bf648371444b",
+      "character": "闻",
+      "content": "使……听说",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "1b72d13b-7997-4b45-840c-e011db66f46b",
+      "character": "于",
+      "content": "介词，向",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "dcb77a7d-528d-45fc-88b8-139f70863c04",
+      "character": "令",
+      "content": "命令",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "c0cc46ca-f995-4d8e-80a0-06fdc86cbed8",
+      "character": "使",
+      "content": "劳力",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "1c6b42d1-227c-4c20-b4f2-ae95c7abb89c",
+      "character": "于",
+      "content": "介词，从",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "0f321c88-b766-4caa-8f0f-b0b28d7b35a4",
+      "character": "闻",
+      "content": "名声",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "4d3cc68d-83d4-4103-801c-090b3c16e248",
+      "character": "食",
+      "content": "吃饭",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "9887e430-843b-45fa-9238-e9f1efbe4f64",
+      "character": "所",
+      "content": "助词，与动词连用",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "f5013cc7-94ec-408f-a39a-e2f297ae04b8",
+      "character": "因",
+      "content": "于是",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "4beed41b-68c2-45d3-95b9-4302111cd994",
+      "character": "屈",
+      "content": "弯曲",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "82ecace2-da68-437c-aad4-eeeae7f1cb51",
+      "character": "当",
+      "content": "副词，应当",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "32cf58f6-fbcf-48db-89e9-71dfaf32fed1",
+      "character": "光",
+      "content": "光芒",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    },
+    {
+      "id": "99ae501d-fcfc-4cfc-b28b-0932a09911da",
+      "character": "使",
+      "content": "连词，表假设",
+      "createdAt": "2025-12-13T07:53:31.143Z",
+      "updatedAt": "2025-12-13T07:53:31.143Z"
+    }
+  ],
   "translations": [],
-  "characterDefinitionLinks": [],
+  "characterDefinitionLinks": [
+    {
+      "id": "b3c3d81a-4d34-4dec-9215-3cea5edce352",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "81b7e45f-03a6-4d81-9ab7-8285e73bff09",
+      "characterPosition": 1
+    },
+    {
+      "id": "1ccf78fa-467c-4c38-8f8a-96119a15020c",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "7a852086-0415-46f8-a981-99b38e40f0ce",
+      "characterPosition": 18
+    },
+    {
+      "id": "3e1fdd00-e3d5-4eab-a037-93878d3bc23c",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "ec760dea-5c43-4bb6-9a45-44d2900e0f82",
+      "characterPosition": 5
+    },
+    {
+      "id": "1734694f-008e-41d3-829a-6fa1cab14c47",
+      "definitionId": "87ff5b39-8014-4a20-9d33-ff151e13bb82",
+      "sentenceId": "13c34a90-fa35-474f-811d-012b42a7d12d",
+      "characterPosition": 3
+    },
+    {
+      "id": "0b35330d-91a0-46cf-bf7a-72bea451b6f1",
+      "definitionId": "87ff5b39-8014-4a20-9d33-ff151e13bb82",
+      "sentenceId": "168f9114-2788-4af2-b02b-1bf07b252303",
+      "characterPosition": 16
+    },
+    {
+      "id": "d16d06be-263c-4a19-94a3-d1048ac514be",
+      "definitionId": "87ff5b39-8014-4a20-9d33-ff151e13bb82",
+      "sentenceId": "6fec9d32-52f6-4f4d-80e7-00b783dd7b8f",
+      "characterPosition": 4
+    },
+    {
+      "id": "8e968388-b75a-407f-9903-25b274c335d3",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "47788893-1c23-484c-a566-17301f0dec11",
+      "characterPosition": 8
+    },
+    {
+      "id": "4265cd80-7c8b-4533-bb22-c245fe4cf55e",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "47788893-1c23-484c-a566-17301f0dec11",
+      "characterPosition": 15
+    },
+    {
+      "id": "0f34b053-c43a-4134-9eac-2c5de820a846",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "47788893-1c23-484c-a566-17301f0dec11",
+      "characterPosition": 20
+    },
+    {
+      "id": "aa8914c3-707c-45fe-919d-8dca09f2ffda",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "47788893-1c23-484c-a566-17301f0dec11",
+      "characterPosition": 26
+    },
+    {
+      "id": "ac42dacc-3f17-4d16-ac7e-e51d511a492e",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "47788893-1c23-484c-a566-17301f0dec11",
+      "characterPosition": 33
+    },
+    {
+      "id": "c9ec513f-2bba-462c-92c1-1763e4801364",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "47788893-1c23-484c-a566-17301f0dec11",
+      "characterPosition": 39
+    },
+    {
+      "id": "fc1aac6d-dfa7-4b7b-bb05-70cde147d278",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "b48bd1c2-f61d-4e18-bd19-3af399cd5d08",
+      "characterPosition": 6
+    },
+    {
+      "id": "6d4cf913-f9b6-4606-bd37-fffdee2860cb",
+      "definitionId": "87ff5b39-8014-4a20-9d33-ff151e13bb82",
+      "sentenceId": "58b95b6a-c251-4e5c-9f11-378c0566d287",
+      "characterPosition": 5
+    },
+    {
+      "id": "eab9e32d-1690-47d0-bb53-5f0d2e4b0bb2",
+      "definitionId": "87ff5b39-8014-4a20-9d33-ff151e13bb82",
+      "sentenceId": "58b95b6a-c251-4e5c-9f11-378c0566d287",
+      "characterPosition": 12
+    },
+    {
+      "id": "99bc9997-82f3-4dfe-ae7e-6658756b0359",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "35bd7f02-52a9-46e0-91ef-23ac8dc78254",
+      "characterPosition": 12
+    },
+    {
+      "id": "ce24410e-147e-4dd5-9669-3e88d7683c7b",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "35bd7f02-52a9-46e0-91ef-23ac8dc78254",
+      "characterPosition": 25
+    },
+    {
+      "id": "5ecf6826-ab06-45c2-a7ce-a1906bc9f5c3",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 17
+    },
+    {
+      "id": "3231a97d-d09e-4a10-aa37-6d54dc3111cc",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 25
+    },
+    {
+      "id": "2f6ad30a-e23d-41ad-bdd4-f4d7bb26ce61",
+      "definitionId": "b8dfb67e-b2f6-4bfa-9719-ec84ddca9664",
+      "sentenceId": "f269c2b9-0a92-44cf-bb49-29f6f90043f5",
+      "characterPosition": 7
+    },
+    {
+      "id": "060f1594-3b16-4a26-84be-8d6583235291",
+      "definitionId": "b8dfb67e-b2f6-4bfa-9719-ec84ddca9664",
+      "sentenceId": "f269c2b9-0a92-44cf-bb49-29f6f90043f5",
+      "characterPosition": 13
+    },
+    {
+      "id": "7572d0e1-56d9-4669-a824-00a9fce1bb82",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "80c05d52-a51f-4168-b1dc-69f343da06a2",
+      "characterPosition": 8
+    },
+    {
+      "id": "36d182d8-7c14-4c86-b84e-4055bcbef4cb",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "0e822a69-4e84-4f56-bb11-a5d560eca22b",
+      "characterPosition": 2
+    },
+    {
+      "id": "498ebf0c-fdbe-458c-ac0c-85d51b0ee2db",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "7a852086-0415-46f8-a981-99b38e40f0ce",
+      "characterPosition": 18
+    },
+    {
+      "id": "2b9c05ab-0c24-458d-b78f-271a531c044c",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "80c05d52-a51f-4168-b1dc-69f343da06a2",
+      "characterPosition": 8
+    },
+    {
+      "id": "f7059dc3-bb6e-4190-bf29-ccc929d7621f",
+      "definitionId": "e8102e4a-4545-44b4-860d-4a6ab722c291",
+      "sentenceId": "df0ee550-1d8a-4844-9254-513a0f26d2c5",
+      "characterPosition": 14
+    },
+    {
+      "id": "aae888d2-665d-4d10-8f52-0da7f2dd81a1",
+      "definitionId": "60eb8df4-a2ce-4361-819c-da942a189841",
+      "sentenceId": "df0ee550-1d8a-4844-9254-513a0f26d2c5",
+      "characterPosition": 15
+    },
+    {
+      "id": "b936dd7f-9adb-4f3a-b99c-49beba24cf6a",
+      "definitionId": "caa80bb1-3e2e-4f0f-9aa2-01a19a82a731",
+      "sentenceId": "df0ee550-1d8a-4844-9254-513a0f26d2c5",
+      "characterPosition": 9
+    },
+    {
+      "id": "af17458e-afec-40b0-bf2a-c72cbc2b9d51",
+      "definitionId": "8ab3843d-bbdf-411f-a88d-14ebcc231a82",
+      "sentenceId": "81b7e45f-03a6-4d81-9ab7-8285e73bff09",
+      "characterPosition": 16
+    },
+    {
+      "id": "35daf854-d600-4e41-ba21-11a16018bbcd",
+      "definitionId": "223fe69c-085f-4a30-b963-4001b79518a1",
+      "sentenceId": "81b7e45f-03a6-4d81-9ab7-8285e73bff09",
+      "characterPosition": 7
+    },
+    {
+      "id": "a27c5e75-3a56-4dc2-af57-16b349f1b1b3",
+      "definitionId": "51a0bfd2-b575-4e95-a61e-3c01361565b7",
+      "sentenceId": "74a0e397-a25c-4604-b2df-4197323c8458",
+      "characterPosition": 12
+    },
+    {
+      "id": "e861f0e0-1f44-442a-98e2-ff561c5a5dbc",
+      "definitionId": "f16bb596-4244-432e-b99d-0b90530635d0",
+      "sentenceId": "74a0e397-a25c-4604-b2df-4197323c8458",
+      "characterPosition": 1
+    },
+    {
+      "id": "f6ddf7b4-8cde-4af9-a9d1-032305defeb2",
+      "definitionId": "d21e4439-93d4-46c4-8e77-300b7b332eb2",
+      "sentenceId": "53b0e7ca-240b-42d3-9f77-d71ee4b69ca8",
+      "characterPosition": 9
+    },
+    {
+      "id": "efacfd02-c22d-4213-bce4-80aa72eabaed",
+      "definitionId": "b5a41291-ddf8-43b5-aded-a95f6da1a69f",
+      "sentenceId": "4df5bda0-8d74-4504-be0b-3d3f095bf128",
+      "characterPosition": 3
+    },
+    {
+      "id": "b39903b4-1937-45f2-a7b0-a76f601e1211",
+      "definitionId": "b3d80897-83d1-43a9-8de2-d13408e151b2",
+      "sentenceId": "db6a21bd-60e2-490a-8dcb-128429539c2c",
+      "characterPosition": 9
+    },
+    {
+      "id": "cf3d1c44-b9fd-4ee7-be8d-2a9129fbbfb2",
+      "definitionId": "027f4728-993a-4c13-bd37-0579662f1cd2",
+      "sentenceId": "db6a21bd-60e2-490a-8dcb-128429539c2c",
+      "characterPosition": 13
+    },
+    {
+      "id": "4da9d111-afdf-498d-aba1-9abad0cf45ea",
+      "definitionId": "bc1a5288-228a-4c38-b553-a0f054049bdf",
+      "sentenceId": "43179509-aacb-47c0-a23a-5f9e47cf7fbc",
+      "characterPosition": 6
+    },
+    {
+      "id": "cf4f3b8f-39ca-4aab-8d76-6d416b2cf0e8",
+      "definitionId": "e3be3f37-e99c-4c3e-b4e7-d30dcf2e7889",
+      "sentenceId": "43179509-aacb-47c0-a23a-5f9e47cf7fbc",
+      "characterPosition": 4
+    },
+    {
+      "id": "c2fe0250-c97c-4153-9a49-fb547c70cb2c",
+      "definitionId": "caa80bb1-3e2e-4f0f-9aa2-01a19a82a731",
+      "sentenceId": "43179509-aacb-47c0-a23a-5f9e47cf7fbc",
+      "characterPosition": 3
+    },
+    {
+      "id": "e0429b95-ef51-4069-a833-d3358fe699c4",
+      "definitionId": "9b5d166d-1dc4-4aee-a255-72996a5d095d",
+      "sentenceId": "f2029b6f-3835-490f-bd51-7c4b63716753",
+      "characterPosition": 0
+    },
+    {
+      "id": "57ab2d87-114c-49c0-b1a6-b0c4b73c56b1",
+      "definitionId": "6dcdd679-7780-4b7e-b44a-b7111bdc36b4",
+      "sentenceId": "f2029b6f-3835-490f-bd51-7c4b63716753",
+      "characterPosition": 8
+    },
+    {
+      "id": "c4145d54-f893-42b6-955e-b156930b0feb",
+      "definitionId": "6dcdd679-7780-4b7e-b44a-b7111bdc36b4",
+      "sentenceId": "f2029b6f-3835-490f-bd51-7c4b63716753",
+      "characterPosition": 10
+    },
+    {
+      "id": "f67c7aa1-fb0c-4116-be27-26db8085f1f0",
+      "definitionId": "106504ee-06b6-4461-ba9e-66e7c3327031",
+      "sentenceId": "f2029b6f-3835-490f-bd51-7c4b63716753",
+      "characterPosition": 7
+    },
+    {
+      "id": "22495a3b-afd6-4321-9d22-e689f87647be",
+      "definitionId": "e40f3ed8-9804-4f9a-a471-7d0cdb2f58a8",
+      "sentenceId": "f2029b6f-3835-490f-bd51-7c4b63716753",
+      "characterPosition": 3
+    },
+    {
+      "id": "f7db988b-4a58-4283-8e68-69b2119e516c",
+      "definitionId": "e40f3ed8-9804-4f9a-a471-7d0cdb2f58a8",
+      "sentenceId": "f2029b6f-3835-490f-bd51-7c4b63716753",
+      "characterPosition": 13
+    },
+    {
+      "id": "609f7469-6251-445d-882f-d1295b795ccd",
+      "definitionId": "8a320f4c-08c7-434f-8d3e-8901e102b5fe",
+      "sentenceId": "f2029b6f-3835-490f-bd51-7c4b63716753",
+      "characterPosition": 12
+    },
+    {
+      "id": "ab0db574-1ba4-4110-92ef-b5cb2ce07e16",
+      "definitionId": "5e9dfd49-5d69-40a1-9e5b-af3119d7ffd5",
+      "sentenceId": "473f9711-0f3c-4297-bb9f-9d0b38f476c6",
+      "characterPosition": 1
+    },
+    {
+      "id": "38d9ece5-5444-4a50-8658-768653d02b5f",
+      "definitionId": "ef1de84a-5360-4ed7-9e8e-29bc96b04888",
+      "sentenceId": "ea7c3b4b-df5b-499c-af9e-ccd120a8151d",
+      "characterPosition": 3
+    },
+    {
+      "id": "18fb4bd5-8284-482b-a6d6-70b8d41e16f1",
+      "definitionId": "6dcdd679-7780-4b7e-b44a-b7111bdc36b4",
+      "sentenceId": "233e6032-83fa-414a-8e74-09196e1d2046",
+      "characterPosition": 11
+    },
+    {
+      "id": "13b7e02c-4061-4c65-9e8e-ba81deac21fc",
+      "definitionId": "38d5f0a5-04a0-4d94-9345-304319ac9366",
+      "sentenceId": "233e6032-83fa-414a-8e74-09196e1d2046",
+      "characterPosition": 10
+    },
+    {
+      "id": "cc042884-3c85-4add-868c-c811fade9d14",
+      "definitionId": "e40f3ed8-9804-4f9a-a471-7d0cdb2f58a8",
+      "sentenceId": "233e6032-83fa-414a-8e74-09196e1d2046",
+      "characterPosition": 8
+    },
+    {
+      "id": "21495152-bca1-4356-ab03-9a733a1b4a5c",
+      "definitionId": "6dcdd679-7780-4b7e-b44a-b7111bdc36b4",
+      "sentenceId": "7a852086-0415-46f8-a981-99b38e40f0ce",
+      "characterPosition": 19
+    },
+    {
+      "id": "57ff6acc-159a-4e63-8bba-17d0aa88f7e6",
+      "definitionId": "7b3f8862-ad71-4b86-9373-16df747b6938",
+      "sentenceId": "7a852086-0415-46f8-a981-99b38e40f0ce",
+      "characterPosition": 16
+    },
+    {
+      "id": "6587b314-6c46-4cd0-ab24-042a912a9f5b",
+      "definitionId": "57940323-39b7-49a6-9f68-eb9ebc5f5bb9",
+      "sentenceId": "7a852086-0415-46f8-a981-99b38e40f0ce",
+      "characterPosition": 14
+    },
+    {
+      "id": "4bea0b72-0270-489a-bc6f-cdf66706c349",
+      "definitionId": "e3be3f37-e99c-4c3e-b4e7-d30dcf2e7889",
+      "sentenceId": "7a852086-0415-46f8-a981-99b38e40f0ce",
+      "characterPosition": 0
+    },
+    {
+      "id": "f467c77c-fcdb-485e-b4ca-64bcb22f74e6",
+      "definitionId": "caa80bb1-3e2e-4f0f-9aa2-01a19a82a731",
+      "sentenceId": "7a852086-0415-46f8-a981-99b38e40f0ce",
+      "characterPosition": 11
+    },
+    {
+      "id": "466bfab6-d5bc-4689-aedf-bf206a12f570",
+      "definitionId": "3b128fea-4f3d-48ed-9529-91fe5e4a898a",
+      "sentenceId": "bc192b5d-0e9c-470c-9022-89471c36c7bc",
+      "characterPosition": 1
+    },
+    {
+      "id": "8286a71f-e88c-4e92-9981-7a5b3581e8c9",
+      "definitionId": "5ef1dbfd-cd72-4612-ab9c-ba55c7319722",
+      "sentenceId": "bc192b5d-0e9c-470c-9022-89471c36c7bc",
+      "characterPosition": 19
+    },
+    {
+      "id": "3fee4b86-3146-485e-a02b-f3b24188974f",
+      "definitionId": "5ef1dbfd-cd72-4612-ab9c-ba55c7319722",
+      "sentenceId": "bc192b5d-0e9c-470c-9022-89471c36c7bc",
+      "characterPosition": 29
+    },
+    {
+      "id": "e457ddd1-7634-434d-878a-31cc2c0ba198",
+      "definitionId": "cd81ecf7-9e5e-4813-968f-c0253298a0d1",
+      "sentenceId": "bc192b5d-0e9c-470c-9022-89471c36c7bc",
+      "characterPosition": 21
+    },
+    {
+      "id": "50601a57-1a6d-4229-94e7-eab348d4912c",
+      "definitionId": "caa80bb1-3e2e-4f0f-9aa2-01a19a82a731",
+      "sentenceId": "bc192b5d-0e9c-470c-9022-89471c36c7bc",
+      "characterPosition": 6
+    },
+    {
+      "id": "8a2ea35a-4ef4-4e54-997f-0d035450a56c",
+      "definitionId": "e40f3ed8-9804-4f9a-a471-7d0cdb2f58a8",
+      "sentenceId": "bc192b5d-0e9c-470c-9022-89471c36c7bc",
+      "characterPosition": 16
+    },
+    {
+      "id": "bb446842-9992-4e25-866d-ddb91787ce88",
+      "definitionId": "8f1abd3d-0fc7-449a-ab22-1f5dbf506d66",
+      "sentenceId": "bc192b5d-0e9c-470c-9022-89471c36c7bc",
+      "characterPosition": 24
+    },
+    {
+      "id": "6dcd8a3f-ee4e-4352-a46a-f9970398472f",
+      "definitionId": "6a315834-9c2f-45fa-bd40-4b393bad07cb",
+      "sentenceId": "bc192b5d-0e9c-470c-9022-89471c36c7bc",
+      "characterPosition": 18
+    },
+    {
+      "id": "ef83bae2-80be-48d8-88e3-8b760a10104c",
+      "definitionId": "6a315834-9c2f-45fa-bd40-4b393bad07cb",
+      "sentenceId": "bc192b5d-0e9c-470c-9022-89471c36c7bc",
+      "characterPosition": 28
+    },
+    {
+      "id": "22d5e4b4-cf3b-4589-98f6-0c5a424be860",
+      "definitionId": "ae13ebb6-e29e-4097-bd08-75297b8a30f3",
+      "sentenceId": "8bedc6a7-25c7-4c04-a90b-97cc2cf01205",
+      "characterPosition": 10
+    },
+    {
+      "id": "f50f7c1b-5fd3-46b6-b11c-8ac26592fdcc",
+      "definitionId": "f8c119ce-230f-4425-a82a-c77c6207661b",
+      "sentenceId": "8bedc6a7-25c7-4c04-a90b-97cc2cf01205",
+      "characterPosition": 14
+    },
+    {
+      "id": "4c3257fd-ec0f-4546-bedc-20c266c0a6b7",
+      "definitionId": "bbd3f416-b580-4c7f-a28a-ce8f8375103f",
+      "sentenceId": "8bedc6a7-25c7-4c04-a90b-97cc2cf01205",
+      "characterPosition": 4
+    },
+    {
+      "id": "a2206396-dd81-40a8-9e35-739f58c55da7",
+      "definitionId": "cd672225-a9cb-428c-8177-954f6ec0f05f",
+      "sentenceId": "8bedc6a7-25c7-4c04-a90b-97cc2cf01205",
+      "characterPosition": 6
+    },
+    {
+      "id": "7f75fb69-e5fb-4bac-ad94-0ef7cf99abf4",
+      "definitionId": "e3be3f37-e99c-4c3e-b4e7-d30dcf2e7889",
+      "sentenceId": "8bedc6a7-25c7-4c04-a90b-97cc2cf01205",
+      "characterPosition": 0
+    },
+    {
+      "id": "7fa6da93-cb2f-49d0-84d1-733f6c63dc0b",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "8bedc6a7-25c7-4c04-a90b-97cc2cf01205",
+      "characterPosition": 7
+    },
+    {
+      "id": "d08cb38b-ab5c-459c-924c-9ba2d16f5a9e",
+      "definitionId": "e474d835-b33c-4b56-b0ae-2f35fcfec48f",
+      "sentenceId": "ec760dea-5c43-4bb6-9a45-44d2900e0f82",
+      "characterPosition": 4
+    },
+    {
+      "id": "e7189691-92dd-4dd5-8d3c-435a17187f0e",
+      "definitionId": "2f49261e-2864-43b3-8a64-965a8e37b9f1",
+      "sentenceId": "ec760dea-5c43-4bb6-9a45-44d2900e0f82",
+      "characterPosition": 0
+    },
+    {
+      "id": "f9d6ecdc-5314-4666-9adc-9c02e84b4881",
+      "definitionId": "0e40cb04-c605-48d5-8751-b3e046b65876",
+      "sentenceId": "ec760dea-5c43-4bb6-9a45-44d2900e0f82",
+      "characterPosition": 13
+    },
+    {
+      "id": "4389027a-3552-46aa-93c2-2aa6032a0ad5",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "ec760dea-5c43-4bb6-9a45-44d2900e0f82",
+      "characterPosition": 8
+    },
+    {
+      "id": "5402124f-540f-4e5e-8b4a-f24f2b844f02",
+      "definitionId": "2a2d6570-a48c-4c20-9356-a3e8877f7752",
+      "sentenceId": "8c3258ef-3c79-4c86-8cd4-2c9d1d746a5d",
+      "characterPosition": 4
+    },
+    {
+      "id": "95965df5-f691-456d-9acc-71f369ac2932",
+      "definitionId": "b5a41291-ddf8-43b5-aded-a95f6da1a69f",
+      "sentenceId": "8c3258ef-3c79-4c86-8cd4-2c9d1d746a5d",
+      "characterPosition": 9
+    },
+    {
+      "id": "3e3ad1dc-2a92-4e7a-b774-f8aaeb63fdd3",
+      "definitionId": "c3b94528-dc3c-4aaf-ba98-ef6cc9e58f42",
+      "sentenceId": "8c3258ef-3c79-4c86-8cd4-2c9d1d746a5d",
+      "characterPosition": 2
+    },
+    {
+      "id": "6930686e-7ca0-49af-9c70-4ac04e95b95f",
+      "definitionId": "0e40cb04-c605-48d5-8751-b3e046b65876",
+      "sentenceId": "8c3258ef-3c79-4c86-8cd4-2c9d1d746a5d",
+      "characterPosition": 10
+    },
+    {
+      "id": "989c558f-cf25-498e-95af-fed4c584a2ae",
+      "definitionId": "3fd8fe90-4bed-4350-82e2-e3df01806570",
+      "sentenceId": "13c34a90-fa35-474f-811d-012b42a7d12d",
+      "characterPosition": 10
+    },
+    {
+      "id": "951f1f75-ae71-45dd-80f4-bf636348a969",
+      "definitionId": "0e40cb04-c605-48d5-8751-b3e046b65876",
+      "sentenceId": "13c34a90-fa35-474f-811d-012b42a7d12d",
+      "characterPosition": 11
+    },
+    {
+      "id": "0cfc569a-dcf7-4bc4-89c3-2e287ea02b58",
+      "definitionId": "01c02776-a171-4214-a8e4-ae5621badccf",
+      "sentenceId": "168f9114-2788-4af2-b02b-1bf07b252303",
+      "characterPosition": 15
+    },
+    {
+      "id": "4f85b378-cbdf-411c-8f37-46410073599f",
+      "definitionId": "89d6c1b4-3943-4894-90f7-7affb3e60800",
+      "sentenceId": "168f9114-2788-4af2-b02b-1bf07b252303",
+      "characterPosition": 13
+    },
+    {
+      "id": "c57afb4d-33e9-4d6c-997e-9b065dbb2ed6",
+      "definitionId": "2f49261e-2864-43b3-8a64-965a8e37b9f1",
+      "sentenceId": "168f9114-2788-4af2-b02b-1bf07b252303",
+      "characterPosition": 1
+    },
+    {
+      "id": "92340486-9701-4242-ad05-598082afaf3a",
+      "definitionId": "0e40cb04-c605-48d5-8751-b3e046b65876",
+      "sentenceId": "168f9114-2788-4af2-b02b-1bf07b252303",
+      "characterPosition": 19
+    },
+    {
+      "id": "bc162cac-46aa-49a0-9d15-cbdd085c0856",
+      "definitionId": "cd81ecf7-9e5e-4813-968f-c0253298a0d1",
+      "sentenceId": "6fec9d32-52f6-4f4d-80e7-00b783dd7b8f",
+      "characterPosition": 6
+    },
+    {
+      "id": "41db4214-124c-43ae-8479-b578a6263cb3",
+      "definitionId": "e3be3f37-e99c-4c3e-b4e7-d30dcf2e7889",
+      "sentenceId": "6fec9d32-52f6-4f4d-80e7-00b783dd7b8f",
+      "characterPosition": 2
+    },
+    {
+      "id": "d69a7457-f659-4ded-bf4a-9797e1bfb393",
+      "definitionId": "caa80bb1-3e2e-4f0f-9aa2-01a19a82a731",
+      "sentenceId": "6fec9d32-52f6-4f4d-80e7-00b783dd7b8f",
+      "characterPosition": 0
+    },
+    {
+      "id": "6f18d93f-9353-474a-92c6-ffcbe0d61da3",
+      "definitionId": "0e40cb04-c605-48d5-8751-b3e046b65876",
+      "sentenceId": "6fec9d32-52f6-4f4d-80e7-00b783dd7b8f",
+      "characterPosition": 7
+    },
+    {
+      "id": "3f6b4ee7-0667-45e7-9362-40e785a7c844",
+      "definitionId": "0e40cb04-c605-48d5-8751-b3e046b65876",
+      "sentenceId": "8a3e98ef-c8e4-4966-87e0-28159c9ec4ea",
+      "characterPosition": 3
+    },
+    {
+      "id": "3f65cea7-4b5b-4d11-b4b4-dd2d559fcfa8",
+      "definitionId": "05d3d0cd-ca8c-4b61-ae83-295ce81d213a",
+      "sentenceId": "47788893-1c23-484c-a566-17301f0dec11",
+      "characterPosition": 42
+    },
+    {
+      "id": "37c35095-25c8-46cc-97c8-fd2e8f005c15",
+      "definitionId": "e474d835-b33c-4b56-b0ae-2f35fcfec48f",
+      "sentenceId": "47788893-1c23-484c-a566-17301f0dec11",
+      "characterPosition": 11
+    },
+    {
+      "id": "f0621818-1153-41d8-b2c2-74e255b2f963",
+      "definitionId": "92c907e9-273e-4285-b015-4df572a93e8d",
+      "sentenceId": "47788893-1c23-484c-a566-17301f0dec11",
+      "characterPosition": 43
+    },
+    {
+      "id": "a9df21b4-3e52-4c5a-996a-603b86530205",
+      "definitionId": "70ea9284-9d56-4621-ade1-b5fc0579d371",
+      "sentenceId": "47788893-1c23-484c-a566-17301f0dec11",
+      "characterPosition": 9
+    },
+    {
+      "id": "2f017b27-7747-4dda-a424-f574b636f01a",
+      "definitionId": "8f1abd3d-0fc7-449a-ab22-1f5dbf506d66",
+      "sentenceId": "47788893-1c23-484c-a566-17301f0dec11",
+      "characterPosition": 0
+    },
+    {
+      "id": "a32819ae-5507-4e02-b9fe-916ef2eda256",
+      "definitionId": "9dfee17f-2d5d-46f8-b850-3c2661935552",
+      "sentenceId": "47788893-1c23-484c-a566-17301f0dec11",
+      "characterPosition": 10
+    },
+    {
+      "id": "c5cb5c19-affb-4597-bbff-8d3e7dcf0d55",
+      "definitionId": "0a6b4881-c8c1-4f05-b973-2c06bc12d934",
+      "sentenceId": "b48bd1c2-f61d-4e18-bd19-3af399cd5d08",
+      "characterPosition": 5
+    },
+    {
+      "id": "da4222a8-4fa1-436c-84a9-55a1b3db75e6",
+      "definitionId": "51a0bfd2-b575-4e95-a61e-3c01361565b7",
+      "sentenceId": "b48bd1c2-f61d-4e18-bd19-3af399cd5d08",
+      "characterPosition": 10
+    },
+    {
+      "id": "0e2febce-c74d-49b7-83ec-bbf9c9a09f99",
+      "definitionId": "a1c7dc98-8dae-4a78-83b3-e5292fa42b4b",
+      "sentenceId": "b48bd1c2-f61d-4e18-bd19-3af399cd5d08",
+      "characterPosition": 11
+    },
+    {
+      "id": "2ec55da0-f2be-4516-887e-b60afd711c61",
+      "definitionId": "4c9a67a3-954e-4dff-a04b-153933f53252",
+      "sentenceId": "b48bd1c2-f61d-4e18-bd19-3af399cd5d08",
+      "characterPosition": 12
+    },
+    {
+      "id": "89b3f6c2-11b2-42a3-9f44-a80833c0932f",
+      "definitionId": "2f49261e-2864-43b3-8a64-965a8e37b9f1",
+      "sentenceId": "b48bd1c2-f61d-4e18-bd19-3af399cd5d08",
+      "characterPosition": 0
+    },
+    {
+      "id": "e2db1238-207a-4cf6-ada9-6c2d9edcabc6",
+      "definitionId": "56ae0c18-6c06-476c-888f-824d9978b5a1",
+      "sentenceId": "b48bd1c2-f61d-4e18-bd19-3af399cd5d08",
+      "characterPosition": 14
+    },
+    {
+      "id": "c472dc11-b662-474c-b6a0-d334c0f539a9",
+      "definitionId": "e474d835-b33c-4b56-b0ae-2f35fcfec48f",
+      "sentenceId": "58b95b6a-c251-4e5c-9f11-378c0566d287",
+      "characterPosition": 4
+    },
+    {
+      "id": "b8607dd0-b1bf-4734-8c03-ca0c2322487f",
+      "definitionId": "e474d835-b33c-4b56-b0ae-2f35fcfec48f",
+      "sentenceId": "58b95b6a-c251-4e5c-9f11-378c0566d287",
+      "characterPosition": 14
+    },
+    {
+      "id": "7f34816c-09d3-46ae-a26f-1a6a1c7aedef",
+      "definitionId": "8f1abd3d-0fc7-449a-ab22-1f5dbf506d66",
+      "sentenceId": "58b95b6a-c251-4e5c-9f11-378c0566d287",
+      "characterPosition": 0
+    },
+    {
+      "id": "ac37e469-4815-4d10-89cc-b91e368c63c5",
+      "definitionId": "6a315834-9c2f-45fa-bd40-4b393bad07cb",
+      "sentenceId": "58b95b6a-c251-4e5c-9f11-378c0566d287",
+      "characterPosition": 8
+    },
+    {
+      "id": "82413d3d-7901-49ab-ad21-72864f24cc51",
+      "definitionId": "6a315834-9c2f-45fa-bd40-4b393bad07cb",
+      "sentenceId": "58b95b6a-c251-4e5c-9f11-378c0566d287",
+      "characterPosition": 15
+    },
+    {
+      "id": "1e958b0c-7e2a-4880-9680-3a5bc18784a2",
+      "definitionId": "2d92caaf-6270-4623-981e-092b84020d9a",
+      "sentenceId": "0277f990-d63d-4151-a8c6-2981ba73ffb9",
+      "characterPosition": 11
+    },
+    {
+      "id": "69b0036d-3ad2-4be1-abff-dbfec109c2c8",
+      "definitionId": "e3117c8e-a7a9-4515-91e8-396a71bfb14d",
+      "sentenceId": "0277f990-d63d-4151-a8c6-2981ba73ffb9",
+      "characterPosition": 33
+    },
+    {
+      "id": "9e7c5efa-1385-4fcf-b177-7926113cef11",
+      "definitionId": "8b5b09c7-de0e-4c1b-81d4-9f6745e78209",
+      "sentenceId": "0277f990-d63d-4151-a8c6-2981ba73ffb9",
+      "characterPosition": 12
+    },
+    {
+      "id": "7149ce1e-9374-4b8c-bd48-fddc4f2840ce",
+      "definitionId": "39997fa7-4707-4f8d-9295-8829e6bc4b26",
+      "sentenceId": "0277f990-d63d-4151-a8c6-2981ba73ffb9",
+      "characterPosition": 4
+    },
+    {
+      "id": "d389e465-1291-4c2b-9d0e-3e4bb7221813",
+      "definitionId": "39997fa7-4707-4f8d-9295-8829e6bc4b26",
+      "sentenceId": "0277f990-d63d-4151-a8c6-2981ba73ffb9",
+      "characterPosition": 35
+    },
+    {
+      "id": "515d9dbf-c38a-4afe-8a2b-3359f68b9c6d",
+      "definitionId": "8f1abd3d-0fc7-449a-ab22-1f5dbf506d66",
+      "sentenceId": "0277f990-d63d-4151-a8c6-2981ba73ffb9",
+      "characterPosition": 0
+    },
+    {
+      "id": "38860ad3-6666-42d2-8295-ada28176a285",
+      "definitionId": "f5c357e3-2b6a-4d78-be35-4f7afd40bb8b",
+      "sentenceId": "0277f990-d63d-4151-a8c6-2981ba73ffb9",
+      "characterPosition": 25
+    },
+    {
+      "id": "d5582bae-18b1-4743-a6b7-597acea39ac7",
+      "definitionId": "f5c357e3-2b6a-4d78-be35-4f7afd40bb8b",
+      "sentenceId": "0277f990-d63d-4151-a8c6-2981ba73ffb9",
+      "characterPosition": 32
+    },
+    {
+      "id": "41afad74-1cb8-4fbe-b149-2d715552c2fc",
+      "definitionId": "c210249a-4eb4-4ba2-9a43-8c284761e11c",
+      "sentenceId": "e522b2a2-22f9-476a-a644-99a9b8467a28",
+      "characterPosition": 9
+    },
+    {
+      "id": "7c0275b0-b254-4c18-8960-83f61f9cf306",
+      "definitionId": "c210249a-4eb4-4ba2-9a43-8c284761e11c",
+      "sentenceId": "e522b2a2-22f9-476a-a644-99a9b8467a28",
+      "characterPosition": 13
+    },
+    {
+      "id": "31efd4df-35ae-4164-84e4-a65568a02c68",
+      "definitionId": "e3117c8e-a7a9-4515-91e8-396a71bfb14d",
+      "sentenceId": "e522b2a2-22f9-476a-a644-99a9b8467a28",
+      "characterPosition": 18
+    },
+    {
+      "id": "ba64767c-d0a5-4651-9405-eea9410caa54",
+      "definitionId": "2f49261e-2864-43b3-8a64-965a8e37b9f1",
+      "sentenceId": "e522b2a2-22f9-476a-a644-99a9b8467a28",
+      "characterPosition": 0
+    },
+    {
+      "id": "fb09a0a4-20b2-4f66-bffd-c816401e24fa",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "e522b2a2-22f9-476a-a644-99a9b8467a28",
+      "characterPosition": 6
+    },
+    {
+      "id": "c737e021-37e0-4733-a116-7119af9f129c",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "e522b2a2-22f9-476a-a644-99a9b8467a28",
+      "characterPosition": 11
+    },
+    {
+      "id": "01255e1b-e7dc-43de-b4d8-cc127dcbdb28",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "e522b2a2-22f9-476a-a644-99a9b8467a28",
+      "characterPosition": 15
+    },
+    {
+      "id": "2184f913-6368-4fbc-8447-eab219e0840d",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "e522b2a2-22f9-476a-a644-99a9b8467a28",
+      "characterPosition": 20
+    },
+    {
+      "id": "ee2003ab-58ca-4414-acea-d08d461cee7b",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "e522b2a2-22f9-476a-a644-99a9b8467a28",
+      "characterPosition": 5
+    },
+    {
+      "id": "49271f91-864b-4f06-bc0a-035f38906e6e",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "e522b2a2-22f9-476a-a644-99a9b8467a28",
+      "characterPosition": 10
+    },
+    {
+      "id": "6aae95b4-64e2-4946-9b1a-28a9098b32a5",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "e522b2a2-22f9-476a-a644-99a9b8467a28",
+      "characterPosition": 14
+    },
+    {
+      "id": "0f59344b-ad15-4fa3-931a-fd145cee382a",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "e522b2a2-22f9-476a-a644-99a9b8467a28",
+      "characterPosition": 19
+    },
+    {
+      "id": "0cd08d95-22ed-42a5-8b1d-8bd2ccf2529e",
+      "definitionId": "a330d5f0-1ce3-4155-8d49-2428baa9dccb",
+      "sentenceId": "35bd7f02-52a9-46e0-91ef-23ac8dc78254",
+      "characterPosition": 26
+    },
+    {
+      "id": "755581d0-983d-4065-9433-16a6da83fbdb",
+      "definitionId": "b5a41291-ddf8-43b5-aded-a95f6da1a69f",
+      "sentenceId": "35bd7f02-52a9-46e0-91ef-23ac8dc78254",
+      "characterPosition": 16
+    },
+    {
+      "id": "42eec639-61e8-4e13-8460-0d8eb657b554",
+      "definitionId": "5a285b46-a495-4050-a210-f6843da0ec80",
+      "sentenceId": "35bd7f02-52a9-46e0-91ef-23ac8dc78254",
+      "characterPosition": 27
+    },
+    {
+      "id": "7385f33d-06c9-4220-a918-3694b8d3aebe",
+      "definitionId": "8b5b09c7-de0e-4c1b-81d4-9f6745e78209",
+      "sentenceId": "35bd7f02-52a9-46e0-91ef-23ac8dc78254",
+      "characterPosition": 6
+    },
+    {
+      "id": "3e51c233-5ad4-4b7b-b447-ec593227cbd1",
+      "definitionId": "420e0bc2-6770-4442-aafa-9535e7db8b7b",
+      "sentenceId": "35bd7f02-52a9-46e0-91ef-23ac8dc78254",
+      "characterPosition": 24
+    },
+    {
+      "id": "2d4fc298-3ba3-4c7a-b2b5-42ea527bdbd8",
+      "definitionId": "8f1abd3d-0fc7-449a-ab22-1f5dbf506d66",
+      "sentenceId": "35bd7f02-52a9-46e0-91ef-23ac8dc78254",
+      "characterPosition": 0
+    },
+    {
+      "id": "db443851-670e-4e16-9bc8-b9e56bd9493a",
+      "definitionId": "f5c357e3-2b6a-4d78-be35-4f7afd40bb8b",
+      "sentenceId": "35bd7f02-52a9-46e0-91ef-23ac8dc78254",
+      "characterPosition": 19
+    },
+    {
+      "id": "29b2567d-455c-495d-aa4d-8b1f423fc0c3",
+      "definitionId": "174b3225-8cc3-4a1d-8db4-636058fd304d",
+      "sentenceId": "35bd7f02-52a9-46e0-91ef-23ac8dc78254",
+      "characterPosition": 30
+    },
+    {
+      "id": "6d037384-97df-486f-880b-fdb32758f47b",
+      "definitionId": "56ae0c18-6c06-476c-888f-824d9978b5a1",
+      "sentenceId": "35bd7f02-52a9-46e0-91ef-23ac8dc78254",
+      "characterPosition": 21
+    },
+    {
+      "id": "1a0f546d-4d7f-4a97-b807-744471bbc34d",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "35bd7f02-52a9-46e0-91ef-23ac8dc78254",
+      "characterPosition": 14
+    },
+    {
+      "id": "712eef2c-3547-452f-982f-bf12c8d1023a",
+      "definitionId": "1b868689-9bcc-48a3-bde3-de52f77b59b1",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 15
+    },
+    {
+      "id": "23c78421-1ecb-44db-b59a-2461f6018030",
+      "definitionId": "1b868689-9bcc-48a3-bde3-de52f77b59b1",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 23
+    },
+    {
+      "id": "f110af16-eff1-409d-a3ca-be30a259cf36",
+      "definitionId": "57940323-39b7-49a6-9f68-eb9ebc5f5bb9",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 6
+    },
+    {
+      "id": "296ed204-ef92-4f1a-8192-6008e625ef4b",
+      "definitionId": "e7cf8801-c88f-45ef-aa6e-6a45f38e5a19",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 11
+    },
+    {
+      "id": "3fe2a7f0-5706-4cc3-85af-65ab64c692c1",
+      "definitionId": "8f1abd3d-0fc7-449a-ab22-1f5dbf506d66",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 0
+    },
+    {
+      "id": "bc65eaaa-1855-4675-b4d7-5d8b3cf33cc0",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 16
+    },
+    {
+      "id": "440a95c2-25c6-4fcb-9508-8a5fb948d471",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 24
+    },
+    {
+      "id": "b9602d12-c708-4649-97a5-b108e440a4b8",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 17
+    },
+    {
+      "id": "f8e6feba-8ef0-4714-b673-c63443551c05",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 25
+    },
+    {
+      "id": "6c4c303a-5a20-48f4-a931-f643c66484e3",
+      "definitionId": "f5c357e3-2b6a-4d78-be35-4f7afd40bb8b",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 14
+    },
+    {
+      "id": "216208eb-8294-4ace-91bd-4ce4ae67ad39",
+      "definitionId": "f5c357e3-2b6a-4d78-be35-4f7afd40bb8b",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 21
+    },
+    {
+      "id": "19f28d41-b751-41e9-a089-1d10f7f6c264",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 19
+    },
+    {
+      "id": "56815366-6825-45c3-bffe-0e43f5a56da9",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "92ef4b76-bbfb-4cd8-86d9-02aa586f620d",
+      "characterPosition": 27
+    },
+    {
+      "id": "050cd400-7665-45ff-a7b1-0dd664116728",
+      "definitionId": "8b504376-08ac-43d3-9abc-3f6c77bb0f7f",
+      "sentenceId": "8550289a-4e1d-432e-8be5-9f9f3a637769",
+      "characterPosition": 11
+    },
+    {
+      "id": "d5f3e8a0-5a45-470f-bbd7-43346657f9da",
+      "definitionId": "106504ee-06b6-4461-ba9e-66e7c3327031",
+      "sentenceId": "8550289a-4e1d-432e-8be5-9f9f3a637769",
+      "characterPosition": 14
+    },
+    {
+      "id": "fef45682-7102-4ffd-a6aa-9d0a0923cb58",
+      "definitionId": "8f1abd3d-0fc7-449a-ab22-1f5dbf506d66",
+      "sentenceId": "8550289a-4e1d-432e-8be5-9f9f3a637769",
+      "characterPosition": 0
+    },
+    {
+      "id": "68aac01c-8eeb-47c6-abb7-a259f981c1b6",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "8550289a-4e1d-432e-8be5-9f9f3a637769",
+      "characterPosition": 8
+    },
+    {
+      "id": "31579c20-8980-49e7-b8b2-b3aa08f17e41",
+      "definitionId": "b2f9010f-33e5-46d4-9eeb-9e511143974e",
+      "sentenceId": "2e82fc73-a6d1-41ce-a120-8a7794858175",
+      "characterPosition": 12
+    },
+    {
+      "id": "03bb4e26-3ce6-4b7b-84a7-31c4913ed310",
+      "definitionId": "51a0bfd2-b575-4e95-a61e-3c01361565b7",
+      "sentenceId": "2e82fc73-a6d1-41ce-a120-8a7794858175",
+      "characterPosition": 6
+    },
+    {
+      "id": "afeb5c60-be90-4ae5-afd5-d1aa6a413fb0",
+      "definitionId": "51a0bfd2-b575-4e95-a61e-3c01361565b7",
+      "sentenceId": "2e82fc73-a6d1-41ce-a120-8a7794858175",
+      "characterPosition": 14
+    },
+    {
+      "id": "a548ab2f-59d5-4146-86de-7f25f922b5d2",
+      "definitionId": "6df0ede4-59fb-4e64-92bf-1a43477a7abd",
+      "sentenceId": "2e82fc73-a6d1-41ce-a120-8a7794858175",
+      "characterPosition": 16
+    },
+    {
+      "id": "00570bf2-8b4a-4f0f-8792-074a1ed31504",
+      "definitionId": "8f1abd3d-0fc7-449a-ab22-1f5dbf506d66",
+      "sentenceId": "2e82fc73-a6d1-41ce-a120-8a7794858175",
+      "characterPosition": 0
+    },
+    {
+      "id": "e8bf1c6d-6957-4cf4-b751-81509f3dd65a",
+      "definitionId": "e474d835-b33c-4b56-b0ae-2f35fcfec48f",
+      "sentenceId": "f269c2b9-0a92-44cf-bb49-29f6f90043f5",
+      "characterPosition": 6
+    },
+    {
+      "id": "b9db0ff9-8f8c-4bee-a1e4-a3f302d50235",
+      "definitionId": "6df0ede4-59fb-4e64-92bf-1a43477a7abd",
+      "sentenceId": "f269c2b9-0a92-44cf-bb49-29f6f90043f5",
+      "characterPosition": 9
+    },
+    {
+      "id": "0db82cf0-c1bb-44f2-b947-5943d07b099b",
+      "definitionId": "2f49261e-2864-43b3-8a64-965a8e37b9f1",
+      "sentenceId": "f269c2b9-0a92-44cf-bb49-29f6f90043f5",
+      "characterPosition": 0
+    },
+    {
+      "id": "092cd8b7-61a7-4f17-9bda-1a4b9eb596f5",
+      "definitionId": "f5c357e3-2b6a-4d78-be35-4f7afd40bb8b",
+      "sentenceId": "f269c2b9-0a92-44cf-bb49-29f6f90043f5",
+      "characterPosition": 19
+    },
+    {
+      "id": "14487d56-d1a0-4366-838a-3c03bfc61c1e",
+      "definitionId": "56ae0c18-6c06-476c-888f-824d9978b5a1",
+      "sentenceId": "f269c2b9-0a92-44cf-bb49-29f6f90043f5",
+      "characterPosition": 21
+    },
+    {
+      "id": "4ffca731-f09d-413c-9994-f4cc9ed20148",
+      "definitionId": "84fc97a6-a299-411e-961d-4a349fa12792",
+      "sentenceId": "fb01c43a-5802-42e1-b967-5bd93fa37361",
+      "characterPosition": 0
+    },
+    {
+      "id": "899649e1-aa15-4358-806e-9f3e7906fe7a",
+      "definitionId": "a1c7dc98-8dae-4a78-83b3-e5292fa42b4b",
+      "sentenceId": "fb01c43a-5802-42e1-b967-5bd93fa37361",
+      "characterPosition": 7
+    },
+    {
+      "id": "5a756d26-f8b3-4e68-bcac-b32acda1fab0",
+      "definitionId": "a1c7dc98-8dae-4a78-83b3-e5292fa42b4b",
+      "sentenceId": "fb01c43a-5802-42e1-b967-5bd93fa37361",
+      "characterPosition": 12
+    },
+    {
+      "id": "bcbde9f9-a6b2-4b7f-94fd-84ae1760d4ab",
+      "definitionId": "18ff6114-c6ea-43b3-8daf-a1a5a7306a22",
+      "sentenceId": "fb01c43a-5802-42e1-b967-5bd93fa37361",
+      "characterPosition": 4
+    },
+    {
+      "id": "e947509b-f8d1-447a-95c6-5f1b5ec96507",
+      "definitionId": "2f49261e-2864-43b3-8a64-965a8e37b9f1",
+      "sentenceId": "fb01c43a-5802-42e1-b967-5bd93fa37361",
+      "characterPosition": 2
+    },
+    {
+      "id": "e2bbd082-1ceb-4925-b6e2-463c8448350b",
+      "definitionId": "027f4728-993a-4c13-bd37-0579662f1cd2",
+      "sentenceId": "fb01c43a-5802-42e1-b967-5bd93fa37361",
+      "characterPosition": 3
+    },
+    {
+      "id": "9fb18c32-6603-4c76-b873-36636d30e47a",
+      "definitionId": "a1c7dc98-8dae-4a78-83b3-e5292fa42b4b",
+      "sentenceId": "e7e15751-cfa7-4147-b978-61e97222d271",
+      "characterPosition": 4
+    },
+    {
+      "id": "5e4dbd62-d392-4bb0-be35-7404c0dce0d2",
+      "definitionId": "a1c7dc98-8dae-4a78-83b3-e5292fa42b4b",
+      "sentenceId": "e7e15751-cfa7-4147-b978-61e97222d271",
+      "characterPosition": 12
+    },
+    {
+      "id": "5eb0c27c-70fc-409e-adec-fc7fe2d2fe1b",
+      "definitionId": "6df0ede4-59fb-4e64-92bf-1a43477a7abd",
+      "sentenceId": "e7e15751-cfa7-4147-b978-61e97222d271",
+      "characterPosition": 6
+    },
+    {
+      "id": "3c5c1f05-419f-4b1a-b8d7-375135d02f62",
+      "definitionId": "27622693-aa77-4f4e-bdcf-7f37c007cb70",
+      "sentenceId": "e7e15751-cfa7-4147-b978-61e97222d271",
+      "characterPosition": 13
+    },
+    {
+      "id": "79247baf-3f61-4074-b215-150ebc2ec923",
+      "definitionId": "84fc97a6-a299-411e-961d-4a349fa12792",
+      "sentenceId": "7f3c2c8e-74d5-4757-9d72-5a08b72b8397",
+      "characterPosition": 0
+    },
+    {
+      "id": "817b43e1-8338-469c-a5df-e3e0930d98d2",
+      "definitionId": "a1c7dc98-8dae-4a78-83b3-e5292fa42b4b",
+      "sentenceId": "7f3c2c8e-74d5-4757-9d72-5a08b72b8397",
+      "characterPosition": 14
+    },
+    {
+      "id": "cdd40ef2-d81e-476f-81ba-765db1094bc0",
+      "definitionId": "a1c7dc98-8dae-4a78-83b3-e5292fa42b4b",
+      "sentenceId": "7f3c2c8e-74d5-4757-9d72-5a08b72b8397",
+      "characterPosition": 21
+    },
+    {
+      "id": "fe7f7db1-82d4-4a16-b972-a766cfb97584",
+      "definitionId": "e474d835-b33c-4b56-b0ae-2f35fcfec48f",
+      "sentenceId": "7f3c2c8e-74d5-4757-9d72-5a08b72b8397",
+      "characterPosition": 1
+    },
+    {
+      "id": "6b691773-468b-415c-bca1-be6f636c5a3a",
+      "definitionId": "e474d835-b33c-4b56-b0ae-2f35fcfec48f",
+      "sentenceId": "7f3c2c8e-74d5-4757-9d72-5a08b72b8397",
+      "characterPosition": 8
+    },
+    {
+      "id": "48c4f90a-482c-4469-8b97-f225ab94c0bb",
+      "definitionId": "e474d835-b33c-4b56-b0ae-2f35fcfec48f",
+      "sentenceId": "7f3c2c8e-74d5-4757-9d72-5a08b72b8397",
+      "characterPosition": 12
+    },
+    {
+      "id": "fff336ab-45e4-47e3-97ec-946f276371ff",
+      "definitionId": "e474d835-b33c-4b56-b0ae-2f35fcfec48f",
+      "sentenceId": "7f3c2c8e-74d5-4757-9d72-5a08b72b8397",
+      "characterPosition": 23
+    },
+    {
+      "id": "d21d3b89-4fcd-4f29-877d-c06e428e2448",
+      "definitionId": "6df0ede4-59fb-4e64-92bf-1a43477a7abd",
+      "sentenceId": "7f3c2c8e-74d5-4757-9d72-5a08b72b8397",
+      "characterPosition": 19
+    },
+    {
+      "id": "25af7ab7-b459-4a87-861a-7efab4a41352",
+      "definitionId": "6a315834-9c2f-45fa-bd40-4b393bad07cb",
+      "sentenceId": "6a6f89db-9c17-424f-9d63-7ca6811e1f18",
+      "characterPosition": 2
+    },
+    {
+      "id": "153f9795-9de8-4777-8686-a0a45dc258e7",
+      "definitionId": "6a315834-9c2f-45fa-bd40-4b393bad07cb",
+      "sentenceId": "6a6f89db-9c17-424f-9d63-7ca6811e1f18",
+      "characterPosition": 10
+    },
+    {
+      "id": "c3a5cdfb-a8c0-43b5-a1cd-41a27a284a89",
+      "definitionId": "2f79e572-7504-4332-b134-c40e694b80b5",
+      "sentenceId": "54255d80-946a-454f-81b0-a42c87783a96",
+      "characterPosition": 3
+    },
+    {
+      "id": "303d834e-00bc-4efa-8920-58d5834ac5ec",
+      "definitionId": "e2095969-a831-49ad-bd2e-f539cd076333",
+      "sentenceId": "54255d80-946a-454f-81b0-a42c87783a96",
+      "characterPosition": 25
+    },
+    {
+      "id": "745c8f06-4dc9-4585-8412-ea42514f66d1",
+      "definitionId": "773c20b8-166b-40bc-9a31-90fdf7727353",
+      "sentenceId": "54255d80-946a-454f-81b0-a42c87783a96",
+      "characterPosition": 22
+    },
+    {
+      "id": "9a43a560-b172-4386-b97c-bd88c09b9286",
+      "definitionId": "6dcdd679-7780-4b7e-b44a-b7111bdc36b4",
+      "sentenceId": "54255d80-946a-454f-81b0-a42c87783a96",
+      "characterPosition": 8
+    },
+    {
+      "id": "b715179a-9737-44d4-99c7-f79e2d90fa9f",
+      "definitionId": "d3dc2ef9-7617-4c25-b251-56973959a44f",
+      "sentenceId": "54255d80-946a-454f-81b0-a42c87783a96",
+      "characterPosition": 10
+    },
+    {
+      "id": "8ec0010f-bb60-4229-bd6c-3c52941665b8",
+      "definitionId": "64e1ae93-6c3b-44ce-b815-e2d1f1922047",
+      "sentenceId": "54255d80-946a-454f-81b0-a42c87783a96",
+      "characterPosition": 5
+    },
+    {
+      "id": "bf189d23-080a-43a1-950c-b13e7830f7e1",
+      "definitionId": "caa80bb1-3e2e-4f0f-9aa2-01a19a82a731",
+      "sentenceId": "54255d80-946a-454f-81b0-a42c87783a96",
+      "characterPosition": 1
+    },
+    {
+      "id": "c51fe849-0c7d-423f-b9c4-baf60b5f78f4",
+      "definitionId": "caa80bb1-3e2e-4f0f-9aa2-01a19a82a731",
+      "sentenceId": "54255d80-946a-454f-81b0-a42c87783a96",
+      "characterPosition": 6
+    },
+    {
+      "id": "c5f66986-23f3-4bdd-8845-a24ca226e399",
+      "definitionId": "87cc1ffc-f4ff-4ba1-a825-a1d70cf65449",
+      "sentenceId": "80c05d52-a51f-4168-b1dc-69f343da06a2",
+      "characterPosition": 9
+    },
+    {
+      "id": "944aa11d-265c-47b8-95de-04dd6c34ffc0",
+      "definitionId": "e08e9ad0-bf78-4856-a1d9-25b582c29ea9",
+      "sentenceId": "80c05d52-a51f-4168-b1dc-69f343da06a2",
+      "characterPosition": 16
+    },
+    {
+      "id": "48147946-32ef-4843-a22e-c6490d7d5ff3",
+      "definitionId": "9a607aa1-a4da-4810-b324-d4f7925cdf03",
+      "sentenceId": "80c05d52-a51f-4168-b1dc-69f343da06a2",
+      "characterPosition": 8
+    },
+    {
+      "id": "bbd7cb54-20bf-44b5-bda2-71ff1810c3c4",
+      "definitionId": "027f4728-993a-4c13-bd37-0579662f1cd2",
+      "sentenceId": "80c05d52-a51f-4168-b1dc-69f343da06a2",
+      "characterPosition": 1
+    },
+    {
+      "id": "e3403265-4116-4da9-9137-68dfd9133ed7",
+      "definitionId": "d28b348f-77ea-4763-aa30-0318317eb05d",
+      "sentenceId": "814deb31-7bb2-4153-be20-d6838eb64948",
+      "characterPosition": 14
+    },
+    {
+      "id": "6c470a16-21ec-48e9-b7ce-e86fcd38ecf0",
+      "definitionId": "f5c357e3-2b6a-4d78-be35-4f7afd40bb8b",
+      "sentenceId": "814deb31-7bb2-4153-be20-d6838eb64948",
+      "characterPosition": 1
+    },
+    {
+      "id": "7a15828d-3bba-4779-9b02-8bc074fa1bbb",
+      "definitionId": "d28b348f-77ea-4763-aa30-0318317eb05d",
+      "sentenceId": "0e822a69-4e84-4f56-bb11-a5d560eca22b",
+      "characterPosition": 12
+    },
+    {
+      "id": "d7223562-a8ba-4476-b842-1b487c686003",
+      "definitionId": "76d0b8a1-5af4-40fa-a306-242666900e72",
+      "sentenceId": "0e822a69-4e84-4f56-bb11-a5d560eca22b",
+      "characterPosition": 1
+    },
+    {
+      "id": "1ce6525d-d95b-45f1-b558-a556e26f40f5",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "0e822a69-4e84-4f56-bb11-a5d560eca22b",
+      "characterPosition": 5
+    },
+    {
+      "id": "b6fa332b-0b2d-4fa6-92cb-9536c743969b",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "0e822a69-4e84-4f56-bb11-a5d560eca22b",
+      "characterPosition": 4
+    },
+    {
+      "id": "69ab8085-676b-4db8-87d2-3c8c6442d72a",
+      "definitionId": "89a97520-43fb-4171-a5c8-2d84484a82ef",
+      "sentenceId": "c798aeed-247d-45ad-adeb-f6f94edf994a",
+      "characterPosition": 2
+    },
+    {
+      "id": "9d5bdd1d-63ff-4855-a8f0-16a81473e83d",
+      "definitionId": "bb5033cd-3fa0-4492-9a08-bf648371444b",
+      "sentenceId": "c798aeed-247d-45ad-adeb-f6f94edf994a",
+      "characterPosition": 5
+    },
+    {
+      "id": "4f90038e-4670-4687-953d-971837938c9a",
+      "definitionId": "1b72d13b-7997-4b45-840c-e011db66f46b",
+      "sentenceId": "c798aeed-247d-45ad-adeb-f6f94edf994a",
+      "characterPosition": 7
+    },
+    {
+      "id": "3f2f2d6c-ccdc-48c2-804e-6d272b00380d",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "c798aeed-247d-45ad-adeb-f6f94edf994a",
+      "characterPosition": 3
+    },
+    {
+      "id": "bb03f491-3b2e-47b2-b543-66eed1a05f54",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "c798aeed-247d-45ad-adeb-f6f94edf994a",
+      "characterPosition": 6
+    },
+    {
+      "id": "9de1264c-6966-4e32-bc03-ca6d31dcdfd9",
+      "definitionId": "d28b348f-77ea-4763-aa30-0318317eb05d",
+      "sentenceId": "4b956c0e-d6d5-4425-8c7b-acc681f9a714",
+      "characterPosition": 16
+    },
+    {
+      "id": "f8f84d53-74df-4bf6-9ec7-87305ca450e2",
+      "definitionId": "d28b348f-77ea-4763-aa30-0318317eb05d",
+      "sentenceId": "4b956c0e-d6d5-4425-8c7b-acc681f9a714",
+      "characterPosition": 23
+    },
+    {
+      "id": "0a776181-b506-45c9-b018-963030624b7e",
+      "definitionId": "dcb77a7d-528d-45fc-88b8-139f70863c04",
+      "sentenceId": "4b956c0e-d6d5-4425-8c7b-acc681f9a714",
+      "characterPosition": 2
+    },
+    {
+      "id": "3598d7d6-30e5-4ffc-8407-e79d00ac4d4a",
+      "definitionId": "c0cc46ca-f995-4d8e-80a0-06fdc86cbed8",
+      "sentenceId": "4b956c0e-d6d5-4425-8c7b-acc681f9a714",
+      "characterPosition": 20
+    },
+    {
+      "id": "981f72da-0664-48d0-834f-5dade8015eb4",
+      "definitionId": "1c6b42d1-227c-4c20-b4f2-ae95c7abb89c",
+      "sentenceId": "4b956c0e-d6d5-4425-8c7b-acc681f9a714",
+      "characterPosition": 6
+    },
+    {
+      "id": "d0da24c2-5832-44aa-8a77-d38a96d75cfd",
+      "definitionId": "1c6b42d1-227c-4c20-b4f2-ae95c7abb89c",
+      "sentenceId": "4b956c0e-d6d5-4425-8c7b-acc681f9a714",
+      "characterPosition": 26
+    },
+    {
+      "id": "186623b8-8b16-44bb-868e-9ec957b18cf9",
+      "definitionId": "027f4728-993a-4c13-bd37-0579662f1cd2",
+      "sentenceId": "4b956c0e-d6d5-4425-8c7b-acc681f9a714",
+      "characterPosition": 5
+    },
+    {
+      "id": "add418a7-b51a-4f9e-ae8c-569860723e9d",
+      "definitionId": "027f4728-993a-4c13-bd37-0579662f1cd2",
+      "sentenceId": "4b956c0e-d6d5-4425-8c7b-acc681f9a714",
+      "characterPosition": 19
+    },
+    {
+      "id": "9b7c0f19-27ce-42e1-b464-e2810436881e",
+      "definitionId": "0f321c88-b766-4caa-8f0f-b0b28d7b35a4",
+      "sentenceId": "1b7b680d-954f-46e5-b53e-1554f75db10c",
+      "characterPosition": 1
+    },
+    {
+      "id": "692780a4-3c35-4531-b6e3-341bea86dbb6",
+      "definitionId": "0f321c88-b766-4caa-8f0f-b0b28d7b35a4",
+      "sentenceId": "1b7b680d-954f-46e5-b53e-1554f75db10c",
+      "characterPosition": 9
+    },
+    {
+      "id": "c8884a88-986e-490b-a1ce-7b2ce1dc3931",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "1b7b680d-954f-46e5-b53e-1554f75db10c",
+      "characterPosition": 2
+    },
+    {
+      "id": "a0704252-46e2-40fb-8c39-ca8ab6954adc",
+      "definitionId": "4d3cc68d-83d4-4103-801c-090b3c16e248",
+      "sentenceId": "4609532c-3cb2-4e1d-b673-311ec8a8c462",
+      "characterPosition": 17
+    },
+    {
+      "id": "4173102d-d607-4b34-88af-fbd35efeb61c",
+      "definitionId": "9887e430-843b-45fa-9238-e9f1efbe4f64",
+      "sentenceId": "4609532c-3cb2-4e1d-b673-311ec8a8c462",
+      "characterPosition": 12
+    },
+    {
+      "id": "46f6ffff-c88d-44d8-b83c-924dcfd217c2",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "4609532c-3cb2-4e1d-b673-311ec8a8c462",
+      "characterPosition": 18
+    },
+    {
+      "id": "b2c11a54-3861-4946-9237-e62771cb85df",
+      "definitionId": "9887e430-843b-45fa-9238-e9f1efbe4f64",
+      "sentenceId": "bf263fa0-ac37-481d-accc-1772c55f8ca9",
+      "characterPosition": 5
+    },
+    {
+      "id": "2b7a19e8-c9c2-438e-90c1-9f5f4032c105",
+      "definitionId": "f5013cc7-94ec-408f-a39a-e2f297ae04b8",
+      "sentenceId": "bf263fa0-ac37-481d-accc-1772c55f8ca9",
+      "characterPosition": 9
+    },
+    {
+      "id": "521564ac-9597-40ae-a299-35ccfeac108e",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "bf263fa0-ac37-481d-accc-1772c55f8ca9",
+      "characterPosition": 7
+    },
+    {
+      "id": "66f9761c-d272-4154-a910-da0551c293c8",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "bf263fa0-ac37-481d-accc-1772c55f8ca9",
+      "characterPosition": 4
+    },
+    {
+      "id": "6310ee3c-67b8-49bf-8253-dd0934f1beac",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "bf263fa0-ac37-481d-accc-1772c55f8ca9",
+      "characterPosition": 12
+    },
+    {
+      "id": "9712814b-9040-4898-afff-1cc877cac1bb",
+      "definitionId": "4beed41b-68c2-45d3-95b9-4302111cd994",
+      "sentenceId": "fba7bc78-8fba-466a-9825-16fd881625a4",
+      "characterPosition": 1
+    },
+    {
+      "id": "a32b927b-0146-4140-b090-14ca3f4895e3",
+      "definitionId": "57940323-39b7-49a6-9f68-eb9ebc5f5bb9",
+      "sentenceId": "fba7bc78-8fba-466a-9825-16fd881625a4",
+      "characterPosition": 11
+    },
+    {
+      "id": "a2831f75-a1af-4f13-bb6f-bfa57d08c778",
+      "definitionId": "0e40cb04-c605-48d5-8751-b3e046b65876",
+      "sentenceId": "fba7bc78-8fba-466a-9825-16fd881625a4",
+      "characterPosition": 19
+    },
+    {
+      "id": "7a17bb6d-30a1-4a48-8306-d580c29138db",
+      "definitionId": "82ecace2-da68-437c-aad4-eeeae7f1cb51",
+      "sentenceId": "3a6cdfd8-a980-4f3e-ac5c-98e35486f68c",
+      "characterPosition": 16
+    },
+    {
+      "id": "3e315c90-3970-42fa-8cad-18c59da1c4fa",
+      "definitionId": "f5c357e3-2b6a-4d78-be35-4f7afd40bb8b",
+      "sentenceId": "3a6cdfd8-a980-4f3e-ac5c-98e35486f68c",
+      "characterPosition": 0
+    },
+    {
+      "id": "7a676ba4-a234-4736-b58e-94869404bb1a",
+      "definitionId": "32cf58f6-fbcf-48db-89e9-71dfaf32fed1",
+      "sentenceId": "199b2897-325d-44d7-a637-988097710be3",
+      "characterPosition": 17
+    },
+    {
+      "id": "9ac666c9-496f-4bd1-acab-43ebe6bd1481",
+      "definitionId": "99ae501d-fcfc-4cfc-b28b-0932a09911da",
+      "sentenceId": "199b2897-325d-44d7-a637-988097710be3",
+      "characterPosition": 22
+    },
+    {
+      "id": "9b9911e3-2ed0-40fe-8aad-8b65d91eb75b",
+      "definitionId": "9887e430-843b-45fa-9238-e9f1efbe4f64",
+      "sentenceId": "199b2897-325d-44d7-a637-988097710be3",
+      "characterPosition": 29
+    },
+    {
+      "id": "e52bc2f4-54ef-4719-a5c9-3ffd7f1e4646",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "199b2897-325d-44d7-a637-988097710be3",
+      "characterPosition": 2
+    },
+    {
+      "id": "72d7ad31-ede2-4d7c-be37-e84ee4c8d6ec",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "199b2897-325d-44d7-a637-988097710be3",
+      "characterPosition": 19
+    },
+    {
+      "id": "c1865e34-4ef6-4e57-a9f9-b4facc075dbd",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "199b2897-325d-44d7-a637-988097710be3",
+      "characterPosition": 1
+    },
+    {
+      "id": "929cef1e-ee37-4f71-a41f-bddf3b62745e",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "199b2897-325d-44d7-a637-988097710be3",
+      "characterPosition": 15
+    },
+    {
+      "id": "f18dea78-464e-4116-a9df-c831da67ce70",
+      "definitionId": "f5c357e3-2b6a-4d78-be35-4f7afd40bb8b",
+      "sentenceId": "6e8265bd-afc1-4d4f-bfee-5a2d750da927",
+      "characterPosition": 0
+    },
+    {
+      "id": "88fd628a-2a11-42f0-8fc1-f0a06fd3a70c",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "6f7de9f5-c674-4ea3-839b-d21a2c3a79dc",
+      "characterPosition": 2
+    },
+    {
+      "id": "623ed80b-bb0e-409c-af11-284180ae3545",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "6f7de9f5-c674-4ea3-839b-d21a2c3a79dc",
+      "characterPosition": 1
+    },
+    {
+      "id": "f9a5644c-a807-4f1c-bdcc-f0918de58e75",
+      "definitionId": "57940323-39b7-49a6-9f68-eb9ebc5f5bb9",
+      "sentenceId": "a9cf9b4e-ffc6-45f5-9224-39954b6529f0",
+      "characterPosition": 11
+    },
+    {
+      "id": "ac2f2298-d758-4646-8fbe-a5df92ac4017",
+      "definitionId": "f5c357e3-2b6a-4d78-be35-4f7afd40bb8b",
+      "sentenceId": "a9cf9b4e-ffc6-45f5-9224-39954b6529f0",
+      "characterPosition": 17
+    },
+    {
+      "id": "06143913-dfa2-4eec-92fc-59551c9172e1",
+      "definitionId": "106504ee-06b6-4461-ba9e-66e7c3327031",
+      "sentenceId": "924183b3-4074-4aa5-a8f0-e171611ccc25",
+      "characterPosition": 2
+    },
+    {
+      "id": "f1ef6a5c-1e9b-4b65-aec9-97dc422bc8e2",
+      "definitionId": "106504ee-06b6-4461-ba9e-66e7c3327031",
+      "sentenceId": "924183b3-4074-4aa5-a8f0-e171611ccc25",
+      "characterPosition": 11
+    },
+    {
+      "id": "b56a1ebb-e8a0-4c89-bdca-8f6befce524d",
+      "definitionId": "223fe69c-085f-4a30-b963-4001b79518a1",
+      "sentenceId": "924183b3-4074-4aa5-a8f0-e171611ccc25",
+      "characterPosition": 3
+    },
+    {
+      "id": "fb5a991a-f331-400f-be0d-62ff6043478f",
+      "definitionId": "223fe69c-085f-4a30-b963-4001b79518a1",
+      "sentenceId": "924183b3-4074-4aa5-a8f0-e171611ccc25",
+      "characterPosition": 12
+    },
+    {
+      "id": "7991134d-9cee-4cf6-b5a6-218af1cc21d5",
+      "definitionId": "44e705a6-49b4-4388-889e-a84f3fa9d15b",
+      "sentenceId": "924183b3-4074-4aa5-a8f0-e171611ccc25",
+      "characterPosition": 9
+    },
+    {
+      "id": "12c93303-6f4a-4b4e-97fb-952d790a52d8",
+      "definitionId": "f5c357e3-2b6a-4d78-be35-4f7afd40bb8b",
+      "sentenceId": "924183b3-4074-4aa5-a8f0-e171611ccc25",
+      "characterPosition": 0
+    },
+    {
+      "id": "7df9e785-6aca-4abb-b218-cb3010f0965e",
+      "definitionId": "4413e2e2-4558-4106-82ca-f62c53de83c8",
+      "sentenceId": "924183b3-4074-4aa5-a8f0-e171611ccc25",
+      "characterPosition": 8
+    }
+  ],
   "sentenceTranslationLinks": [],
   "shortSentences": [],
   "keyCharacters": [
