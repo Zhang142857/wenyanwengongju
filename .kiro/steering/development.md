@@ -29,3 +29,4 @@ npm run electron:build:win # 构建 Windows 安装包
 - 测试文件使用 `.test.ts` 或 `.test.tsx`
 - 放在对应文件同目录或 `__tests__` 目录
 - 使用 Vitest 框架
+最重要的：当你提交到github一个部署的时候请等待一段时间然后用github MCP查看情况

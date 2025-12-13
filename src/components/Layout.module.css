@@ -61,11 +61,17 @@
   letter-spacing: 0.02em;
 }
 
-.checkUpdateBtn {
+.headerActions {
   position: absolute;
   top: 50%;
   right: 2rem;
   transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkUpdateBtn {
   padding: 0.5rem 1rem;
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -80,11 +86,11 @@
 .checkUpdateBtn:hover:not(:disabled) {
   background: rgba(255, 255, 255, 1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transform: translateY(-50%) translateY(-1px);
+  transform: translateY(-1px);
 }
 
 .checkUpdateBtn:active:not(:disabled) {
-  transform: translateY(-50%) translateY(0);
+  transform: translateY(0);
 }
 
 .checkUpdateBtn:disabled {
@@ -127,8 +133,12 @@
     padding: 1.5rem 1rem;
   }
 
-  .checkUpdateBtn {
+  .headerActions {
     right: 1rem;
+    gap: 8px;
+  }
+
+  .checkUpdateBtn {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
   }

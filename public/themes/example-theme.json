@@ -1,0 +1,38 @@
+{
+  "id": "custom-purple",
+  "name": "紫韵雅致",
+  "description": "优雅的紫色主题，适合文艺气息",
+  "author": "用户自定义",
+  "version": "1.0.0",
+  "colors": {
+    "primary": "#9c27b0",
+    "primaryLight": "#ba68c8",
+    "primaryDark": "#7b1fa2",
+    "accent": "#e91e63",
+    "accentLight": "#f48fb1",
+    "bgPrimary": "#f3e5f5",
+    "bgSecondary": "#e1bee7",
+    "bgCard": "rgba(255, 255, 255, 0.5)",
+    "bgCardHover": "rgba(255, 255, 255, 0.7)",
+    "textPrimary": "#4a148c",
+    "textSecondary": "#7b1fa2",
+    "textMuted": "#ab47bc",
+    "border": "rgba(156, 39, 176, 0.2)",
+    "highlight": "rgba(156, 39, 176, 0.15)",
+    "highlightText": "#9c27b0"
+  },
+  "shadows": {
+    "sm": "0 2px 8px rgba(156, 39, 176, 0.12)",
+    "md": "0 4px 16px rgba(156, 39, 176, 0.18)",
+    "lg": "0 8px 32px rgba(156, 39, 176, 0.25)"
+  },
+  "radius": {
+    "sm": "8px",
+    "md": "16px",
+    "lg": "20px"
+  },
+  "background": {
+    "gradient": "linear-gradient(135deg, #f3e5f5 0%, #e1bee7 50%, #ce93d8 100%)",
+    "overlay": "radial-gradient(circle at 30% 20%, rgba(233, 30, 99, 0.2) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(156, 39, 176, 0.25) 0%, transparent 50%)"
+  }
+}

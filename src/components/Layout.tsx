@@ -6,6 +6,8 @@ import { useSidebar } from '@/contexts/SidebarContext'
 import OnboardingTour from './OnboardingTour'
 import ImageTour from './ImageTour'
 import UpdateNotification from './UpdateNotification'
+import { ThemePanel } from './ThemePanel'
+import { useThemeStore } from '@/stores/themeStore'
 import type { UpdateInfo } from '@/types/electron'
 import styles from './Layout.module.css'
 
@@ -37,8 +39,15 @@ export default function Layout({ children, title = '文言文查询', subtitle =
   const [showUpdateNotification, setShowUpdateNotification] = useState(false)
   const [isCheckingUpdate, setIsCheckingUpdate] = useState(false)
   const [appVersion, setAppVersion] = useState<string>('')
+  
+  // 初始化主题系统
+  const { initialize: initializeTheme, isLoaded: themeLoaded } = useThemeStore()
 
   useEffect(() => {
+    // 初始化主题
+    if (!themeLoaded) {
+      initializeTheme()
+    }
     // 获取应用版本号
     if (typeof window !== 'undefined' && window.electronAPI?.getAppVersion) {
       window.electronAPI.getAppVersion().then((version) => {
@@ -185,14 +194,17 @@ function Header({ title, subtitle, onCheckUpdate, isCheckingUpdate, appVersion }
           {appVersion && <span className={styles.version}> v{appVersion}</span>}
         </p>
       </div>
-      <button 
-        className={styles.checkUpdateBtn}
-        onClick={onCheckUpdate}
-        disabled={isCheckingUpdate}
-        title="检查更新"
-      >
-        {isCheckingUpdate ? '检查中...' : '检查更新'}
-      </button>
+      <div className={styles.headerActions}>
+        <ThemePanel />
+        <button 
+          className={styles.checkUpdateBtn}
+          onClick={onCheckUpdate}
+          disabled={isCheckingUpdate}
+          title="检查更新"
+        >
+          {isCheckingUpdate ? '检查中...' : '检查更新'}
+        </button>
+      </div>
     </header>
   )
 }
