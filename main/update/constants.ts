@@ -33,6 +33,25 @@ export const BACKUPS_DIRECTORY = 'backups';
 export const DOWNLOADS_DIRECTORY = 'downloads';
 export const UPDATE_LOCK_FILE = 'update.lock';
 export const DEFERRED_REPLACEMENTS_FILE = 'deferred-replacements.json';
+export const CONFIG_BACKUP_DIRECTORY = 'config-backups';
+export const CONFIG_RESTORE_PENDING_FILE = 'config-restore-pending.json';
+
+// 需要备份的配置文件（相对于 config 目录）
+export const CONFIG_FILES_TO_BACKUP = [
+  'app-config.json',
+  'libraries.json',
+  'weights.json',
+  '.migrated'
+];
+
+// 需要备份的目录
+export const CONFIG_DIRECTORIES_TO_BACKUP = [
+  'config',
+  'cache/backgrounds'
+];
+
+// 配置备份保留数量
+export const CONFIG_BACKUP_RETENTION_COUNT = 3;
 
 // User data directories to exclude from backup/update
 export const USER_DATA_DIRECTORIES = [

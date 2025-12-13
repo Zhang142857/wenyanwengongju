@@ -16,6 +16,7 @@ export * from './utils';
 export { DownloadManager, downloadManager } from './downloadManager';
 export { FileManager } from './fileManager';
 export { RecoveryManager } from './recoveryManager';
+export { ConfigBackupManager } from './configBackupManager';
 export { UpdateManager, getUpdateManager } from './updateManager';
 export { ErrorHandler } from './errorHandler';
 

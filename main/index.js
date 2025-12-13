@@ -6,6 +6,10 @@ const http = require('http');
 const { checkAndApplyUpdatePatch } = require('./updateConfig');
 const { UpdateChecker, isDownloading, getDownloadState, cancelDownload } = require('./updateChecker');
 const { configManager, CONFIG_FILES } = require('./configManager');
+const { ConfigBackupManager } = require('./update/configBackupManager');
+
+// 禁用 GPU 硬件加速，解决打包后输入框渲染异常问题
+app.disableHardwareAcceleration();
 
 // 保持对窗口对象的全局引用
 let mainWindow = null;
@@ -172,6 +176,9 @@ if (!isDev) {
   registerProtocol();
 }
 
+// 配置备份管理器实例
+let configBackupManager = null;
+
 // Electron 初始化完成后创建窗口
 app.whenReady().then(async () => {
   // 解析启动参数
@@ -180,6 +187,17 @@ app.whenReady().then(async () => {
   // 处理自定义协议
   if (!isDev) {
     handleProtocol();
+  }
+  
+  // 初始化配置备份管理器并检查是否需要恢复配置
+  const userDataPath = app.getPath('userData');
+  const appPath = app.isPackaged ? path.dirname(app.getPath('exe')) : path.join(__dirname, '..');
+  configBackupManager = new ConfigBackupManager(userDataPath, appPath);
+  
+  // 检查并恢复更新后的配置
+  const configRestored = await configBackupManager.checkAndRestoreOnStartup();
+  if (configRestored) {
+    console.log('✅ 更新后配置已自动恢复');
   }
   
   // 初始化配置管理器（新的配置系统）
@@ -936,6 +954,25 @@ ipcMain.handle('download-and-install', async (event, downloadUrl, fileName, vers
       mainWindow.webContents.send('update-download-started', { version, downloadUrl });
     }
 
+    // 在下载前备份配置文件
+    if (configBackupManager) {
+      console.log('📦 更新前备份配置文件...');
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('config-backup-started');
+      }
+      
+      const currentVersion = app.getVersion();
+      const backupPath = await configBackupManager.backupBeforeUpdate(currentVersion);
+      console.log(`✅ 配置已备份到: ${backupPath}`);
+      
+      // 标记需要在更新后恢复配置
+      await configBackupManager.markPendingRestore(backupPath);
+      
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('config-backup-complete', { backupPath });
+      }
+    }
+
     // 多线程下载
     const filePath = await updateChecker.downloadUpdate(downloadUrl, fileName, (progress) => {
       if (mainWindow && !mainWindow.isDestroyed()) {
@@ -967,6 +1004,44 @@ ipcMain.handle('is-downloading', () => {
 // IPC: 取消下载
 ipcMain.handle('cancel-download', () => {
   return cancelDownload();
+});
+
+// ==================== 配置备份相关 IPC ====================
+
+// IPC: 获取配置备份状态
+ipcMain.handle('get-config-backup-status', async () => {
+  if (!configBackupManager) {
+    return { hasBackup: false, latestBackup: null, backupCount: 0, totalSize: 0 };
+  }
+  return configBackupManager.getBackupStatus();
+});
+
+// IPC: 手动备份配置
+ipcMain.handle('backup-config', async () => {
+  if (!configBackupManager) {
+    throw new Error('配置备份管理器未初始化');
+  }
+  const currentVersion = app.getVersion();
+  const backupPath = await configBackupManager.backupBeforeUpdate(currentVersion);
+  return { success: true, backupPath };
+});
+
+// IPC: 手动恢复配置
+ipcMain.handle('restore-config', async (event, backupDir) => {
+  if (!configBackupManager) {
+    throw new Error('配置备份管理器未初始化');
+  }
+  await configBackupManager.restoreAfterUpdate(backupDir);
+  return { success: true };
+});
+
+// IPC: 清理旧的配置备份
+ipcMain.handle('cleanup-config-backups', async (event, keepCount = 3) => {
+  if (!configBackupManager) {
+    throw new Error('配置备份管理器未初始化');
+  }
+  await configBackupManager.cleanupOldBackups(keepCount);
+  return { success: true };
 });
 
 // 应用启动后延迟检查更新

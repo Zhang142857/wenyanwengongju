@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  overflow-y: hidden;
+  overflow-y: auto;
   overflow-x: hidden;
   padding: 1rem;
   background: var(--color-background);
@@ -28,17 +28,9 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
-}
-
-.section:first-child {
-  flex: 1;
-  min-height: 0;
-}
-
-.section:last-child {
   flex-shrink: 0;
 }
 
@@ -197,11 +189,8 @@
 
 .charList {
   margin-top: 0;
-  flex: 1;
-  min-height: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .charListTitle {
@@ -215,13 +204,11 @@
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 0.5rem;
-  overflow-y: auto;
-  overflow-x: hidden;
   padding: 0.5rem;
   background: var(--color-background);
   border-radius: 6px;
-  flex: 1;
-  min-height: 0;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .charBtn {

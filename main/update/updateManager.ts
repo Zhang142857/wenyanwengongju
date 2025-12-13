@@ -42,6 +42,7 @@ import {
 import { DownloadManager } from './downloadManager';
 import { FileManager } from './fileManager';
 import { RecoveryManager } from './recoveryManager';
+import { ConfigBackupManager } from './configBackupManager';
 
 export class UpdateManager extends EventEmitter {
   private userDataPath: string;
@@ -51,6 +52,7 @@ export class UpdateManager extends EventEmitter {
   private downloadManager: DownloadManager;
   private fileManager: FileManager;
   private recoveryManager: RecoveryManager;
+  private configBackupManager: ConfigBackupManager;
   
   private status: UpdateStatus = { state: 'idle' };
   private checkTimer: NodeJS.Timeout | null = null;
@@ -69,6 +71,7 @@ export class UpdateManager extends EventEmitter {
     this.downloadManager = new DownloadManager();
     this.fileManager = new FileManager(this.userDataPath, this.appPath);
     this.recoveryManager = new RecoveryManager(this.userDataPath, this.appPath);
+    this.configBackupManager = new ConfigBackupManager(this.userDataPath, this.appPath);
     
     this.setupEventListeners();
   }
@@ -78,6 +81,13 @@ export class UpdateManager extends EventEmitter {
    */
   async initialize(): Promise<void> {
     try {
+      // 首先检查是否需要恢复配置（更新后首次启动）
+      const configRestored = await this.configBackupManager.checkAndRestoreOnStartup();
+      if (configRestored) {
+        console.log('✅ 更新后配置已自动恢复');
+        this.emit('config-restored');
+      }
+      
       // Initialize recovery manager first
       await this.recoveryManager.initializeOnStartup();
       
@@ -176,6 +186,15 @@ export class UpdateManager extends EventEmitter {
         updateInProgress: true,
         retryCount: 0
       });
+      
+      // 备份配置文件（更新前）
+      this.emit('config-backup-started');
+      const configBackupPath = await this.configBackupManager.backupBeforeUpdate(this.currentVersion);
+      console.log(`📦 配置已备份到: ${configBackupPath}`);
+      
+      // 标记需要在更新后恢复配置
+      await this.configBackupManager.markPendingRestore(configBackupPath);
+      this.emit('config-backup-complete', { backupPath: configBackupPath });
       
       // Download update package
       await this.downloadUpdate(updateInfo);

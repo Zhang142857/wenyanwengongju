@@ -63,6 +63,19 @@ interface ElectronAPI {
   isDownloading: () => Promise<{ isDownloading: boolean; version: string | null }>
   cancelDownload: () => Promise<boolean>
 
+  // 配置备份
+  getConfigBackupStatus: () => Promise<{
+    hasBackup: boolean
+    latestBackup: string | null
+    backupCount: number
+    totalSize: number
+  }>
+  backupConfig: () => Promise<{ success: boolean; backupPath: string }>
+  restoreConfig: (backupDir?: string) => Promise<{ success: boolean }>
+  cleanupConfigBackups: (keepCount?: number) => Promise<{ success: boolean }>
+  onConfigBackupStarted: (callback: () => void) => void
+  onConfigBackupComplete: (callback: (data: { backupPath: string }) => void) => void
+
   // 文件操作
   openFile: (options?: any) => Promise<string | null>
   saveFile: (options?: any) => Promise<string | null>

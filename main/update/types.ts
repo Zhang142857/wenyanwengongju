@@ -99,3 +99,21 @@ export interface UpdateLock {
   startedAt: string;
   version: string;
 }
+
+// 配置备份元数据
+export interface ConfigBackupMetadata {
+  version: string;
+  createdAt: string;  // ISO 8601 timestamp
+  appVersion: string;
+  files: string[];
+  directories: string[];
+  totalSize: number;
+  appPath: string;
+  configDir: string;
+}
+
+// 配置恢复待处理标记
+export interface ConfigRestorePending {
+  backupDir: string;
+  markedAt: string;
+}

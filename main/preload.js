@@ -113,6 +113,32 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.removeAllListeners('update-download-progress');
     ipcRenderer.removeAllListeners('update-download-started');
     ipcRenderer.removeAllListeners('update-download-error');
+    ipcRenderer.removeAllListeners('config-backup-started');
+    ipcRenderer.removeAllListeners('config-backup-complete');
+  },
+
+  // ==================== 配置备份 API ====================
+  
+  // 获取配置备份状态
+  getConfigBackupStatus: () => ipcRenderer.invoke('get-config-backup-status'),
+  
+  // 手动备份配置
+  backupConfig: () => ipcRenderer.invoke('backup-config'),
+  
+  // 手动恢复配置
+  restoreConfig: (backupDir) => ipcRenderer.invoke('restore-config', backupDir),
+  
+  // 清理旧的配置备份
+  cleanupConfigBackups: (keepCount) => ipcRenderer.invoke('cleanup-config-backups', keepCount),
+  
+  // 监听配置备份开始事件
+  onConfigBackupStarted: (callback) => {
+    ipcRenderer.on('config-backup-started', (event) => callback());
+  },
+  
+  // 监听配置备份完成事件
+  onConfigBackupComplete: (callback) => {
+    ipcRenderer.on('config-backup-complete', (event, data) => callback(data));
   },
 
   // ==================== 背景媒体管理 API ====================
