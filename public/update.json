@@ -1,12 +1,12 @@
 {
-  "version": "1.2.4",
-  "changelog": "## 文言文小工具 v1.2.4\n\n### 下载\n- Windows 安装包: `文言文查询 Setup 1.2.4.exe`\n\n### 安装说明\n1. 下载 .exe 安装包\n2. 双击运行安装程序\n3. 按照向导完成安装\n\n### 系统要求\n- Windows 7/8/10/11\n- 至少 2GB RAM",
-  "published_at": "2025-12-13T13:18:13Z",
+  "version": "1.2.5",
+  "changelog": "## 文言文小工具 v1.2.5\n\n### 下载\n- Windows 安装包: `文言文查询 Setup 1.2.5.exe`\n\n### 安装说明\n1. 下载 .exe 安装包\n2. 双击运行安装程序\n3. 按照向导完成安装\n\n### 系统要求\n- Windows 7/8/10/11\n- 至少 2GB RAM",
+  "published_at": "2025-12-13T13:26:11Z",
   "platforms": {
     "windows": {
-      "download_url": "https://github.com/Zhang142857/wenyanwengongju/releases/download/v1.2.4/Setup.1.2.4.exe",
-      "size": 321812659,
-      "name": "Setup.1.2.4.exe"
+      "download_url": "https://github.com/Zhang142857/wenyanwengongju/releases/download/v1.2.5/Setup.1.2.5.exe",
+      "size": 321811761,
+      "name": "Setup.1.2.5.exe"
     }
   },
   "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
