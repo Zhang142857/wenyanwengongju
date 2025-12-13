@@ -326,7 +326,7 @@ export default function Home() {
           </header>
 
           <div className={styles.copyrightBar}>
-            <span className={styles.versionBadge}>v1.2.1</span>
+            <span className={styles.versionBadge}>v1.2.3</span>
             <span className={styles.separator}>|</span>
             <a href="https://github.com/Zhang142857" target="_blank" rel="noopener noreferrer" className={styles.authorLink}>
               <img src="/DM_20251130153613_001.png" alt="作者头像" className={styles.authorAvatar} />
@@ -335,6 +335,10 @@ export default function Home() {
             <span className={styles.separator}>|</span>
             <a href="https://github.com/Zhang142857/wenyanwengongju" target="_blank" rel="noopener noreferrer" className={styles.projectLink}>
               <span>项目地址</span>
+            </a>
+            <span className={styles.separator}>|</span>
+            <a href="https://zzqstudio.pages.dev/guide/" target="_blank" rel="noopener noreferrer" className={styles.projectLink}>
+              <span>文档</span>
             </a>
           </div>
 

@@ -113,17 +113,94 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  # 生成静态更新 JSON 并推送到仓库
+  update-json:
+    needs: release
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get release info
+        id: release
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          
+          # 获取 release 信息
+          RELEASE_DATA=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases/tags/v$VERSION")
+          
+          CHANGELOG=$(echo "$RELEASE_DATA" | jq -r '.body // ""')
+          PUBLISHED_AT=$(echo "$RELEASE_DATA" | jq -r '.published_at // ""')
+          
+          # 获取 Windows 安装包信息
+          ASSET=$(echo "$RELEASE_DATA" | jq -r '.assets[] | select(.name | test(".*\\.(exe)$"; "i")) | select(.name | test("Setup"; "i")) | {name, size, browser_download_url} | @base64' | head -1)
+          
+          if [ -n "$ASSET" ]; then
+            ASSET_NAME=$(echo "$ASSET" | base64 -d | jq -r '.name')
+            ASSET_SIZE=$(echo "$ASSET" | base64 -d | jq -r '.size')
+            ASSET_URL=$(echo "$ASSET" | base64 -d | jq -r '.browser_download_url')
+          else
+            ASSET_NAME=""
+            ASSET_SIZE=0
+            ASSET_URL=""
+          fi
+          
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "PUBLISHED_AT=$PUBLISHED_AT" >> $GITHUB_OUTPUT
+          echo "ASSET_NAME=$ASSET_NAME" >> $GITHUB_OUTPUT
+          echo "ASSET_SIZE=$ASSET_SIZE" >> $GITHUB_OUTPUT
+          echo "ASSET_URL=$ASSET_URL" >> $GITHUB_OUTPUT
+
+      - name: Generate update.json
+        run: |
+          cat > public/update.json << 'JSONEOF'
+          {
+            "version": "${{ steps.release.outputs.VERSION }}",
+            "changelog": ${{ toJSON(steps.release.outputs.CHANGELOG) }},
+            "published_at": "${{ steps.release.outputs.PUBLISHED_AT }}",
+            "platforms": {
+              "windows": {
+                "download_url": "${{ steps.release.outputs.ASSET_URL }}",
+                "size": ${{ steps.release.outputs.ASSET_SIZE || 0 }},
+                "name": "${{ steps.release.outputs.ASSET_NAME }}"
+              }
+            },
+            "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          JSONEOF
+          
+          echo "Generated update.json:"
+          cat public/update.json
+
+      - name: Commit and push update.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/update.json
+          git diff --staged --quiet || git commit -m "chore: update update.json for v${{ steps.release.outputs.VERSION }}"
+          git push origin main
+
   # Notify Cloudflare Worker to refresh cache
   notify-cdn:
-    needs: release
+    needs: update-json
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     
     steps:
       - name: Trigger CDN cache refresh
         run: |
-          curl -X POST "${{ secrets.CLOUDFLARE_WORKER_URL }}/api/refresh-cache" \
-            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_WORKER_TOKEN }}" \
+          curl -X POST "https://update.156658.xyz/api/refresh-cache" \
             -H "Content-Type: application/json" \
             -d '{"version": "${{ github.ref_name }}"}'
         continue-on-error: true
