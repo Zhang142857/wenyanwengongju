@@ -32,10 +32,12 @@ const EXCLUDE_PATTERNS = [
   'dist',
   'build',
   
-  // 敏感配置文件
+  // 敏感配置文件（包含 API 密钥）
   'config/app-config.json',
+  'config\\app-config.json',
   'config.default.json',
   /^config-custom-.*\.json$/,
+  /app-config\.json$/,
   
   // 内部文档
   '打包命令.md',
