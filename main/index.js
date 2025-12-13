@@ -6,7 +6,7 @@ const http = require('http');
 const { checkAndApplyUpdatePatch } = require('./updateConfig');
 const { UpdateChecker, isDownloading, getDownloadState, cancelDownload } = require('./updateChecker');
 const { configManager, CONFIG_FILES } = require('./configManager');
-const { ConfigBackupManager } = require('./update/configBackupManager');
+const { ConfigBackupManager } = require('./configBackupManager');
 
 // 禁用 GPU 硬件加速，解决打包后输入框渲染异常问题
 app.disableHardwareAcceleration();
