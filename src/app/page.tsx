@@ -326,7 +326,7 @@ export default function Home() {
           </header>
 
           <div className={styles.copyrightBar}>
-            <span className={styles.versionBadge}>v1.2.3</span>
+            <span className={styles.versionBadge}>v1.2.4</span>
             <span className={styles.separator}>|</span>
             <a href="https://github.com/Zhang142857" target="_blank" rel="noopener noreferrer" className={styles.authorLink}>
               <img src="/DM_20251130153613_001.png" alt="作者头像" className={styles.authorAvatar} />

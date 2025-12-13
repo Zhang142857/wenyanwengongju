@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { HomeIcon, SearchIcon, EditIcon, BookIcon, MindMapIcon } from './Icons'
+import { HomeIcon, SearchIcon, BookIcon, MindMapIcon, DatabaseIcon, ImportIcon, ExamIcon, AIIcon, GearIcon } from './Icons'
 import { useSidebar } from '@/contexts/SidebarContext'
 import styles from './Sidebar.module.css'
 
@@ -14,11 +14,11 @@ export default function Sidebar() {
     { name: '首页', path: '/', icon: HomeIcon },
     { name: '查字', path: '/query', icon: SearchIcon },
     { name: '义项整理', path: '/organize', icon: MindMapIcon },
-    { name: 'AI义项整理', path: '/ai-organize', icon: MindMapIcon },
-    { name: '编辑库', path: '/manage', icon: EditIcon },
-    { name: '导入数据', path: '/import', icon: EditIcon },
-    { name: '自动出题', path: '/exam', icon: EditIcon },
-    { name: '⚙️ 设置', path: '/settings', icon: EditIcon },
+    { name: 'AI义项整理', path: '/ai-organize', icon: AIIcon },
+    { name: '编辑库', path: '/manage', icon: DatabaseIcon },
+    { name: '导入数据', path: '/import', icon: ImportIcon },
+    { name: '自动出题', path: '/exam', icon: ExamIcon },
+    { name: '设置', path: '/settings', icon: GearIcon },
   ]
 
   return (
