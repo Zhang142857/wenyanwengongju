@@ -6,7 +6,14 @@ const http = require('http');
 const { checkAndApplyUpdatePatch } = require('./updateConfig');
 const { UpdateChecker, isDownloading, getDownloadState, cancelDownload } = require('./updateChecker');
 const { configManager, CONFIG_FILES } = require('./configManager');
-const { ConfigBackupManager } = require('./configBackupManager');
+
+// 延迟加载配置备份管理器，避免模块加载错误导致应用崩溃
+let ConfigBackupManager = null;
+try {
+  ConfigBackupManager = require('./configBackupManager').ConfigBackupManager;
+} catch (error) {
+  console.error('⚠ 配置备份管理器模块加载失败:', error.message);
+}
 
 // 禁用 GPU 硬件加速，解决打包后输入框渲染异常问题
 app.disableHardwareAcceleration();
@@ -190,19 +197,24 @@ app.whenReady().then(async () => {
   }
   
   // 初始化配置备份管理器并检查是否需要恢复配置（添加错误保护）
-  try {
-    const userDataPath = app.getPath('userData');
-    const appPath = app.isPackaged ? path.dirname(app.getPath('exe')) : path.join(__dirname, '..');
-    configBackupManager = new ConfigBackupManager(userDataPath, appPath);
-    
-    // 检查并恢复更新后的配置
-    const configRestored = await configBackupManager.checkAndRestoreOnStartup();
-    if (configRestored) {
-      console.log('✅ 更新后配置已自动恢复');
+  if (ConfigBackupManager) {
+    try {
+      const userDataPath = app.getPath('userData');
+      const appPath = app.isPackaged ? path.dirname(app.getPath('exe')) : path.join(__dirname, '..');
+      configBackupManager = new ConfigBackupManager(userDataPath, appPath);
+      
+      // 检查并恢复更新后的配置
+      const configRestored = await configBackupManager.checkAndRestoreOnStartup();
+      if (configRestored) {
+        console.log('✅ 更新后配置已自动恢复');
+      }
+    } catch (error) {
+      console.error('⚠ 配置备份管理器初始化失败，跳过配置恢复:', error.message);
+      configBackupManager = null;
+      // 不阻塞应用启动
     }
-  } catch (error) {
-    console.error('⚠ 配置备份管理器初始化失败，跳过配置恢复:', error.message);
-    // 不阻塞应用启动
+  } else {
+    console.log('⚠ 配置备份管理器未加载，跳过配置恢复功能');
   }
   
   // 初始化配置管理器（新的配置系统）

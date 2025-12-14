@@ -8,7 +8,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const { app } = require('electron');
+
+// 安全获取 electron app 模块
+let electronApp = null;
+try {
+  electronApp = require('electron').app;
+} catch (e) {
+  // 在非 Electron 环境下忽略
+}
 
 // 需要备份的配置文件（相对于 config 目录）
 const CONFIG_FILES_TO_BACKUP = [
@@ -191,7 +198,7 @@ class ConfigBackupManager {
       const metadata = {
         version,
         createdAt: this.getCurrentTimestamp(),
-        appVersion: app.getVersion(),
+        appVersion: electronApp ? electronApp.getVersion() : 'unknown',
         files: backedUpFiles,
         totalSize,
         appPath: this.appPath,
