@@ -391,10 +391,10 @@
 }
 
 .dialog {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(30, 45, 60, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(79, 172, 254, 0.2);
   border-radius: 16px;
   width: 90%;
   max-width: 500px;
@@ -403,6 +403,7 @@
   display: flex;
   flex-direction: column;
   animation: slideUp 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes slideUp {
@@ -421,12 +422,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .dialogTitle {
   margin: 0;
-  color: var(--color-text-primary);
+  color: rgba(255, 255, 255, 0.95);
   font-size: 1.2rem;
   font-weight: 600;
 }
@@ -435,7 +436,7 @@
   padding: 0.5rem;
   background: transparent;
   border: none;
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -445,8 +446,8 @@
 }
 
 .dialogClose:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .dialogContent {
@@ -465,7 +466,7 @@
 .settingsLabel {
   display: block;
   margin-bottom: 0.75rem;
-  color: var(--color-text-primary);
+  color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
   font-size: 0.95rem;
 }
@@ -482,24 +483,25 @@
   gap: 0.5rem;
   cursor: pointer;
   padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   transition: all 0.2s ease;
 }
 
 .radioLabel:hover {
-  background: rgba(255, 255, 255, 0.8);
-  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(79, 172, 254, 0.5);
 }
 
 .radioLabel input[type="radio"] {
   cursor: pointer;
+  accent-color: #4facfe;
 }
 
 .radioLabel span {
   font-size: 0.9rem;
-  color: var(--color-text-primary);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .uploadBtn {
@@ -565,16 +567,18 @@
 .colorInput {
   flex: 1;
   padding: 0.5rem 0.75rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   font-size: 0.9rem;
   font-family: monospace;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .colorInput:focus {
   outline: none;
-  border-color: var(--color-primary);
+  border-color: rgba(79, 172, 254, 0.5);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* 复选框组 */
@@ -590,27 +594,27 @@
   gap: 0.5rem;
   cursor: pointer;
   padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   transition: all 0.2s ease;
 }
 
 .checkboxLabel:hover {
-  background: rgba(255, 255, 255, 0.8);
-  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(79, 172, 254, 0.5);
 }
 
 .checkboxLabel input[type="checkbox"] {
   cursor: pointer;
   width: 16px;
   height: 16px;
-  accent-color: var(--color-primary);
+  accent-color: #4facfe;
 }
 
 .checkboxLabel span {
   font-size: 0.9rem;
-  color: var(--color-text-primary);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* 滑块样式 */
@@ -618,7 +622,7 @@
   width: 100%;
   height: 6px;
   border-radius: 3px;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   outline: none;
   -webkit-appearance: none;
   appearance: none;
@@ -630,9 +634,9 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--color-primary);
+  background: linear-gradient(135deg, #4facfe, #6fc3ff);
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(79, 172, 254, 0.4);
   transition: transform 0.2s ease;
 }
 
@@ -644,10 +648,10 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--color-primary);
+  background: linear-gradient(135deg, #4facfe, #6fc3ff);
   cursor: pointer;
   border: none;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(79, 172, 254, 0.4);
 }
 
 .main::-webkit-scrollbar {

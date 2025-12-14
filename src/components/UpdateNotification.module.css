@@ -6,11 +6,12 @@
   z-index: 9999;
   min-width: 360px;
   max-width: 450px;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(30, 45, 60, 0.92);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(79, 172, 254, 0.3);
-  border-radius: 12px;
-  box-shadow: var(--shadow-lg);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(79, 172, 254, 0.25);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   animation: slideIn 0.3s ease-out;
 }
 
@@ -52,12 +53,12 @@
 .title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--color-text-primary);
+  color: rgba(255, 255, 255, 0.95);
   margin-bottom: 4px;
 }
 
 .version {
-  color: var(--color-primary);
+  color: #6fc3ff;
   font-weight: 700;
 }
 
@@ -68,14 +69,14 @@
   padding: 0;
   border: none;
   background: none;
-  color: var(--color-primary);
+  color: #6fc3ff;
   font-size: 12px;
   cursor: pointer;
   transition: color 0.2s;
 }
 
 .changelogToggle:hover {
-  color: var(--color-primary-dark);
+  color: #9dd5ff;
 }
 
 .changelogToggle svg {
@@ -89,10 +90,10 @@
 .changelog {
   margin-top: 8px;
   padding: 8px 12px;
-  background: rgba(79, 172, 254, 0.08);
+  background: rgba(79, 172, 254, 0.12);
   border-radius: 8px;
   font-size: 12px;
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.75);
   max-height: 120px;
   overflow-y: auto;
 }
@@ -139,18 +140,19 @@
 
 .dismissButton {
   padding: 6px 12px;
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   background: transparent;
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 12px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .dismissButton:hover {
-  background: rgba(79, 172, 254, 0.1);
-  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* Progress bar */
@@ -175,7 +177,7 @@
 
 .progressText {
   font-size: 11px;
-  color: var(--color-primary);
+  color: #6fc3ff;
   margin-top: 4px;
   text-align: center;
 }
@@ -189,12 +191,12 @@
   gap: 16px;
   margin-top: 6px;
   font-size: 12px;
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.6);
   white-space: nowrap;
 }
 
 .speed {
-  color: var(--color-accent);
+  color: #5fffa0;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
@@ -202,14 +204,14 @@
 }
 
 .eta {
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.6);
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
 
 .threads {
-  color: var(--color-primary);
+  color: #6fc3ff;
   font-size: 11px;
   display: inline-flex;
   align-items: center;
@@ -218,17 +220,17 @@
 
 .downloadingText {
   font-size: 12px;
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.7);
   text-align: center;
 }
 
 .error {
   margin-top: 8px;
   padding: 8px;
-  background: rgba(231, 76, 60, 0.1);
-  border: 1px solid rgba(231, 76, 60, 0.2);
+  background: rgba(231, 76, 60, 0.2);
+  border: 1px solid rgba(231, 76, 60, 0.3);
   border-radius: 8px;
-  color: #c0392b;
+  color: #ff8a80;
   font-size: 12px;
 }
 

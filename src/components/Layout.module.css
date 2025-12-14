@@ -74,29 +74,55 @@
 
 .checkUpdateBtn {
   padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
-  color: #333;
-  font-size: 0.875rem;
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.15), rgba(67, 233, 123, 0.1));
+  border: 1px solid rgba(79, 172, 254, 0.3);
+  border-radius: 20px;
+  color: var(--color-primary-dark, #3a8fd9);
+  font-size: 0.8rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   font-weight: 500;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.checkUpdateBtn::before {
+  content: '↻';
+  font-size: 0.9rem;
+  transition: transform 0.3s ease;
 }
 
 .checkUpdateBtn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.25), rgba(67, 233, 123, 0.15));
+  border-color: var(--color-primary, #4facfe);
+  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.2);
+  transform: translateY(-2px);
+}
+
+.checkUpdateBtn:hover:not(:disabled)::before {
+  transform: rotate(180deg);
 }
 
 .checkUpdateBtn:active:not(:disabled) {
   transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(79, 172, 254, 0.15);
 }
 
 .checkUpdateBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.checkUpdateBtn:disabled::before {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .main {
