@@ -1,0 +1,36 @@
+[2025-12-14T01:36:45.039Z] [INFO] ========== 应用进程启动 ==========
+[2025-12-14T01:36:45.041Z] [INFO] 日志文件: C:\Users\WDAGUtilityAccount\AppData\Roaming\文言文小工具\logs\app-2025-12-14T01-36-45.log
+[2025-12-14T01:36:45.041Z] [INFO] Node: 22.21.1
+[2025-12-14T01:36:45.041Z] [INFO] 平台: win32 x64
+[2025-12-14T01:36:45.041Z] [INFO] 工作目录: C:\Users\WDAGUtilityAccount\AppData\Local\Programs\classical-chinese-query
+[2025-12-14T01:36:45.041Z] [INFO] 启动参数: C:\Users\WDAGUtilityAccount\AppData\Local\Programs\classical-chinese-query\文言文查询.exe
+[2025-12-14T01:36:45.041Z] [INFO] 开始加载 Electron 模块...
+[2025-12-14T01:36:45.043Z] [INFO] Electron 模块加载成功
+[2025-12-14T01:36:45.043Z] [INFO] Electron 版本: 39.2.4
+[2025-12-14T01:36:45.074Z] [INFO] http/https 模块加载成功
+[2025-12-14T01:36:45.077Z] [INFO] updateConfig 模块加载成功
+[2025-12-14T01:36:45.081Z] [INFO] updateChecker 模块加载成功
+[2025-12-14T01:36:45.084Z] [INFO] configManager 模块加载成功
+[2025-12-14T01:36:45.086Z] [INFO] configBackupManager 模块加载成功
+[2025-12-14T01:36:45.337Z] [INFO] ========== app.whenReady() 触发 ==========
+[2025-12-14T01:36:45.338Z] [INFO] 应用版本: 1.2.11
+[2025-12-14T01:36:45.338Z] [INFO] 解析启动参数...
+[2025-12-14T01:36:45.339Z] [INFO] 启动参数解析完成
+[2025-12-14T01:36:45.339Z] [INFO] 注册自定义协议...
+[2025-12-14T01:36:45.410Z] [INFO] 自定义协议注册完成
+[2025-12-14T01:36:45.410Z] [INFO] 初始化配置备份管理器...
+[2025-12-14T01:36:45.410Z] [INFO] 用户数据目录: C:\Users\WDAGUtilityAccount\AppData\Roaming\classical-chinese-query
+[2025-12-14T01:36:45.410Z] [INFO] 应用目录: C:\Users\WDAGUtilityAccount\AppData\Local\Programs\classical-chinese-query
+[2025-12-14T01:36:45.411Z] [INFO] 配置备份管理器实例化成功
+[2025-12-14T01:36:45.412Z] [INFO] 初始化配置管理器...
+[2025-12-14T01:36:45.425Z] [INFO] 配置管理器初始化完成
+[2025-12-14T01:36:45.425Z] [INFO] 初始化默认数据...
+[2025-12-14T01:36:45.426Z] [INFO] 默认数据初始化完成
+[2025-12-14T01:36:45.426Z] [INFO] 检查更新补丁...
+[2025-12-14T01:36:45.427Z] [INFO] 更新补丁检查完成
+[2025-12-14T01:36:45.427Z] [INFO] 创建主窗口...
+[2025-12-14T01:36:45.648Z] [INFO] 主窗口创建完成
+[2025-12-14T01:36:45.648Z] [INFO] 设置配置变化通知...
+[2025-12-14T01:36:45.649Z] [INFO] 配置变化通知设置完成
+[2025-12-14T01:36:45.649Z] [INFO] ========== 应用启动完成 ==========
+[2025-12-14T01:36:48.664Z] [INFO] 开始检查更新...

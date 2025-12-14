@@ -187,6 +187,8 @@ function getAppPath() {
 }
 
 function createWindow() {
+  logInfo('createWindow: 开始创建窗口');
+  
   // 创建浏览器窗口
   mainWindow = new BrowserWindow({
     width: 1200,
@@ -205,19 +207,61 @@ function createWindow() {
     backgroundColor: '#faf8f5',
     show: false,
   });
+  
+  logInfo('createWindow: BrowserWindow 实例创建完成');
+
+  // 监听渲染进程事件
+  mainWindow.webContents.on('did-start-loading', () => {
+    logInfo('渲染进程: did-start-loading - 开始加载页面');
+  });
+  
+  mainWindow.webContents.on('did-stop-loading', () => {
+    logInfo('渲染进程: did-stop-loading - 页面加载停止');
+  });
+  
+  mainWindow.webContents.on('dom-ready', () => {
+    logInfo('渲染进程: dom-ready - DOM 准备就绪');
+  });
+  
+  mainWindow.webContents.on('did-finish-load', () => {
+    logInfo('渲染进程: did-finish-load - 页面加载完成');
+  });
+  
+  mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
+    logError(`渲染进程: did-fail-load - 页面加载失败: ${errorCode} ${errorDescription} URL: ${validatedURL}`);
+  });
+  
+  mainWindow.webContents.on('render-process-gone', (event, details) => {
+    logError(`渲染进程: render-process-gone - 渲染进程崩溃: ${JSON.stringify(details)}`);
+  });
+  
+  mainWindow.webContents.on('unresponsive', () => {
+    logWarn('渲染进程: unresponsive - 页面无响应');
+  });
+  
+  mainWindow.webContents.on('console-message', (event, level, message, line, sourceId) => {
+    const levelStr = ['verbose', 'info', 'warning', 'error'][level] || 'unknown';
+    log(levelStr.toUpperCase(), `渲染进程控制台 [${levelStr}]: ${message}`);
+  });
 
   // 加载应用
+  const loadURL = isDev ? 'http://localhost:3000' : 'app://./index.html';
+  logInfo(`createWindow: 准备加载 URL: ${loadURL}`);
+  
   if (isDev) {
-    mainWindow.loadURL('http://localhost:3000');
+    mainWindow.loadURL(loadURL);
     // 开发环境下打开开发者工具
     mainWindow.webContents.openDevTools();
   } else {
     // 生产环境使用自定义协议加载
-    mainWindow.loadURL('app://./index.html');
+    mainWindow.loadURL(loadURL);
   }
+  
+  logInfo('createWindow: loadURL 调用完成');
 
   // 窗口准备好后显示，避免白屏
   mainWindow.once('ready-to-show', () => {
+    logInfo('createWindow: ready-to-show 事件触发');
     mainWindow.show();
   });
 
