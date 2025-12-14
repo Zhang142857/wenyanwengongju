@@ -141,6 +141,20 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.on('config-backup-complete', (event, data) => callback(data));
   },
 
+  // ==================== 日志相关 API ====================
+  
+  // 获取日志文件路径
+  getLogFilePath: () => ipcRenderer.invoke('get-log-file-path'),
+  
+  // 获取日志目录
+  getLogsDirectory: () => ipcRenderer.invoke('get-logs-directory'),
+  
+  // 打开日志目录
+  openLogsDirectory: () => ipcRenderer.invoke('open-logs-directory'),
+  
+  // 读取当前日志内容
+  readCurrentLog: () => ipcRenderer.invoke('read-current-log'),
+
   // ==================== 背景媒体管理 API ====================
   
   // 保存背景媒体文件

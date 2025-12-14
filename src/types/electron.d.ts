@@ -76,6 +76,12 @@ interface ElectronAPI {
   onConfigBackupStarted: (callback: () => void) => void
   onConfigBackupComplete: (callback: (data: { backupPath: string }) => void) => void
 
+  // 日志相关
+  getLogFilePath: () => Promise<string | null>
+  getLogsDirectory: () => Promise<string>
+  openLogsDirectory: () => Promise<boolean>
+  readCurrentLog: () => Promise<string>
+
   // 文件操作
   openFile: (options?: any) => Promise<string | null>
   saveFile: (options?: any) => Promise<string | null>

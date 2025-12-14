@@ -3,16 +3,94 @@ const path = require('path');
 const fs = require('fs');
 const https = require('https');
 const http = require('http');
-const { checkAndApplyUpdatePatch } = require('./updateConfig');
-const { UpdateChecker, isDownloading, getDownloadState, cancelDownload } = require('./updateChecker');
-const { configManager, CONFIG_FILES } = require('./configManager');
+
+// ==================== 日志系统 ====================
+let logFilePath = null;
+let logStream = null;
+
+function initLogger() {
+  try {
+    const userDataPath = app.getPath('userData');
+    const logsDir = path.join(userDataPath, 'logs');
+    if (!fs.existsSync(logsDir)) {
+      fs.mkdirSync(logsDir, { recursive: true });
+    }
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    logFilePath = path.join(logsDir, `app-${timestamp}.log`);
+    logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
+    log('INFO', '日志系统初始化完成');
+    log('INFO', `日志文件: ${logFilePath}`);
+    log('INFO', `应用版本: ${app.getVersion()}`);
+    log('INFO', `Electron: ${process.versions.electron}`);
+    log('INFO', `Node: ${process.versions.node}`);
+    log('INFO', `平台: ${process.platform} ${process.arch}`);
+  } catch (error) {
+    console.error('日志系统初始化失败:', error);
+  }
+}
+
+function log(level, message, error = null) {
+  const timestamp = new Date().toISOString();
+  const logMessage = `[${timestamp}] [${level}] ${message}`;
+  console.log(logMessage);
+  if (logStream) {
+    logStream.write(logMessage + '\n');
+    if (error) {
+      logStream.write(`[${timestamp}] [${level}] Stack: ${error.stack || error}\n`);
+    }
+  }
+}
+
+function logError(message, error) {
+  log('ERROR', message, error);
+}
+
+function logInfo(message) {
+  log('INFO', message);
+}
+
+function logWarn(message) {
+  log('WARN', message);
+}
+
+// ==================== 模块加载 ====================
+let checkAndApplyUpdatePatch, UpdateChecker, isDownloading, getDownloadState, cancelDownload, configManager, CONFIG_FILES;
+
+try {
+  const updateConfig = require('./updateConfig');
+  checkAndApplyUpdatePatch = updateConfig.checkAndApplyUpdatePatch;
+  logInfo('updateConfig 模块加载成功');
+} catch (error) {
+  logError('updateConfig 模块加载失败', error);
+}
+
+try {
+  const updateChecker = require('./updateChecker');
+  UpdateChecker = updateChecker.UpdateChecker;
+  isDownloading = updateChecker.isDownloading;
+  getDownloadState = updateChecker.getDownloadState;
+  cancelDownload = updateChecker.cancelDownload;
+  logInfo('updateChecker 模块加载成功');
+} catch (error) {
+  logError('updateChecker 模块加载失败', error);
+}
+
+try {
+  const configManagerModule = require('./configManager');
+  configManager = configManagerModule.configManager;
+  CONFIG_FILES = configManagerModule.CONFIG_FILES;
+  logInfo('configManager 模块加载成功');
+} catch (error) {
+  logError('configManager 模块加载失败', error);
+}
 
 // 延迟加载配置备份管理器，避免模块加载错误导致应用崩溃
 let ConfigBackupManager = null;
 try {
   ConfigBackupManager = require('./configBackupManager').ConfigBackupManager;
+  logInfo('configBackupManager 模块加载成功');
 } catch (error) {
-  console.error('⚠ 配置备份管理器模块加载失败:', error.message);
+  logError('configBackupManager 模块加载失败', error);
 }
 
 // 禁用 GPU 硬件加速，解决打包后输入框渲染异常问题
@@ -188,66 +266,103 @@ let configBackupManager = null;
 
 // Electron 初始化完成后创建窗口
 app.whenReady().then(async () => {
-  // 解析启动参数
-  parseArgs();
+  // 初始化日志系统（最先执行）
+  initLogger();
+  logInfo('========== 应用启动 ==========');
   
-  // 处理自定义协议
-  if (!isDev) {
-    handleProtocol();
-  }
-  
-  // 初始化配置备份管理器并检查是否需要恢复配置（添加错误保护）
-  if (ConfigBackupManager) {
-    try {
-      const userDataPath = app.getPath('userData');
-      const appPath = app.isPackaged ? path.dirname(app.getPath('exe')) : path.join(__dirname, '..');
-      configBackupManager = new ConfigBackupManager(userDataPath, appPath);
-      
-      // 检查并恢复更新后的配置
-      const configRestored = await configBackupManager.checkAndRestoreOnStartup();
-      if (configRestored) {
-        console.log('✅ 更新后配置已自动恢复');
-      }
-    } catch (error) {
-      console.error('⚠ 配置备份管理器初始化失败，跳过配置恢复:', error.message);
-      configBackupManager = null;
-      // 不阻塞应用启动
+  try {
+    // 解析启动参数
+    logInfo('解析启动参数...');
+    parseArgs();
+    logInfo('启动参数解析完成');
+    
+    // 处理自定义协议
+    if (!isDev) {
+      logInfo('注册自定义协议...');
+      handleProtocol();
+      logInfo('自定义协议注册完成');
     }
-  } else {
-    console.log('⚠ 配置备份管理器未加载，跳过配置恢复功能');
-  }
-  
-  // 初始化配置管理器（新的配置系统）
-  await configManager.initialize();
-  
-  // 初始化默认数据（向后兼容）
-  initializeDefaultData();
-  
-  // 检查并应用更新补丁（更新时注入新配置）
-  applyUpdatePatchIfNeeded();
-  
-  // 处理更新后的特殊操作
-  if (launchArgs.postUpdate || launchArgs.action) {
-    await handlePostUpdateActions();
-  }
-  
-  // 如果不是静默模式，创建窗口
-  if (!launchArgs.silent) {
-    createWindow();
     
-    // 设置配置变化通知
-    setupConfigChangeNotification();
+    // 初始化配置备份管理器并检查是否需要恢复配置（添加错误保护）
+    logInfo('初始化配置备份管理器...');
+    if (ConfigBackupManager) {
+      try {
+        const userDataPath = app.getPath('userData');
+        const appPath = app.isPackaged ? path.dirname(app.getPath('exe')) : path.join(__dirname, '..');
+        logInfo(`用户数据目录: ${userDataPath}`);
+        logInfo(`应用目录: ${appPath}`);
+        configBackupManager = new ConfigBackupManager(userDataPath, appPath);
+        logInfo('配置备份管理器实例化成功');
+        
+        // 检查并恢复更新后的配置
+        const configRestored = await configBackupManager.checkAndRestoreOnStartup();
+        if (configRestored) {
+          logInfo('更新后配置已自动恢复');
+        }
+      } catch (error) {
+        logError('配置备份管理器初始化失败，跳过配置恢复', error);
+        configBackupManager = null;
+        // 不阻塞应用启动
+      }
+    } else {
+      logWarn('配置备份管理器未加载，跳过配置恢复功能');
+    }
     
-    // 窗口创建后检查更新（延迟执行，不阻塞启动）
-    setTimeout(() => {
-      checkForUpdates();
-    }, 3000);
-  } else {
-    console.log('🔇 静默模式，不显示窗口');
-    // 静默模式下，操作完成后退出
-    if (launchArgs.action) {
-      console.log('✓ 静默操作完成，退出应用');
-      app.quit();
+    // 初始化配置管理器（新的配置系统）
+    logInfo('初始化配置管理器...');
+    await configManager.initialize();
+    logInfo('配置管理器初始化完成');
+    
+    // 初始化默认数据（向后兼容）
+    logInfo('初始化默认数据...');
+    initializeDefaultData();
+    logInfo('默认数据初始化完成');
+    
+    // 检查并应用更新补丁（更新时注入新配置）
+    logInfo('检查更新补丁...');
+    applyUpdatePatchIfNeeded();
+    logInfo('更新补丁检查完成');
+    
+    // 处理更新后的特殊操作
+    if (launchArgs.postUpdate || launchArgs.action) {
+      logInfo('处理更新后操作...');
+      await handlePostUpdateActions();
+      logInfo('更新后操作处理完成');
+    }
+    
+    // 如果不是静默模式，创建窗口
+    if (!launchArgs.silent) {
+      logInfo('创建主窗口...');
+      createWindow();
+      logInfo('主窗口创建完成');
+      
+      // 设置配置变化通知
+      logInfo('设置配置变化通知...');
+      setupConfigChangeNotification();
+      logInfo('配置变化通知设置完成');
+      
+      // 窗口创建后检查更新（延迟执行，不阻塞启动）
+      setTimeout(() => {
+        logInfo('开始检查更新...');
+        checkForUpdates();
+      }, 3000);
+    } else {
+      logInfo('静默模式，不显示窗口');
+      // 静默模式下，操作完成后退出
+      if (launchArgs.action) {
+        logInfo('静默操作完成，退出应用');
+        app.quit();
+      }
+    }
+    
+    logInfo('========== 应用启动完成 ==========');
+  } catch (error) {
+    logError('应用启动过程中发生错误', error);
+    // 尝试显示错误对话框
+    try {
+      dialog.showErrorBox('启动错误', `应用启动失败: ${error.message}\n\n请查看日志文件获取详细信息。`);
+    } catch (e) {
+      // 忽略对话框错误
     }
   }
 
@@ -1064,6 +1179,42 @@ ipcMain.handle('cleanup-config-backups', async (event, keepCount = 3) => {
   }
   await configBackupManager.cleanupOldBackups(keepCount);
   return { success: true };
+});
+
+// ==================== 日志相关 IPC ====================
+
+// IPC: 获取日志文件路径
+ipcMain.handle('get-log-file-path', () => {
+  return logFilePath;
+});
+
+// IPC: 获取日志目录
+ipcMain.handle('get-logs-directory', () => {
+  const userDataPath = app.getPath('userData');
+  return path.join(userDataPath, 'logs');
+});
+
+// IPC: 打开日志目录
+ipcMain.handle('open-logs-directory', () => {
+  const userDataPath = app.getPath('userData');
+  const logsDir = path.join(userDataPath, 'logs');
+  if (fs.existsSync(logsDir)) {
+    shell.openPath(logsDir);
+    return true;
+  }
+  return false;
+});
+
+// IPC: 读取当前日志内容
+ipcMain.handle('read-current-log', () => {
+  if (logFilePath && fs.existsSync(logFilePath)) {
+    try {
+      return fs.readFileSync(logFilePath, 'utf8');
+    } catch (error) {
+      return `读取日志失败: ${error.message}`;
+    }
+  }
+  return '日志文件不存在';
 });
 
 // 应用启动后延迟检查更新
