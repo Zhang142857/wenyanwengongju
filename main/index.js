@@ -189,15 +189,20 @@ app.whenReady().then(async () => {
     handleProtocol();
   }
   
-  // 初始化配置备份管理器并检查是否需要恢复配置
-  const userDataPath = app.getPath('userData');
-  const appPath = app.isPackaged ? path.dirname(app.getPath('exe')) : path.join(__dirname, '..');
-  configBackupManager = new ConfigBackupManager(userDataPath, appPath);
-  
-  // 检查并恢复更新后的配置
-  const configRestored = await configBackupManager.checkAndRestoreOnStartup();
-  if (configRestored) {
-    console.log('✅ 更新后配置已自动恢复');
+  // 初始化配置备份管理器并检查是否需要恢复配置（添加错误保护）
+  try {
+    const userDataPath = app.getPath('userData');
+    const appPath = app.isPackaged ? path.dirname(app.getPath('exe')) : path.join(__dirname, '..');
+    configBackupManager = new ConfigBackupManager(userDataPath, appPath);
+    
+    // 检查并恢复更新后的配置
+    const configRestored = await configBackupManager.checkAndRestoreOnStartup();
+    if (configRestored) {
+      console.log('✅ 更新后配置已自动恢复');
+    }
+  } catch (error) {
+    console.error('⚠ 配置备份管理器初始化失败，跳过配置恢复:', error.message);
+    // 不阻塞应用启动
   }
   
   // 初始化配置管理器（新的配置系统）
@@ -954,22 +959,27 @@ ipcMain.handle('download-and-install', async (event, downloadUrl, fileName, vers
       mainWindow.webContents.send('update-download-started', { version, downloadUrl });
     }
 
-    // 在下载前备份配置文件
+    // 在下载前备份配置文件（添加错误保护，备份失败不阻塞更新）
     if (configBackupManager) {
-      console.log('📦 更新前备份配置文件...');
-      if (mainWindow && !mainWindow.isDestroyed()) {
-        mainWindow.webContents.send('config-backup-started');
-      }
-      
-      const currentVersion = app.getVersion();
-      const backupPath = await configBackupManager.backupBeforeUpdate(currentVersion);
-      console.log(`✅ 配置已备份到: ${backupPath}`);
-      
-      // 标记需要在更新后恢复配置
-      await configBackupManager.markPendingRestore(backupPath);
-      
-      if (mainWindow && !mainWindow.isDestroyed()) {
-        mainWindow.webContents.send('config-backup-complete', { backupPath });
+      try {
+        console.log('📦 更新前备份配置文件...');
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('config-backup-started');
+        }
+        
+        const currentVersion = app.getVersion();
+        const backupPath = await configBackupManager.backupBeforeUpdate(currentVersion);
+        console.log(`✅ 配置已备份到: ${backupPath}`);
+        
+        // 标记需要在更新后恢复配置
+        await configBackupManager.markPendingRestore(backupPath);
+        
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('config-backup-complete', { backupPath });
+        }
+      } catch (backupError) {
+        console.error('⚠ 配置备份失败，继续更新:', backupError.message);
+        // 备份失败不阻塞更新流程
       }
     }
 
