@@ -7,6 +7,7 @@ import { BookIcon, ToolboxIcon, SettingsIcon, RefreshIcon, UploadIcon, CloseIcon
 import { configService } from '@/services/configService'
 import type { BackgroundEffects } from '@/types/config'
 import styles from './home.module.css'
+import packageJson from '../../package.json'
 
 interface Quote {
   text: string
@@ -326,7 +327,7 @@ export default function Home() {
           </header>
 
           <div className={styles.copyrightBar}>
-            <span className={styles.versionBadge}>v1.2.5</span>
+            <span className={styles.versionBadge}>v{packageJson.version}</span>
             <span className={styles.separator}>|</span>
             <a href="https://github.com/Zhang142857" target="_blank" rel="noopener noreferrer" className={styles.authorLink}>
               <img src="/DM_20251130153613_001.png" alt="作者头像" className={styles.authorAvatar} />
