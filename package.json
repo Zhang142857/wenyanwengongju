@@ -1,6 +1,6 @@
 {
     "name": "classical-chinese-query",
-    "version": "1.2.12",
+    "version": "1.2.13",
     "description": "文言文查询小程序 - 面向教师的文言文字词查询工具",
     "main": "main/index.js",
     "scripts": {

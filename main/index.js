@@ -132,8 +132,14 @@ try {
   logError('configBackupManager 模块加载失败', error);
 }
 
-// 禁用 GPU 硬件加速，解决打包后输入框渲染异常问题
-app.disableHardwareAcceleration();
+// 注意：不再禁用 GPU 硬件加速，因为这会导致 backdrop-filter 不工作
+// 如果遇到输入框渲染问题，可以尝试以下命令行参数
+// app.disableHardwareAcceleration();
+
+// 添加命令行参数来解决某些环境下的渲染问题
+app.commandLine.appendSwitch('disable-gpu-sandbox');
+app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
+logInfo('已添加 GPU 兼容性命令行参数');
 
 // 保持对窗口对象的全局引用
 let mainWindow = null;
