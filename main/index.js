@@ -1,31 +1,37 @@
-const { app, BrowserWindow, ipcMain, protocol, net, dialog, shell } = require('electron');
+// ==================== 早期日志系统（在 app ready 之前） ====================
 const path = require('path');
 const fs = require('fs');
-const https = require('https');
-const http = require('http');
 
-// ==================== 日志系统 ====================
 let logFilePath = null;
 let logStream = null;
+let earlyLogs = []; // 存储早期日志，等 app ready 后写入文件
 
-function initLogger() {
+function getEarlyLogPath() {
+  // 在 app ready 之前，使用环境变量或默认路径
+  const appData = process.env.APPDATA || process.env.HOME || '.';
+  return path.join(appData, '文言文小工具', 'logs');
+}
+
+function initEarlyLogger() {
   try {
-    const userDataPath = app.getPath('userData');
-    const logsDir = path.join(userDataPath, 'logs');
+    const logsDir = getEarlyLogPath();
     if (!fs.existsSync(logsDir)) {
       fs.mkdirSync(logsDir, { recursive: true });
     }
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
     logFilePath = path.join(logsDir, `app-${timestamp}.log`);
     logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
-    log('INFO', '日志系统初始化完成');
+    
+    // 写入启动信息
+    log('INFO', '========== 应用进程启动 ==========');
     log('INFO', `日志文件: ${logFilePath}`);
-    log('INFO', `应用版本: ${app.getVersion()}`);
-    log('INFO', `Electron: ${process.versions.electron}`);
     log('INFO', `Node: ${process.versions.node}`);
     log('INFO', `平台: ${process.platform} ${process.arch}`);
+    log('INFO', `工作目录: ${process.cwd()}`);
+    log('INFO', `启动参数: ${process.argv.join(' ')}`);
   } catch (error) {
-    console.error('日志系统初始化失败:', error);
+    console.error('早期日志系统初始化失败:', error);
+    earlyLogs.push({ level: 'ERROR', message: `早期日志初始化失败: ${error.message}`, error });
   }
 }
 
@@ -33,11 +39,18 @@ function log(level, message, error = null) {
   const timestamp = new Date().toISOString();
   const logMessage = `[${timestamp}] [${level}] ${message}`;
   console.log(logMessage);
+  
   if (logStream) {
-    logStream.write(logMessage + '\n');
-    if (error) {
-      logStream.write(`[${timestamp}] [${level}] Stack: ${error.stack || error}\n`);
+    try {
+      logStream.write(logMessage + '\n');
+      if (error) {
+        logStream.write(`[${timestamp}] [${level}] Stack: ${error.stack || error}\n`);
+      }
+    } catch (e) {
+      console.error('写入日志失败:', e);
     }
+  } else {
+    earlyLogs.push({ level, message, error, timestamp });
   }
 }
 
@@ -52,6 +65,32 @@ function logInfo(message) {
 function logWarn(message) {
   log('WARN', message);
 }
+
+// 立即初始化早期日志
+initEarlyLogger();
+log('INFO', '开始加载 Electron 模块...');
+
+// ==================== 加载 Electron ====================
+let app, BrowserWindow, ipcMain, protocol, net, dialog, shell;
+try {
+  const electron = require('electron');
+  app = electron.app;
+  BrowserWindow = electron.BrowserWindow;
+  ipcMain = electron.ipcMain;
+  protocol = electron.protocol;
+  net = electron.net;
+  dialog = electron.dialog;
+  shell = electron.shell;
+  log('INFO', 'Electron 模块加载成功');
+  log('INFO', `Electron 版本: ${process.versions.electron}`);
+} catch (error) {
+  logError('Electron 模块加载失败', error);
+  process.exit(1);
+}
+
+const https = require('https');
+const http = require('http');
+log('INFO', 'http/https 模块加载成功');
 
 // ==================== 模块加载 ====================
 let checkAndApplyUpdatePatch, UpdateChecker, isDownloading, getDownloadState, cancelDownload, configManager, CONFIG_FILES;
@@ -266,9 +305,8 @@ let configBackupManager = null;
 
 // Electron 初始化完成后创建窗口
 app.whenReady().then(async () => {
-  // 初始化日志系统（最先执行）
-  initLogger();
-  logInfo('========== 应用启动 ==========');
+  logInfo('========== app.whenReady() 触发 ==========');
+  logInfo(`应用版本: ${app.getVersion()}`);
   
   try {
     // 解析启动参数
